@@ -1,7 +1,8 @@
 package kr.jadekim.oj.controller.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 /**
  * Created by ohyongtaek on 2016. 1. 19..
@@ -38,7 +39,13 @@ public class Answer {
     public Contest getContest() {
         return contest;
     }
-
+    public Answer(){}
+    public Answer(User submitter,String code,Date submitTime,Problem problem){
+        this.submitter = submitter;
+        this.submitTime = submitTime;
+        this.code = code;
+        this.problem = problem;
+    }
     public void setContest(Contest contest) {
         this.contest = contest;
     }

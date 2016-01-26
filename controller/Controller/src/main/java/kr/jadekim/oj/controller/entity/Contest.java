@@ -1,11 +1,7 @@
 package kr.jadekim.oj.controller.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ohyongtaek on 2016. 1. 19..
@@ -23,22 +19,39 @@ public class Contest {
     @Column(name="endTime")
     private Date endTime;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="problemSet")
     private ProblemSet problemSet;
 
-    @Column(name="manageTeam")
-    private String manageTeam;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="manageTeam")
+    private Team manageTeam;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="teams")
     private List<Team> teams;
 
+    @Column(name = "name")
+    private String name;
 
 
     @ElementCollection
     @MapKey(name="team")
     private Map<Team,AnswerList> solvedProblem;
+
+    public Contest(){
+        this.teams = new ArrayList<>();
+        this.solvedProblem = new HashMap<>();
+    }
+    public Contest(Team manageTeam, Date startTime,Date endTime, String name,ProblemSet problemSet){
+        this.manageTeam = manageTeam;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.name = name;
+        solvedProblem = new HashMap<>();
+        teams = new ArrayList<>();
+        this.problemSet = problemSet;
+    }
 
     public AnswerList getAnswerList(Team team){
         if(!solvedProblem.containsKey(team)){
@@ -81,9 +94,6 @@ public class Contest {
         return problemSet;
     }
 
-    public String getManageTeam() {
-        return manageTeam;
-    }
 
     public List<Team> getTeams() {
         return teams;
@@ -103,8 +113,29 @@ public class Contest {
         this.problemSet = problemSet;
     }
 
-    public void setManageTeam(String manageTeam) {
+    public void setManageTeam(Team manageTeam) {
         this.manageTeam = manageTeam;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSolvedProblem(Map<Team, AnswerList> solvedProblem) {
+        this.solvedProblem = solvedProblem;
+    }
+
+    public Team getManageTeam() {
+
+        return manageTeam;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Map<Team, AnswerList> getSolvedProblem() {
+        return solvedProblem;
     }
 
     public void setTeams(List<Team> teams) {

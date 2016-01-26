@@ -13,10 +13,16 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(name = "name")
     private String name;
+    @Column(name = "content")
     private String content;
+    @Column(name = "type")
     private int type;
-    private String testcase;
+
+    @OneToMany
+    @JoinColumn(name = "testcase")
+    private List<Testcase> testcases;
 
     @OneToMany
     @JoinColumn(name="submitUsers")
@@ -47,14 +53,6 @@ public class Problem {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public String getTestcase() {
-        return testcase;
-    }
-
-    public void setTestcase(String testcase) {
-        this.testcase = testcase;
     }
 
     @OneToMany

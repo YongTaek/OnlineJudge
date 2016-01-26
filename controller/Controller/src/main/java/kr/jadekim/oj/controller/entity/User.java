@@ -2,6 +2,7 @@ package kr.jadekim.oj.controller.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,11 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(name="login_id")
-    private String login_id;
+    private String loginId;
+
     @Column(name="login_pw")
-    private String login_pw;
+    private String loginPw;
+
     @Column(name="name")
     private String name;
     @Column(name="email")
@@ -24,12 +27,34 @@ public class User implements Serializable {
     @Column(name="rate")
     private double rate;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="problems")
     private List<Problem> problems;
 
 
-    @OneToMany
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
+    }
+
+    public void setLoginPw(String loginPw) {
+        this.loginPw = loginPw;
+    }
+
+    public List<Team> getTeamList() {
+
+        return teamList;
+    }
+
+    public String getLoginPw() {
+        return loginPw;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER)
+
     @JoinColumn(name="team_id")
     private List<Team> teamList;
 
@@ -40,6 +65,20 @@ public class User implements Serializable {
     @OneToOne
     @JoinColumn(name="group_id")
     private Group group;
+
+    public User(){}
+
+    public User(String loginId, String loginPw, String name, String email){
+        this.loginId = loginId;
+        this.loginPw = loginPw;
+        this.name = name;
+        this.email = email;
+        this.rate = 0;
+        this.teamList = null;
+        this.group = null;
+        this.problems = new ArrayList<>();
+        this.teamList = new ArrayList<>();
+    }
 
     public void setRate(double rate) {
         this.rate = rate;
@@ -65,20 +104,20 @@ public class User implements Serializable {
         return id;
     }
 
-    public String getLogin_id() {
-        return login_id;
+    public String getloginId() {
+        return loginId;
     }
 
-    public void setLogin_id(String login_id) {
-        this.login_id = login_id;
+    public void setloginId(String loginId) {
+        this.loginId = loginId;
     }
 
-    public String getLogin_pw() {
-        return login_pw;
+    public String getloginPw() {
+        return loginPw;
     }
 
-    public void setLogin_pw(String login_pw) {
-        this.login_pw = login_pw;
+    public void setloginPw(String loginPw) {
+        this.loginPw = loginPw;
     }
 
     public String getName() {
@@ -93,8 +132,8 @@ public class User implements Serializable {
         return group;
     }
 
-    public User(String login_id) {
-        this.login_id = login_id;
+    public User(String loginId) {
+        this.loginId = loginId;
     }
 
     public void setTeamList(List<Team> teamList) {

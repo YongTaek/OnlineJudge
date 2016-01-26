@@ -29,6 +29,8 @@ public class Team {
     @JoinColumn(name="admin")
     private User admin;
 
+
+
     public String getName() {
         return name;
     }
