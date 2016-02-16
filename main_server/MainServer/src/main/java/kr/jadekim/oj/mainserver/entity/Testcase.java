@@ -19,6 +19,10 @@ public class Testcase {
     @Column(name = "output")
     private String output;
 
+    @Column(name = "type")
+    private int type;
+
+
     @ManyToOne
     @JoinColumn(name = "problemId")
     private Problem problem;

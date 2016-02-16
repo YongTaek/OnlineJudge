@@ -18,8 +18,12 @@ public class Problem {
     private String name;
     @Column(name = "content")
     private String content;
-    @Column(name = "type")
-    private int type;
+
+    @Column(name="limitTime")
+    private int limitTime;
+
+    @Column(name="limitMemory")
+    private int limitMemory;
 
     @OneToMany
     @JoinColumn(name = "testcase")
@@ -35,13 +39,37 @@ public class Problem {
         return submitUsers;
     }
 
+    public int getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(int limitTime) {
+        this.limitTime = limitTime;
+    }
+
+    public int getLimitMemory() {
+        return limitMemory;
+    }
+
+    public void setLimitMemory(int limitMemory) {
+        this.limitMemory = limitMemory;
+    }
+
+    public List<Testcase> getTestcases() {
+        return testcases;
+    }
+
+    public void setTestcases(List<Testcase> testcases) {
+        this.testcases = testcases;
+    }
+
     public Problem(){}
 
     public Problem(String name, String content, int type){
         this.name = name;
         this.content  = content;
-        this.type = type;
         submitUsers = new ArrayList<>();
+        this.testcases = new ArrayList<>();
     }
     public int getId() {
         return id;
@@ -60,14 +88,6 @@ public class Problem {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public void setSubmitUsers(List<User> submitUsers) {

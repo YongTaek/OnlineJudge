@@ -26,9 +26,8 @@ public class ProblemService {
     private ProblemRepository problemRepository;
 
     @Async
-    public Future<List<Testcase>> getTestcase(int problem_id){
+    public Future<Problem> getProblem(int problem_id){
         Problem problem = problemRepository.getOne(problem_id);
-        List<Testcase> testcaseList = testcaseRepository.findByProblem(problem);
-        return new AsyncResult<>(testcaseList);
+        return new AsyncResult<>(problem);
     }
 }
