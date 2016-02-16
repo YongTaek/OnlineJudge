@@ -1,20 +1,20 @@
 layout 'test.tpl', title: '문제',
         content: contents {
-            div(class:'container'){
-                div(class:'prob-nav'){
-                    ul(){
+            div(class: 'container') {
+                div(class: 'prob-nav') {
+                    ul() {
                         li '문제'
                         li '추가된 문제'
                         li '문제순위'
                         li '기타'
                     }
-                    form(id:'search-form', action='', method='post'){
-                        input(type:'text', value:'', name:'search')
-                        input(type:'button', value:'검색')
+                    form(id: 'search-form', action = '', method = 'post') {
+                        input(type: 'text', value: '', name: 'search')
+                        input(type: 'button', value: '검색')
                     }
                 }
-                div(class:'prob-container'){
-                    table(class:'prob-table'){
+                div(class: 'prob-container') {
+                    table(class: 'prob-table') {
                         thead {
                             tr {
                                 td '문제번호'
@@ -25,23 +25,34 @@ layout 'test.tpl', title: '문제',
                             }
                         }
                         tbody {
-                            if(problems.empty) { tr {td(colspan:'5', 'No Problem')}}
-                            else {
-                                problems.each { problem ->
+                            if (messages.empty) {
+                                tr { td(colspan: '5', 'No Problem') }
+                            } else {
+                                messages.each { message ->
                                     tr {
-                                        td problem.id
-                                        td problem.name
-                                        td problem.count
-                                        td problem.rate
-                                        td problem.result
+                                        td message.id
+                                        td message.name
+                                        td message.count
+                                        td message.rate
+                                        td message.result
                                     }
                                 }
                             }
                         }
                     }
                 }
-                div(class:'prob-footer'){
-
+                div(class: 'prob-nav') {
+                    ul(class: 'pagination') {
+                        li {
+                            a(href = "#" , 1)
+                        }
+                        li(class: 'active') {
+                            a(href = "#", 2)
+                        }
+                        li {
+                            a(href = "#", 3)
+                        }
+                    }
                 }
             }
         }
