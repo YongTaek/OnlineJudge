@@ -31,8 +31,7 @@ public class User implements Serializable {
     @JoinColumn(name="team_id")
     private List<Team> teamList;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="answers")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "submitter")
     private List<Answer> answers;
 
     @OneToOne
@@ -51,6 +50,9 @@ public class User implements Serializable {
         this.loginPw = loginPw;
     }
 
+    public List<Answer> getAnswers(){
+        return answers;
+    }
     public List<Team> getTeamList() {
 
         return teamList;
@@ -100,7 +102,9 @@ public class User implements Serializable {
         return rate;
     }
 
-
+    public void addAnswer(Answer answer){
+        this.answers.add(answer);
+    }
 
     public int getId() {
         return id;

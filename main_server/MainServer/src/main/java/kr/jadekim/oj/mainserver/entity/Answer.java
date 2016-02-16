@@ -28,8 +28,8 @@ public class Answer {
     @Column(name="submitTime")
     private Date submitTime;
 
-    @OneToOne
-    @JoinColumn(name="submitter")
+    @ManyToOne
+    @JoinColumn(name="user_id")
     private User submitter;
 
     @ManyToOne

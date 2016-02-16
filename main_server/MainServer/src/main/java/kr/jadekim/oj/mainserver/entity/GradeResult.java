@@ -61,7 +61,7 @@ public class GradeResult {
 
 
     public void setSuccess(boolean success) {
-        isSuccess = success;
+        this.isSuccess = success;
     }
 
 

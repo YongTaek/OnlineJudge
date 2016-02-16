@@ -2,6 +2,7 @@ package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ohyongtaek on 2016. 1. 20..
@@ -15,13 +16,13 @@ public class AnswerList {
 
     @OneToMany
     @JoinColumn(name="answerList")
-    private ArrayList<Object> answers;
+    private List<Answer> answers;
 
     @OneToOne
     @JoinColumn(name="team")
     private Team team;
 
-    public void setAnswers(ArrayList<Object> answers) {
+    public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
 
@@ -29,7 +30,7 @@ public class AnswerList {
         this.team = team;
     }
 
-    public ArrayList<Object> getAnswers() {
+    public List<Answer> getAnswers() {
 
         return answers;
     }

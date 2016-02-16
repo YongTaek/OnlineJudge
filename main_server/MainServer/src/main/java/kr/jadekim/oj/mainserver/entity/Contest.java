@@ -64,7 +64,7 @@ public class Contest {
     public boolean addSolvedProblem(Team team,Answer answer){
         if(!solvedProblem.containsKey(team)){
             AnswerList answers = new AnswerList(team);
-            answers.setAnswers(new ArrayList<>());
+            answers.setAnswers(new ArrayList<Answer>());
             answers.setTeam(team);
             solvedProblem.put(team,answers);
         }
