@@ -4,14 +4,14 @@ layout 'test.tpl', title: '문제',
                 div(class: 'row') {
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
-                            li(class: 'active') {
+                            li(class: 'active', id: 'problem') {
                                 a(href: '/', '문제')
                             }
-                            li {
+                            li(id:'recent') {
                                 a(href: '/recent', '추가된 문제')
                             }
-                            li {
-                                a(href: '#', '문제순위')
+                            li(id:'ranking') {
+                                a(href: '/prob/ranking', '문제순위')
                             }
                             li {
                                 a(id:'click-etc',href: '#','기타',role:'button')
@@ -22,13 +22,13 @@ layout 'test.tpl', title: '문제',
                         }
                     }
                     div(class: 'col-md-4') {
-                        form(class: "form-inline") {
+                        form(class: "form-inline",id: 'searchForm') {
                             div(class: "form-group") {
                                 div(class: 'input-group') {
-                                    input(type = "text", class: 'form-control', id: 'exampleInputAmount')
+                                    input(type = "text", class: 'form-control', id: 'exampleInputAmount',name:'search')
                                 }
                             }
-                            button(type: "submit", class: "btn btn-primary", '검색')
+                            button(type: "submit",id: 'searchButton' , class: "btn btn-primary", '검색')
                         }
                     }
                 }
@@ -53,7 +53,11 @@ layout 'test.tpl', title: '문제',
                                         td(class: 'common-table', message.name)
                                         td(class: 'common-table', message.count)
                                         td(class: 'common-table', message.rate)
-                                        td(class: 'common-table', message.result)
+                                        if(message.result == true) {
+                                            td(class: 'common-table', 'O')
+                                        }else{
+                                            td(class: 'common-table', 'X')
+                                        }
                                     }
                                 }
                             }
@@ -76,4 +80,6 @@ layout 'test.tpl', title: '문제',
                     }
                 }
             }
+            script(type:'text/javascript',src:'js/table.js'){}
+
         }

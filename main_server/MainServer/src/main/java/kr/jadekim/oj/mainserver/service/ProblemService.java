@@ -2,10 +2,10 @@ package kr.jadekim.oj.mainserver.service;
 
 
 import kr.jadekim.oj.mainserver.entity.Problem;
-import kr.jadekim.oj.mainserver.entity.Testcase;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -29,5 +29,11 @@ public class ProblemService {
     public Future<Problem> getProblem(int problem_id){
         Problem problem = problemRepository.getOne(problem_id);
         return new AsyncResult<>(problem);
+    }
+
+    @Async
+    public Future<Iterable<Problem>> findAllProblem(Pageable pageable){
+        Iterable<Problem> problems = problemRepository.findAll(pageable);
+        return new AsyncResult<>(problems);
     }
 }

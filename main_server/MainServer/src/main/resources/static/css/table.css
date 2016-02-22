@@ -36,12 +36,11 @@ thead.prob-table-head{
 th{
     font-size: 13px;
 }
-
 #prob-id{
     width: 15%;
 }
 #prob-name{
-    width: 55%;
+    width: 50%;
 }
 #prob-success-count{
     width:10%;
@@ -52,6 +51,7 @@ th{
 #prob-user-result{
     width:10%;
 }
+
 .container{
     width:940px;
     height:100%;

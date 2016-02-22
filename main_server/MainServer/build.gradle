@@ -36,6 +36,7 @@ dependencies {
 	compile('com.google.code.gson:gson:2.3.1')
 	compile('org.apache.httpcomponents:httpayncclient')
 	compile('org.apache.httpcomponents:httpclient')
+	compile('io.reactivex:rxgroovy:x.y.z')
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

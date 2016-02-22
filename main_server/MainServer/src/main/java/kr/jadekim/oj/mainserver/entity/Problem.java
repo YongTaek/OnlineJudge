@@ -29,7 +29,7 @@ public class Problem {
     @JoinColumn(name = "testcase")
     private List<Testcase> testcases;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="submitUsers")
     private List<User> submitUsers;
 

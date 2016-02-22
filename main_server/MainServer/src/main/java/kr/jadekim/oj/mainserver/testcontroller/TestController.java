@@ -10,16 +10,21 @@ import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.repository.GradeResultRepository;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
+import kr.jadekim.oj.mainserver.service.ProblemService;
+import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ohyongtaek on 2016. 2. 15..
@@ -43,11 +48,18 @@ public class TestController {
     @Autowired
     GradeResultRepository gradeResultRepository;
 
+    @Autowired
+    ProblemService problemService;
+
+    @Autowired
+    UserService userService;
+
     @RequestMapping("/test")
     public @ResponseBody String createAnswer(){
         User user = userRepository.findAll().get(0);
         Date date = new Date();
-        Problem problem = new Problem();
+        Problem problem = new Problem("test","내용",0);
+        problem.getSubmitUsers().add(user);
         problemRepository.save(problem);
         Answer answer = new Answer(user,"asdf",date,problem);
         GradeResult gradeResult = new GradeResult();
@@ -78,14 +90,26 @@ public class TestController {
     @RequestMapping
     public ModelAndView list(ModelAndView modelAndView ,@PageableDefault(sort = { "id" }, size = 10) Pageable pageable){
         ArrayList<Map> messages = new ArrayList<>();
-        Iterable<Problem> problems = problemRepository.findAll(pageable);
-        User user = userRepository.findAll().get(0);
+        Iterable<Problem> problems = null;
+        User user = null;
+        try {
+            problems = problemService.findAllProblem(pageable).get();
+            user =userService.findUser("ka123ak").get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         for(Problem p : problems){
             Map<String,Object> map = new HashMap<>();
             int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
             int total_count = answerRepository.countByProblemId(p.getId());
             double rate = success_count/total_count *100;
-            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
+            boolean isSuccess = false;
+            if(user != null) {
+                isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(), p.getId());
+            }
             map.put("id",p.getId());
             map.put("name",p.getName());
             map.put("count",success_count);
@@ -135,4 +159,54 @@ public class TestController {
         return modelAndView;
     }
 
+    @RequestMapping("prob/ranking")
+    public ModelAndView probRanking(ModelAndView modelAndView){
+        ArrayList<Map> messages = new ArrayList<>();
+        Iterable<Problem> problems = problemRepository.findOrderBySubmitUsers();
+        User user = userRepository.findAll().get(0);
+        int i= 0;
+        for(Problem p : problems){
+            Map<String,Object> map = new HashMap<>();
+            System.out.println(p.getSubmitUsers().size());
+            int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
+            int total_count = answerRepository.countByProblemId(p.getId());
+            double rate = success_count/total_count *100;
+            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
+            map.put("rank",++i);
+            map.put("id",p.getId());
+            map.put("name",p.getName());
+            map.put("count",success_count);
+            map.put("rate",rate);
+            map.put("result",isSuccess);
+            messages.add(map);
+        }
+        ArrayList<Integer> pages = new ArrayList<>();
+        modelAndView.setViewName("problemRanking");
+        modelAndView.addObject("messages",messages);
+        modelAndView.addObject("pages",pages);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "search",method = RequestMethod.POST)
+    public @ResponseBody String search(HttpServletRequest request){
+        String problem_id = request.getParameter("search");
+        System.out.println(problem_id);
+        ArrayList<Map> messages = new ArrayList<>();
+        List<Problem> problems = problemRepository.findByName(problem_id);
+        User user = userRepository.findAll().get(0);
+        for(Problem p : problems){
+            Map<String,Object> map = new HashMap<>();
+            int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
+            int total_count = answerRepository.countByProblemId(p.getId());
+            double rate = success_count/total_count *100;
+            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
+            map.put("id",p.getId());
+            map.put("name",p.getName());
+            map.put("count",success_count);
+            map.put("rate",rate);
+            map.put("result",isSuccess);
+            messages.add(map);
+        }
+        return gson.toJson(messages);
+    }
 }

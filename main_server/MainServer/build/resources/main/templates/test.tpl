@@ -9,7 +9,6 @@ html {
         div(class:'container') {
             div { content() }
         }
-        script(type:'text/javascript',src:'js/table.js'){}
 
     }
 }
