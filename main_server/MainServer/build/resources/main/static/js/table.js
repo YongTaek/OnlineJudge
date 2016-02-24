@@ -28,40 +28,57 @@ function sort_table(tbody, col, asc) {
     }
 }
 
-
-var prob_id = document.getElementById('prob-id');
-var prob_tbody = document.getElementById('prob-tbody');
+var prob_id = $('#prob-id');
+var prob_tbody = $('#prob-tbody');
 asc1 = asc2 = asc3 = 1;
-prob_id.addEventListener('click',function() {
+prob_id.click(function(){
     sort_table(prob_tbody, 0, asc1);
     asc1 *= -1;
     asc2 = 1;
     asc3 = 1;
-}, false);
+})
+
 $('#click-etc').click(function(){
     $('#etc').slideToggle('fast',function(){});
 });
 
-var problem = document.getElementById('problem');
-var recent = document.getElementById('recent');
-var prob_ranking = document.getElementById('ranking');
+var problem = $('#problem');
+var recent = $('#recent');
+var prob_ranking = $('#ranking');
 
-if (jQuery(location).attr('pathname') ==='/'){
-    problem.outerHTML = "<li class='active' id='problem'>"+"<a href='/'>문제</a>"+"</li>";
-    recent.outerHTML =  "<li id='recent'>"+"<a href='/recent'>추가된 문제</a>"+"</li>";
-    prob_ranking.outerHTML = "<li id='prob-ranking'>"+"<a href='/prob/ranking'>문제 순위</a>"+"</li>";
-}else if(jQuery(location).attr('pathname') === '/recent'){
-    problem.outerHTML = "<li  id='problem'>"+"<a href='/'>문제</a>"+"</li>";
-    recent.outerHTML =  "<li class='active' id='recent'>"+"<a href='/recent'>추가된 문제</a>"+"</li>";
-    prob_ranking.outerHTML = "<li id='prob-ranking'>"+"<a href='/prob/ranking'>문제 순위</a>"+"</li>";
-}else if(jQuery(location).attr('pathname') === '/prob/ranking') {
-    problem.outerHTML = "<li  id='problem'>" + "<a href='/'>문제</a>" + "</li>";
-    recent.outerHTML = "<li  id='recent'>" + "<a href='/recent'>추가된 문제</a>" + "</li>";
-    prob_ranking.outerHTML = "<li class='active' id='ranking'>" + "<a href='/prob/ranking'>문제 순위</a>" + "</li>";
-    document.getElementById('prob-ranking').style.setProperty('width', '5%');
-    document.getElementById('prob-name').style.setProperty('width','50%');
+if (jQuery(location).attr('pathname') ==='/problem'){
+    if(!problem.hasClass('active')) {
+        problem.addClass('active');
+    }
+    if(recent.hasClass('active')){
+        recent.removeClass('active');
+    }
+    if(prob_ranking.hasClass('active')){
+        prob_ranking.removeClass('active');
+    }
+}else if(jQuery(location).attr('pathname') === '/problem/recent'){
+    if(problem.hasClass('active')){
+        problem.removeClass('active');
+    }
+    if(!recent.hasClass('active')){
+        recent.addClass('active');
+    }
+    if(prob_ranking.hasClass('active')){
+        prob_ranking.removeClass('active');
+    }
+}else if(jQuery(location).attr('pathname') === '/problem/ranking') {
+    if(problem.hasClass('active')){
+        problem.removeClass('active');
+    }
+    if(recent.hasClass('active')){
+        recent.removeClass('active');
+    }
+    if(!prob_ranking.hasClass('active')){
+        prob_ranking.addClass('active');
+    }
+    $('#prob-ranking').css('width', '5%');
+    $('#prob-name').css('width','50%');
 };
-var table = document.getElementById('prob-tbody');
 $('#searchButton').click(function(){
     $.ajax({
         url:'./search',
@@ -81,10 +98,8 @@ $('#searchButton').click(function(){
                     result += "<td class=\"common-table\">" + data[i]['rate'] + "</td>";
                     result += "</tr>";
                 }
-                console.log(result);
-                alert("asdf");
             }
-            $('#prob-tbody').html(result);
+            prob_tbody.html(result);
         }
     })
 });

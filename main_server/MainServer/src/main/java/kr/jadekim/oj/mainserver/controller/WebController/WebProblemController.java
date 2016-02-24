@@ -1,4 +1,4 @@
-package kr.jadekim.oj.mainserver.testcontroller;
+package kr.jadekim.oj.mainserver.controller.WebController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,8 +31,8 @@ import java.util.concurrent.ExecutionException;
  */
 
 @Controller
-@RequestMapping("/")
-public class TestController {
+@RequestMapping("/problem")
+public class WebProblemController {
 
     Gson gson = new GsonBuilder().create();
 
@@ -56,7 +56,14 @@ public class TestController {
 
     @RequestMapping("/test")
     public @ResponseBody String createAnswer(){
-        User user = userRepository.findAll().get(0);
+        User user = null;
+        try {
+            user = userService.findUser("ka123ak").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         Date date = new Date();
         Problem problem = new Problem("test","내용",0);
         problem.getSubmitUsers().add(user);
@@ -68,7 +75,7 @@ public class TestController {
         answer.setResult(gradeResult);
         answerRepository.save(answer);
         user.addAnswer(answer);
-        userRepository.save(user);
+        userService.saveUser(user);
 
 
         int count = answerRepository.countBySuccessAndProblemId(1);
@@ -77,11 +84,11 @@ public class TestController {
 
     @RequestMapping("/query")
     public @ResponseBody  String getUser(){
-        List<User> users = userRepository.findAll();
-        for(User u : users){
-            for(Answer a : u.getAnswers()){
-                System.out.println(a.getResult().isSuccess());
-            }
+        List<Problem> problems = problemRepository.findByName("test");
+        User user = userRepository.findByloginId("ka123ak1").get(0);
+        for(Problem p : problems){
+            p.getSubmitUsers().add(user);
+            problemRepository.save(p);
         }
 
         return "wait";
@@ -101,22 +108,7 @@ public class TestController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        for(Problem p : problems){
-            Map<String,Object> map = new HashMap<>();
-            int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
-            int total_count = answerRepository.countByProblemId(p.getId());
-            double rate = success_count/total_count *100;
-            boolean isSuccess = false;
-            if(user != null) {
-                isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(), p.getId());
-            }
-            map.put("id",p.getId());
-            map.put("name",p.getName());
-            map.put("count",success_count);
-            map.put("rate",rate);
-            map.put("result",isSuccess);
-            messages.add(map);
-        }
+        messages = makeMessages(messages,problems,user);
         ArrayList<Integer> pages = new ArrayList<>();
         int total_count = problemRepository.countAll();
         if(total_count%pageable.getPageSize()==0){
@@ -139,19 +131,7 @@ public class TestController {
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemRepository.findAll(new PageRequest(0,100));
         User user = userRepository.findAll().get(0);
-        for(Problem p : problems){
-            Map<String,Object> map = new HashMap<>();
-            int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
-            int total_count = answerRepository.countByProblemId(p.getId());
-            double rate = success_count/total_count *100;
-            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
-            map.put("id",p.getId());
-            map.put("name",p.getName());
-            map.put("count",success_count);
-            map.put("rate",rate);
-            map.put("result",isSuccess);
-            messages.add(map);
-        }
+        messages = makeMessages(messages,problems,user);
         ArrayList<Integer> pages = new ArrayList<>();
         modelAndView.setViewName("problem");
         modelAndView.addObject("messages",messages);
@@ -159,47 +139,45 @@ public class TestController {
         return modelAndView;
     }
 
-    @RequestMapping("prob/ranking")
+    @RequestMapping("ranking")
     public ModelAndView probRanking(ModelAndView modelAndView){
-        ArrayList<Map> messages = new ArrayList<>();
-        Iterable<Problem> problems = problemRepository.findOrderBySubmitUsers();
-        User user = userRepository.findAll().get(0);
-        int i= 0;
-        for(Problem p : problems){
-            Map<String,Object> map = new HashMap<>();
-            System.out.println(p.getSubmitUsers().size());
-            int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
-            int total_count = answerRepository.countByProblemId(p.getId());
-            double rate = success_count/total_count *100;
-            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
-            map.put("rank",++i);
-            map.put("id",p.getId());
-            map.put("name",p.getName());
-            map.put("count",success_count);
-            map.put("rate",rate);
-            map.put("result",isSuccess);
-            messages.add(map);
+        try {
+            modelAndView = problemService.getSortedProbByrank(modelAndView).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-        ArrayList<Integer> pages = new ArrayList<>();
-        modelAndView.setViewName("problemRanking");
-        modelAndView.addObject("messages",messages);
-        modelAndView.addObject("pages",pages);
         return modelAndView;
     }
 
     @RequestMapping(value = "search",method = RequestMethod.POST)
     public @ResponseBody String search(HttpServletRequest request){
-        String problem_id = request.getParameter("search");
-        System.out.println(problem_id);
+        String problem_name = request.getParameter("search");
         ArrayList<Map> messages = new ArrayList<>();
-        List<Problem> problems = problemRepository.findByName(problem_id);
+        Iterable<Problem> problems = null;
+        try {
+            problems = problemService.findByName(problem_name).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         User user = userRepository.findAll().get(0);
+        messages = makeMessages(messages,problems,user);
+        return gson.toJson(messages);
+    }
+
+    public ArrayList<Map> makeMessages(ArrayList<Map> messages,Iterable<Problem> problems,User user){
         for(Problem p : problems){
             Map<String,Object> map = new HashMap<>();
             int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
             int total_count = answerRepository.countByProblemId(p.getId());
             double rate = success_count/total_count *100;
             boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
+            if(user != null) {
+                isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(), p.getId());
+            }
             map.put("id",p.getId());
             map.put("name",p.getName());
             map.put("count",success_count);
@@ -207,6 +185,6 @@ public class TestController {
             map.put("result",isSuccess);
             messages.add(map);
         }
-        return gson.toJson(messages);
+        return messages;
     }
 }

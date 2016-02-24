@@ -52,4 +52,9 @@ public class UserService {
             return new AsyncResult<>(user);
         }
     }
+
+    @Async
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
 }

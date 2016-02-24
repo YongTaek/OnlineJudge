@@ -18,7 +18,9 @@ public interface ProblemRepository extends JpaRepository<Problem,Integer> {
     @Query("select count(p) from Problem p")
     int countAll();
 
-    @Query("select distinct p from Problem p")
+
+
+    @Query("select p from Problem p join p.submitUsers u group by p order by count(u.id) desc")
     List<Problem> findOrderBySubmitUsers();
 
     List<Problem> findById(int problem_id);

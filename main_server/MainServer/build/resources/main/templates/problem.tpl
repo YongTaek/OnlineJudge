@@ -5,13 +5,13 @@ layout 'test.tpl', title: '문제',
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
                             li(class: 'active', id: 'problem') {
-                                a(href: '/', '문제')
+                                a(href: '/problem', '문제')
                             }
                             li(id:'recent') {
-                                a(href: '/recent', '추가된 문제')
+                                a(href: '/problem/recent', '추가된 문제')
                             }
                             li(id:'ranking') {
-                                a(href: '/prob/ranking', '문제순위')
+                                a(href: '/problem/ranking', '문제순위')
                             }
                             li {
                                 a(id:'click-etc',href: '#','기타',role:'button')
