@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name="tbl_hint")
-public class Hint {
+public class Hint implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

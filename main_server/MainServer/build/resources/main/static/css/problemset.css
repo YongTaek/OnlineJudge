@@ -1,0 +1,35 @@
+table.prob-table{
+    border: 1px solid #dddddd;
+    width:100%;
+}
+thead.prob-table-head{
+    display: table-header-group;
+}
+
+.common-table{
+    padding: 8px;
+    height:35px;
+    border:1px solid #dddddd;
+}
+th{
+    font-size: 13px;
+}
+#prob-id{
+    width: 10%;
+}
+#prob-author{
+    width: 10%;
+}
+#prob-title{
+    width:50%;
+}
+#prob-rate{
+    width:25%;
+}
+#prob-etc{
+    width:5%;
+}
+.container{
+    width:940px;
+    height:100%;
+}

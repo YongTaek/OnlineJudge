@@ -17,7 +17,7 @@ public class MainController {
     private UserRepository userRepository;
 
 
-    @RequestMapping("/hello")
+    @RequestMapping("/")
     public @ResponseBody String index(){
         return "Hello!";
     }

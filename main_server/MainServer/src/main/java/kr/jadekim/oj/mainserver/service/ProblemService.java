@@ -59,7 +59,7 @@ public class ProblemService {
     public Future<ModelAndView> getSortedProbByrank(ModelAndView modelAndView){
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemRepository.findOrderBySubmitUsers();
-        User user = userRepository.findAll().get(0);
+        User user = userRepository.findAll().get(1);
         int i= 0;
         for(Problem p : problems){
             Map<String,Object> map = new HashMap<>();

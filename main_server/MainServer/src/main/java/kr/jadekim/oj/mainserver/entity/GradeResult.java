@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="tbl_gradeResult")
-public class GradeResult {
+public class GradeResult implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

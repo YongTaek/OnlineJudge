@@ -130,7 +130,7 @@ public class WebProblemController {
     public ModelAndView recentList(ModelAndView modelAndView){
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemRepository.findAll(new PageRequest(0,100));
-        User user = userRepository.findAll().get(0);
+        User user = userRepository.findAll().get(1);
         messages = makeMessages(messages,problems,user);
         ArrayList<Integer> pages = new ArrayList<>();
         modelAndView.setViewName("problem");
@@ -174,7 +174,7 @@ public class WebProblemController {
             int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
             int total_count = answerRepository.countByProblemId(p.getId());
             double rate = success_count/total_count *100;
-            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
+            boolean isSuccess = true;
             if(user != null) {
                 isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(), p.getId());
             }

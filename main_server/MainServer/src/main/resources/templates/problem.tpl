@@ -1,6 +1,8 @@
 layout 'test.tpl', title: '문제',
         content: contents {
             div(class: 'container') {
+                link(rel:'stylesheet', href: '/css/table.css')
+
                 div(class: 'row') {
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
@@ -80,6 +82,6 @@ layout 'test.tpl', title: '문제',
                     }
                 }
             }
-            script(type:'text/javascript',src:'js/table.js'){}
+            script(type:'text/javascript',src:'../js/table.js'){}
 
         }
