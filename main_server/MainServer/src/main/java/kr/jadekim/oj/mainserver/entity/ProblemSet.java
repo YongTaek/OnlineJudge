@@ -14,8 +14,9 @@ public class ProblemSet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @JoinColumn(name="auther")
-    private User user;
+    @OneToOne
+    @JoinColumn(name="author")
+    private User author;
 
     @Column(name="name")
     private String name;
@@ -24,14 +25,13 @@ public class ProblemSet {
     @JoinColumn(name="clearUsers")
     private List<User> clearUsers;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="problemList")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "problemSet")
     private List<Problem> problemList;
 
     public ProblemSet(){}
 
-    public ProblemSet(User user, String name){
-        this.user = user;
+    public ProblemSet(User author, String name){
+        this.author = author;
         this.name = name;
         this.clearUsers = new ArrayList<>();
         this.problemList = new ArrayList<>();
@@ -41,8 +41,8 @@ public class ProblemSet {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public User getauthor() {
+        return author;
     }
 
     public String getName() {
@@ -57,8 +57,8 @@ public class ProblemSet {
         return problemList;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setauthor(User author) {
+        this.author = author;
     }
 
     public void setName(String name) {

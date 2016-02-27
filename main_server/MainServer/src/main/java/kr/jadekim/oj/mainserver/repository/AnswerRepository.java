@@ -20,4 +20,5 @@ public interface AnswerRepository extends JpaRepository<Answer,Integer>{
 
     @Query(value = "select b.isSuccess from Answer a join a.result b join a.problem p join a.submitter u where u.id=:user_id and p.id=:prob_id order by a.submitTime desc")
     boolean findIsSuccessTop1ByUserId(@Param("user_id") int user_id, @Param("prob_id") int prob_id);
+
 }

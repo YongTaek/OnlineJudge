@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="tbl_problem")
-public class Problem {
+public class Problem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -29,12 +30,14 @@ public class Problem {
     @JoinColumn(name = "testcase")
     private List<Testcase> testcases;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="submitUsers")
     private List<User> submitUsers;
 
-    @OneToMany
-    @JoinColumn(name="user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "problem_id")
+    private ProblemSet problemSet;
+
     public List<User> getSubmitUsers() {
         return submitUsers;
     }
@@ -71,6 +74,15 @@ public class Problem {
         submitUsers = new ArrayList<>();
         this.testcases = new ArrayList<>();
     }
+
+    public ProblemSet getProblemSet() {
+        return problemSet;
+    }
+
+    public void setProblemSet(ProblemSet problemSet) {
+        this.problemSet = problemSet;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,0 +1,58 @@
+.prob-nav{
+    list-style: none;
+    margin-bottom: 20px;
+    -webkit-padding-start: 40px;
+}
+
+.prob-nav>li{
+    float: left;
+    text-align: -webkit-match-parent;
+}
+.prob-nav>li>a{
+    position: relative;
+    padding:10px 15px;
+}
+#etc{
+    display: none;
+    position: absolute;
+}
+
+
+
+
+table.prob-table{
+    border: 1px solid #dddddd;
+    width:100%;
+}
+thead.prob-table-head{
+    display: table-header-group;
+}
+
+.common-table{
+    padding: 8px;
+    height:35px;
+    border:1px solid #dddddd;
+}
+th{
+    font-size: 13px;
+}
+#prob-id{
+    width: 15%;
+}
+#prob-name{
+    width: 50%;
+}
+#prob-success-count{
+    width:10%;
+}
+#prob-success-rate{
+    width:10%;
+}
+#prob-user-result{
+    width:10%;
+}
+
+.container{
+    width:940px;
+    height:100%;
+}

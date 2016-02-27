@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,7 +9,7 @@ import java.util.*;
  */
 @Entity
 @Table(name="tbl_contest")
-public class Contest {
+public class Contest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

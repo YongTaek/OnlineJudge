@@ -42,4 +42,19 @@ public class UserService {
             return null;
         }
     }
+
+    @Async
+    public Future<User> findUser(String login_id){
+        User user = userRepository.findByloginId(login_id).get(0);
+        if(user == null){
+            return null;
+        }else{
+            return new AsyncResult<>(user);
+        }
+    }
+
+    @Async
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
 }

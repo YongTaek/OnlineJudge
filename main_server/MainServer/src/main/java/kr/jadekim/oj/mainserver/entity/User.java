@@ -14,18 +14,19 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="login_id")
+    @Column(name="login_id",unique = true,nullable = false)
     private String loginId;
 
-    @Column(name="login_pw")
+    @Column(name="login_pw",nullable = false)
     private String loginPw;
 
-    @Column(name="name")
+    @Column(name="name",nullable = false)
     private String name;
-    @Column(name="email")
+    @Column(name="email",nullable = false)
     private String email;
     @Column(name="rate")
     private double rate;
+
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="team_id")
