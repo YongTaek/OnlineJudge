@@ -25,8 +25,7 @@ public class ProblemSet {
     @JoinColumn(name="clearUsers")
     private List<User> clearUsers;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="problemList")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "problemSet")
     private List<Problem> problemList;
 
     public ProblemSet(){}

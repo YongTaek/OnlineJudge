@@ -34,8 +34,10 @@ public class Problem implements Serializable {
     @JoinColumn(name="submitUsers")
     private List<User> submitUsers;
 
-    @OneToMany
-    @JoinColumn(name="user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "problem_id")
+    private ProblemSet problemSet;
+
     public List<User> getSubmitUsers() {
         return submitUsers;
     }
@@ -72,6 +74,15 @@ public class Problem implements Serializable {
         submitUsers = new ArrayList<>();
         this.testcases = new ArrayList<>();
     }
+
+    public ProblemSet getProblemSet() {
+        return problemSet;
+    }
+
+    public void setProblemSet(ProblemSet problemSet) {
+        this.problemSet = problemSet;
+    }
+
     public int getId() {
         return id;
     }

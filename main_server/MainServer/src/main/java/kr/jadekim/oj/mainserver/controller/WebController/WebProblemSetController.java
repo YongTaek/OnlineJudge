@@ -44,7 +44,9 @@ public class WebProblemSetController {
             String name = p.getName();
             String author = p.getauthor().getName();
             int total = p.getProblemList().size();
-            map.put("rate"," ");
+            int success = problemSetRepository.countAllProblem(p.getId(),user.getId());
+            System.out.println(success);
+            map.put("rate",success+"/"+total);
             map.put("id",num);
             map.put("author",author);
             map.put("name",name);
@@ -61,10 +63,14 @@ public class WebProblemSetController {
         User user = userRepository.findByloginId("ka123ak").get(0);
         ProblemSet problemSet = new ProblemSet(user,"test");
         Iterable<Problem> problems = problemRepository.findAll();
+        problemSetRepository.save(problemSet);
         for(Problem p : problems){
+            p.setProblemSet(problemSet);
+            problemRepository.save(p);
             problemSet.getProblemList().add(p);
         }
-        problemSetRepository.save(problemSet);
+        System.out.println(problemSet.getProblemList().size());
+
         return "success";
     }
 }

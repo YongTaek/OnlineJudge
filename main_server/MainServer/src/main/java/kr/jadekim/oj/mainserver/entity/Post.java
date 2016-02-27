@@ -14,9 +14,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne(mappedBy = "post")
-    private Question question;
-
     @OneToOne
     @JoinColumn(name="board")
     private Board board;
