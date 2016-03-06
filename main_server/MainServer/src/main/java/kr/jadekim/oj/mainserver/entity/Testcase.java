@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Testcase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "input")
@@ -27,9 +27,10 @@ public class Testcase {
     @JoinColumn(name = "problemId")
     private Problem problem;
 
-    public Testcase(){}
+    public Testcase() {
+    }
 
-    public Testcase(Problem problem, String input, String output){
+    public Testcase(Problem problem, String input, String output) {
         this.problem = problem;
         this.input = input;
         this.output = output;
@@ -63,8 +64,6 @@ public class Testcase {
     public void setProblem(Problem problem) {
         this.problem = problem;
     }
-
-
 
 
 }

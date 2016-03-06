@@ -8,17 +8,17 @@ import java.util.List;
  * Created by ohyongtaek on 2016. 1. 19..
  */
 @Entity
-@Table(name="tbl_ranking")
+@Table(name = "tbl_ranking")
 public class Ranking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="type")
+    @Column(name = "type")
     private int type;
 
     @OneToMany
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private List<User> topUsers;
 
     public int getId() {
@@ -41,9 +41,12 @@ public class Ranking {
         this.topUsers = topUsers;
     }
 
-    public Ranking() {};
+    public Ranking() {
+    }
 
-    public Ranking(int type){
+    ;
+
+    public Ranking(int type) {
         topUsers = new ArrayList<User>();
         this.type = type;
     }

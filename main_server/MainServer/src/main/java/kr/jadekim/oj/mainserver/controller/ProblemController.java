@@ -21,8 +21,10 @@ public class ProblemController {
     @Autowired
     private ProblemService problemService;
 
-    @RequestMapping(value = "{id}",method = RequestMethod.GET)
-    public @ResponseBody String getProblem(@PathVariable("id") int problem_id) {
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String getProblem(@PathVariable("id") int problem_id) {
         Gson gson = new GsonBuilder().create();
         Problem problem = null;
         try {
@@ -31,11 +33,11 @@ public class ProblemController {
             e.printStackTrace();
             return null;
         }
-        HashMap<String,Object> map = new HashMap<String, Object>();
-        map.put("problem_id",problem_id);
-        map.put("testcase",problem.getTestcases());
-        map.put("limitTime",problem.getLimitTime());
-        map.put("limitMemory",problem.getLimitMemory());
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("problem_id", problem_id);
+        map.put("testcase", problem.getTestcases());
+        map.put("limitTime", problem.getLimitTime());
+        map.put("limitMemory", problem.getLimitMemory());
 
         return gson.toJson(map);
     }

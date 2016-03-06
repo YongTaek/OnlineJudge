@@ -2,9 +2,14 @@ layout 'test.tpl', title: '게시판',
         content: contents {
             div(class: 'container') {
                 div(class: 'prob-nav') {
-                    a(href : '/notice', '공지사항')
-
-                    a(href : '/question', 'Q&A')
+ul(){
+li(){
+a(href : '/notice', '공지사항')
+}
+li(){
+a(href : '/question', 'Q&A')
+}
+}
                     form(id: 'search-form', action = '', method = 'post') {
                         input(type: 'text', value: '', name: 'search')
                         input(type: 'button', value: '검색')
@@ -23,15 +28,16 @@ layout 'test.tpl', title: '게시판',
                      }
                      tbody {
                          if (messages.empty) {
-                              tr { td(colspan: '5', 'No Problem') }
+tr { td(colspan: '4', 'No Problem') }
                               } else {
                                    messages.each { message ->
                                    tr {
-                                       td message.id
-                                       td message.name
-                                       td message.count
-                                       td message.rate
-                                       td message.result
+td message.number
+td {
+a(href : './'+messages.id, message.title)
+}
+td message.user
+td message.date
                                    }
                               }
                          }

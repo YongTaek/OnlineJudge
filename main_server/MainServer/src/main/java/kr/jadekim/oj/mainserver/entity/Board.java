@@ -8,12 +8,13 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="tbl_board")
+
 public class Board implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
     public void setName(String name) {
@@ -25,10 +26,15 @@ public class Board implements Serializable {
         return id;
     }
 
-    public Board(){};
-    public Board(String name){
-        this.name =name;
+    public Board() {
     }
+
+    ;
+
+    public Board(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

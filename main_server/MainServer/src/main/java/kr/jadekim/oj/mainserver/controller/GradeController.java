@@ -37,8 +37,10 @@ public class GradeController {
     private ProblemRepository problemRepository;
 
 
-    @RequestMapping(value = "/api/v1/sendGrade",method = RequestMethod.POST)
-    public @ResponseBody String gradeCode(String user_id, int problem_id, String code,String time,String lang){
+    @RequestMapping(value = "/api/v1/sendGrade", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String gradeCode(String user_id, int problem_id, String code, String time, String lang) {
         Gson gson = new GsonBuilder().create();
 
         User user;
@@ -49,26 +51,25 @@ public class GradeController {
             submitTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
             user = userRepository.findByloginId(user_id).get(0);
             problem = problemRepository.findOne(problem_id);
-            answer  = answerService.saveAnswer(user,code,submitTime,problem).get();
+            answer = answerService.saveAnswer(user, code, submitTime, problem).get();
             RestTemplate restTemplate = new RestTemplate();
             HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("lang",lang);
-            hashMap.put("code",code);
-            hashMap.put("submitId",answer.getId());
-            hashMap.put("problemId",problem_id);
-            JsonObject message = restTemplate.postForObject(Setting.EvaluationServer+"/api/v1/evaluation",hashMap,JsonObject.class);
-            if(message.get("success").getAsBoolean()){
+            hashMap.put("lang", lang);
+            hashMap.put("code", code);
+            hashMap.put("submitId", answer.getId());
+            hashMap.put("problemId", problem_id);
+            JsonObject message = restTemplate.postForObject(Setting.EvaluationServer + "/api/v1/evaluation", hashMap, JsonObject.class);
+            if (message.get("success").getAsBoolean()) {
                 System.out.println("true");
-            }else{
+            } else {
                 System.out.println("false");
             }
-            if(user == null || problem == null || answer == null){
+            if (user == null || problem == null || answer == null) {
                 throw new Exception();
             }
         } catch (Exception e) {
             return "{ \"success\" : false , \"message\":\"\"}";
         }
-
 
 
         return "test";

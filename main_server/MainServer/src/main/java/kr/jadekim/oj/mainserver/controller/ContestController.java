@@ -25,15 +25,16 @@ public class ContestController {
     private ContestService contestService;
 
 
-
     @RequestMapping(value = "/api/v1/start_contest", method = RequestMethod.POST)
-    public @ResponseBody String getContestInfo(int contest_id) throws ExecutionException, InterruptedException {
+    public
+    @ResponseBody
+    String getContestInfo(int contest_id) throws ExecutionException, InterruptedException {
         Contest contest = contestService.getContest(contest_id).get();
         ProblemSet problemSet = new ProblemSet();
         Team team = new Team();
         Date startDate = new Date();
         Date endDate = new Date();
-        contest = new Contest(team,startDate,endDate,"kaak",problemSet);
+        contest = new Contest(team, startDate, endDate, "kaak", problemSet);
         Gson gson = new GsonBuilder().create();
         return gson.toJson(contest);
     }

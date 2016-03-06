@@ -6,26 +6,28 @@ import javax.persistence.*;
  * Created by ohyongtaek on 2016. 1. 19..
  */
 @Entity
-@Table(name="tbl_question_answer")
+@Table(name = "tbl_question_answer")
 public class QuestionAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="question")
+    @JoinColumn(name = "question")
     private Question question;
 
     @OneToOne
-    @JoinColumn(name="post_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
-    public QuestionAnswer(){}
-
-    public QuestionAnswer(Question question, Post post){
-        this.question =question;
-        this.post =post;
+    public QuestionAnswer() {
     }
+
+    public QuestionAnswer(Question question, Post post) {
+        this.question = question;
+        this.post = post;
+    }
+
     public int getId() {
         return id;
     }

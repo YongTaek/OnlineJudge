@@ -11,47 +11,45 @@ import java.util.List;
 @Entity
 @Table(name="tbl_gradeResult")
 public class GradeResult implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="isSuccess")
+    @Column(name = "isSuccess")
     private boolean isSuccess;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="testResult_id")
+    @JoinColumn(name = "testResult_id")
     List<TestResult> testResults;
 
-    @Column(name="grade")
+    @Column(name = "grade")
     private double grade;
 
     @Column(name = "message")
     private String message;
 
     public GradeResult(){
+
         testResults = new ArrayList<>();
     }
-
-
 
 
     public void setGrade() {
         int count = testResults.size();
         int success = 0;
-        for(int i=0;i<count;i++){
-            if(testResults.get(i).getresult() == 0){
+        for (int i = 0; i < count; i++) {
+            if (testResults.get(i).getresult() == 0) {
                 success++;
             }
         }
-        this.grade = (success/count)*100;
+        this.grade = (success / count) * 100;
     }
 
     public double getGrade() {
 
         return grade;
     }
-
-
 
 
     public int getId() {
@@ -63,11 +61,9 @@ public class GradeResult implements Serializable{
     }
 
 
-
     public void setSuccess(boolean success) {
         this.isSuccess = success;
     }
-
 
 
 }

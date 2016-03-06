@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * Created by ohyongtaek on 2016. 1. 19..
  */
-public interface AnswerRepository extends JpaRepository<Answer,Integer>{
+public interface AnswerRepository extends JpaRepository<Answer, Integer> {
 
     @Query("select count(a.id) from Answer a join a.result r join a.problem p where r.isSuccess=true and p.id like :prob_id")
     int countBySuccessAndProblemId(@Param("prob_id") int prob_id);

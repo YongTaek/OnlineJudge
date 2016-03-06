@@ -8,31 +8,32 @@ import java.util.List;
  * Created by ohyongtaek on 2016. 1. 19..
  */
 @Entity
-@Table(name="tbl_team")
+@Table(name = "tbl_team")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     @OneToMany
-    @JoinColumn(name="users")
+    @JoinColumn(name = "users")
     private List<User> users;
 
     @OneToMany
-    @JoinColumn(name="contests")
+    @JoinColumn(name = "contests")
     private List<Contest> contests;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
     @OneToOne
-    @JoinColumn(name="admin")
+    @JoinColumn(name = "admin")
     private User admin;
 
-    public Team(){}
+    public Team() {
+    }
 
-    public Team(User admin, String name){
+    public Team(User admin, String name) {
         this.name = name;
         this.admin = admin;
         users = new ArrayList<>();

@@ -9,7 +9,7 @@ import java.util.List;
  * Created by ohyongtaek on 2016. 1. 19..
  */
 @Entity
-@Table(name="tbl_user")
+@Table(name = "tbl_user")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,20 +23,21 @@ public class User implements Serializable {
     @Column(name="name",nullable = false)
     private String name;
     @Column(name="email",nullable = false)
+
     private String email;
-    @Column(name="rate")
+    @Column(name = "rate")
     private double rate;
 
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="team_id")
+    @JoinColumn(name = "team_id")
     private List<Team> teamList;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "submitter")
     private List<Answer> answers;
 
     @OneToOne
-    @JoinColumn(name="group_id")
+    @JoinColumn(name = "group_id")
     private Group group;
 
     public void setId(int id) {
@@ -51,9 +52,10 @@ public class User implements Serializable {
         this.loginPw = loginPw;
     }
 
-    public List<Answer> getAnswers(){
+    public List<Answer> getAnswers() {
         return answers;
     }
+
     public List<Team> getTeamList() {
 
         return teamList;
@@ -68,15 +70,15 @@ public class User implements Serializable {
     }
 
 
-
     public void setEmail(String email) {
         this.email = email;
     }
 
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String loginId, String loginPw, String name, String email){
+    public User(String loginId, String loginPw, String name, String email) {
         this.loginId = loginId;
         this.loginPw = loginPw;
         this.name = name;
@@ -94,7 +96,6 @@ public class User implements Serializable {
     }
 
 
-
     public String getEmail() {
         return email;
     }
@@ -103,7 +104,7 @@ public class User implements Serializable {
         return rate;
     }
 
-    public void addAnswer(Answer answer){
+    public void addAnswer(Answer answer) {
         this.answers.add(answer);
     }
 

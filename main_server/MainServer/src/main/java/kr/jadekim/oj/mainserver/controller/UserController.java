@@ -29,8 +29,9 @@ public class UserController {
 
     @RequestMapping(value = "/api/v1/join",method = RequestMethod.POST)
     public @ResponseBody
+
     String joinUser(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        User user = userService.join(request.getParameter("login_id"),request.getParameter("login_pw"),request.getParameter("name"),request.getParameter("email")).get();
+        User user = userService.join(request.getParameter("login_id"), request.getParameter("login_pw"), request.getParameter("name"), request.getParameter("email")).get();
 //        System.out.println(request);
         return gson.toJson(user);
     }
@@ -46,6 +47,7 @@ public class UserController {
             return gson.toJson(user1);
         }else{
             System.out.println(gson.toJson(user));
+
 
             return gson.toJson(user);
         }

@@ -11,16 +11,17 @@ import java.util.List;
 @Entity
 @Table(name="tbl_answerList")
 public class AnswerList implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @OneToMany
-    @JoinColumn(name="answerList")
+    @JoinColumn(name = "answerList")
     private List<Answer> answers;
 
     @OneToOne
-    @JoinColumn(name="team")
+    @JoinColumn(name = "team")
     private Team team;
 
     public void setAnswers(List<Answer> answers) {
@@ -40,16 +41,15 @@ public class AnswerList implements Serializable{
         return team;
     }
 
-    public boolean addAnswer(Answer answer){
-        if(answers ==null){
+    public boolean addAnswer(Answer answer) {
+        if (answers == null) {
             answers = new ArrayList<>();
         }
         return answers.add(answer);
     }
 
 
-    public AnswerList(Team team)
-    {
+    public AnswerList(Team team) {
         this.team = team;
         this.answers = new ArrayList<>();
     }

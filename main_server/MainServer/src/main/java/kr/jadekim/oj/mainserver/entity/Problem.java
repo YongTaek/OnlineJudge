@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name="tbl_problem")
 public class Problem implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -20,10 +21,10 @@ public class Problem implements Serializable {
     @Column(name = "content")
     private String content;
 
-    @Column(name="limitTime")
+    @Column(name = "limitTime")
     private int limitTime;
 
-    @Column(name="limitMemory")
+    @Column(name = "limitMemory")
     private int limitMemory;
 
     @OneToMany
@@ -37,6 +38,7 @@ public class Problem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "problem_id")
     private ProblemSet problemSet;
+
 
     public List<User> getSubmitUsers() {
         return submitUsers;
@@ -66,11 +68,12 @@ public class Problem implements Serializable {
         this.testcases = testcases;
     }
 
-    public Problem(){}
+    public Problem() {
+    }
 
-    public Problem(String name, String content, int type){
+    public Problem(String name, String content, int type) {
         this.name = name;
-        this.content  = content;
+        this.content = content;
         submitUsers = new ArrayList<>();
         this.testcases = new ArrayList<>();
     }
@@ -83,9 +86,11 @@ public class Problem implements Serializable {
         this.problemSet = problemSet;
     }
 
+
     public int getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
