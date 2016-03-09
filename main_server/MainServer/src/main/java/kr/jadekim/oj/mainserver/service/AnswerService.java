@@ -33,4 +33,31 @@ public class AnswerService {
         return new AsyncResult<Answer>(answerRepository.save(answer));
 
     }
+
+    @Async
+    public Future<Boolean> findIsSuccessByUserId(int user_id,int problem_id){
+        boolean isSuccess =answerRepository.findIsSuccessTop1ByUserId(user_id,problem_id);
+
+        return new AsyncResult<Boolean>(isSuccess);
+    }
+
+    @Async
+    public Future<Integer> countByProblemId(int problem_id){
+        int count = answerRepository.countByProblemId(problem_id);
+
+        return new AsyncResult<>(count);
+    }
+
+    @Async
+    public Future<Integer> countSuccessByProblemId(int problem_id){
+        int count = answerRepository.countBySuccessAndProblemId(problem_id);
+        return new AsyncResult<>(count);
+    }
+
+    @Async
+    public Future<Integer> countUserByProblemId(int problem_id){
+        int count = answerRepository.countUserByProblemId(problem_id);
+
+        return new AsyncResult<>(count);
+    }
 }

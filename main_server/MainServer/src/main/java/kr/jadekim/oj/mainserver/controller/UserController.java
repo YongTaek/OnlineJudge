@@ -23,9 +23,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+
     private Gson gson = new GsonBuilder().create();
-
-
 
     @RequestMapping(value = "/api/v1/join",method = RequestMethod.POST)
     public @ResponseBody
@@ -37,12 +37,16 @@ public class UserController {
 
     @RequestMapping(value = "/api/v1/login",method = RequestMethod.POST)
     public @ResponseBody String loginUser(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        User user = userService.login(request.getParameter("login_id"),request.getParameter("login_pw")).get();
+        String login_id = request.getParameter("login_id");
+        String login_pw = request.getParameter("login_pw");
+        User user = userService.login(login_id,login_pw).get();
         if(user == null){
             User user1 = new User();
             user1.setId(-1);
             return gson.toJson(user1);
         }else{
+            System.out.println(gson.toJson(user));
+
             return gson.toJson(user);
         }
     }

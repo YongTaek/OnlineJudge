@@ -25,6 +25,9 @@ public class GradeResult implements Serializable{
     @Column(name="grade")
     private double grade;
 
+    @Column(name = "message")
+    private String message;
+
     public GradeResult(){
         testResults = new ArrayList<>();
     }
