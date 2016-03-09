@@ -17,9 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +29,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 @Controller
+@SessionAttributes("loginUserInfo")
 @RequestMapping("/problem")
 public class WebProblemListController {
 
@@ -94,8 +93,8 @@ public class WebProblemListController {
         return "wait";
     }
 
-    @RequestMapping
-    public ModelAndView list(ModelAndView modelAndView ,@PageableDefault(sort = { "id" }, size = 10) Pageable pageable){
+    @RequestMapping("/list")
+    public ModelAndView list(ModelAndView modelAndView , @PageableDefault(sort = { "id" }, size = 10) Pageable pageable){
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = null;
         User user = null;
@@ -127,12 +126,15 @@ public class WebProblemListController {
         return modelAndView;
     }
     @RequestMapping("recent")
-    public ModelAndView recentList(ModelAndView modelAndView){
+    public ModelAndView recentList(ModelAndView modelAndView,@ModelAttribute("loginUserInfo") User loginUserInfo){
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemRepository.findAll(new PageRequest(0,100));
         User user = userRepository.findAll().get(1);
         messages = makeMessages(messages,problems,user);
         ArrayList<Integer> pages = new ArrayList<>();
+        if(loginUserInfo.getLoginId()!=null){
+            System.out.println(loginUserInfo.getLoginId());
+        }
         modelAndView.setViewName("problemList");
         modelAndView.addObject("messages",messages);
         modelAndView.addObject("pages",pages);

@@ -27,7 +27,7 @@ layout 'test.tpl', title: '문제',
                         form(class: "form-inline",id: 'searchForm') {
                             div(class: "form-group") {
                                 div(class: 'input-group') {
-                                    input(type = "text", class: 'form-control', id: 'exampleInputAmount',name:'search')
+                                    input(type: "text", class: 'form-control', id: 'exampleInputAmount',name:'search')
                                 }
                             }
                             button(type: "submit",id: 'searchButton' , class: "btn btn-primary", '검색')
