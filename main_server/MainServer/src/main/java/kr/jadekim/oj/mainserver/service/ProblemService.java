@@ -39,8 +39,8 @@ public class ProblemService {
 
     @Async
     public Future<Problem> getProblem(int problem_id){
-        Problem problem = problemRepository.getOne(problem_id);
-        return new AsyncResult<>(problem);
+        Problem problem = problemRepository.findOne(problem_id);
+        return new AsyncResult<Problem>(problem);
     }
 
     @Async

@@ -1,87 +1,125 @@
 layout 'test.tpl', title: '문제',
-        content: contents {
-            div(class: 'container') {
-                link(rel:'stylesheet', href: '/css/table.css')
-
-                div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-pills') {
-                            li(class: 'active', id: 'problem') {
-                                a(href: '/problem', '문제')
+        content:contents{
+            div(class:'container'){
+                div(class:'row') {
+                    div(class: 'col-md-12'){
+                        ul(class: 'nav nav-pills'){
+                            li(id:'problem-num'){
+                                a(href:'#', messages.num)
                             }
-                            li(id:'recent') {
-                                a(href: '/problem/recent', '추가된 문제')
+                            li(id:'problem-submit'){
+                                a(href: '#', '제출하기')
                             }
-                            li(id:'ranking') {
-                                a(href: '/problem/ranking', '문제순위')
+                            li(id: 'grade-now'){
+                                a(href: '#', '채점 현황')
                             }
-                            li {
-                                a(id:'click-etc',href: '#','기타',role:'button')
-                                div(id:'etc'){
-                                    p 'asdf'
-                                }
+                            li(id: 'grade-now-me'){
+                                a(href: '#','내 채점현황')
+                            }
+                            li(id: 'q&a'){
+                                a(href: '#','Q&A')
                             }
                         }
                     }
-                    div(class: 'col-md-4') {
-                        form(class: "form-inline",id: 'searchForm') {
-                            div(class: "form-group") {
-                                div(class: 'input-group') {
-                                    input(type = "text", class: 'form-control', id: 'exampleInputAmount',name:'search')
-                                }
+                    div(class: 'col-md-12'){
+                        div(class:'page-header'){
+                            h1{
+                                span(id:'problem-title', messages.title)
+                                span(id:'problem-label', messages.label)
                             }
-                            button(type: "submit",id: 'searchButton' , class: "btn btn-primary", '검색')
                         }
                     }
-                }
-                div(class: 'prob-container') {
-                    table(class: 'prob-table') {
-                        thead(class: 'prob-table-head', id:'test-id') {
-                            tr {
-                                th(class: 'common-table', id: 'prob-id', '문제번호')
-                                th(class: 'common-table', id: 'prob-name', '제목')
-                                th(class: 'common-table', id: 'prob-success-count', '정답 수')
-                                th(class: 'common-table', id: 'prob-success-rate', '정답 비율')
-                                th(class: 'common-table', id: 'prob-user-result', 'O/X')
-                            }
-                        }
-                        tbody(id:'prob-tbody') {
-                            if (messages.empty) {
-                                tr { td(colspan: '5', 'No Problem') }
-                            } else {
-                                messages.each { message ->
-                                    tr {
-                                        td(class: 'common-table', message.id)
-                                        td(class: 'common-table', message.name)
-                                        td(class: 'common-table', message.count)
-                                        td(class: 'common-table', message.rate)
-                                        if(message.result == true) {
-                                            td(class: 'common-table', 'O')
-                                        }else{
-                                            td(class: 'common-table', 'X')
-                                        }
+                    div(class:'col-md-12'){
+                        div(class:'table-responsive'){
+                            table(class:'table', id: 'problem-info'){
+                                thead{
+                                    tr{
+                                        th('시간 제한')
+                                        th('메모리 제한')
+                                        th('제출')
+                                        th('정답')
+                                        th('맞은 사람')
+                                        th('정답 비율')
+                                    }
+                                }
+                                tbody{
+                                    tr{
+                                        th(messages.time)
+                                        th(messages.memory)
+                                        th(messages.submit)
+                                        th(messages.success_count)
+                                        th(messages.success_user_count)
+                                        th(messages.rate)
                                     }
                                 }
                             }
                         }
-
                     }
-                }
-                div(class: 'prob-nav') {
-                    ul(class: 'pagination') {
-                        if (pages.empty) {
-
-                        } else {
-                            pages.each { page ->
-                                li {
-                                    a(href: '?page=' + (page - 1), page)
+                    div(class:'problem-body'){
+                        div(class:'col-md-12'){
+                            section(id: 'description'){
+                                div(class:'headline'){
+                                    h2('문제')
                                 }
-
+                                div(class:'problem-description'){
+                                    p(messages.content)
+                                }
+                            }
+                        }
+                        div(class:'col-md-12'){
+                            section(id: 'test-input'){
+                                div(class:'headline'){
+                                    h2('입력')
+                                }
+                                div(class:'problem-input'){
+                                    p(messages.input)
+                                }
+                            }
+                        }
+                        div(class:'col-md-12'){
+                            section(id:'test-output'){
+                                div(class:'headline'){
+                                    h2('출력')
+                                }
+                                div(class:'problem-output'){
+                                    p(messages.output)
+                                }
+                            }
+                        }
+                        div(class:'col-md-12') {
+                            div(class: 'row') {
+                                div(class: 'col-md-6') {
+                                    section(id: 'sampleinput') {
+                                        div(class: 'headline'){
+                                            h2('예제 입력')
+                                        }
+                                        pre(class:'sampledata',messages.inputData)
+                                    }
+                                }
+                                div(class: 'col-md-6') {
+                                    section(id: 'sampleinput') {
+                                        div(class: 'headline'){
+                                            h2('예제 출력')
+                                        }
+                                        pre(class:'sampledata',messages.outputData)
+                                    }
+                                }
+                            }
+                        }
+                        div(class:'col-md-12'){
+                            section(id: 'source'){
+                                div(class:'headline'){
+                                    h2('출처')
+                                }
+                                ul{
+                                    messages.sources.each { source ->
+                                        li(source)
+                                    }
+                                }
                             }
                         }
                     }
+
                 }
             }
-            script(type:'text/javascript',src:'../js/table.js'){}
-
         }
