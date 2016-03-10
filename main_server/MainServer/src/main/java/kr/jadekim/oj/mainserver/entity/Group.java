@@ -11,29 +11,32 @@ import java.util.List;
 @Entity
 @Table(name="tbl_group")
 public class Group implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @OneToMany
-    @JoinColumn(name="users")
+    @JoinColumn(name = "users")
     private List<User> users;
 
     @ManyToMany
     @JoinColumn(name="problemSet")
+
     private List<ProblemSet> mustProblemSet;
 
-    @Column(name="isPrivateJoin")
+    @Column(name = "isPrivateJoin")
     private boolean isPrivateJoin;
 
     @OneToOne
-    @JoinColumn(name="jjang")
+    @JoinColumn(name = "jjang")
     private User jjang;
 
-    public Group(){}
+    public Group() {
+    }
 
-    public Group(User jjang, boolean isPrivateJoin){
-        this.jjang =jjang;
+    public Group(User jjang, boolean isPrivateJoin) {
+        this.jjang = jjang;
         this.users = new ArrayList<>();
         this.users.add(jjang);
         this.mustProblemSet = new ArrayList<>();

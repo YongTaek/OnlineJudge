@@ -11,42 +11,48 @@ import java.util.Date;
 @Entity
 @Table(name="tbl_answer")
 public class Answer implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="problem")
+
     private Problem problem;
 
-    @Column(name="code")
+    @Column(name = "code")
     private String code;
 
     @OneToOne
-    @JoinColumn(name="result")
+    @JoinColumn(name = "result")
     private GradeResult result;
 
-    @Column(name="submitTime")
+    @Column(name = "submitTime")
     private Date submitTime;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User submitter;
 
     @ManyToOne
-    @JoinColumn(name="contest_id")
+    @JoinColumn(name = "contest_id")
     private Contest contest;
 
     public Contest getContest() {
         return contest;
     }
-    public Answer(){}
-    public Answer(User submitter,String code,Date submitTime,Problem problem){
+
+    public Answer() {
+    }
+
+    public Answer(User submitter, String code, Date submitTime, Problem problem) {
         this.submitter = submitter;
         this.submitTime = submitTime;
         this.code = code;
         this.problem = problem;
     }
+
     public void setContest(Contest contest) {
         this.contest = contest;
     }

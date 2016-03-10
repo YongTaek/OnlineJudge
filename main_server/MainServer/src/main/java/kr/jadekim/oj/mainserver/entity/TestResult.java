@@ -6,11 +6,11 @@ import javax.persistence.*;
  * Created by ohyongtaek on 2016. 1. 26..
  */
 @Entity
-@Table(name="tbl_testResult")
+@Table(name = "tbl_testResult")
 public class TestResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     public int getId() {
@@ -21,16 +21,16 @@ public class TestResult {
         this.id = id;
     }
 
-    @Column(name="result")
+    @Column(name = "result")
     private int result;
 
-    @Column(name="runningTime")
+    @Column(name = "runningTime")
     private double runningTime;
 
-    @Column(name="usageMemory")
+    @Column(name = "usageMemory")
     private int usageMemory;
 
-    @Column(name="errorMsg")
+    @Column(name = "errorMsg")
     private String errorMsg;
 
     public int getresult() {

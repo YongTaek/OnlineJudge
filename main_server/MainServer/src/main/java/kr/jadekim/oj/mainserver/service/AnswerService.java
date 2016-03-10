@@ -27,8 +27,8 @@ public class AnswerService {
     private UserRepository userRepository;
 
     @Async
-    public Future<Answer> saveAnswer(User user, String code, Date submitTime, Problem problem){
-        Answer answer = new Answer(user,code,submitTime,problem);
+    public Future<Answer> saveAnswer(User user, String code, Date submitTime, Problem problem) {
+        Answer answer = new Answer(user, code, submitTime, problem);
 
         return new AsyncResult<Answer>(answerRepository.save(answer));
 

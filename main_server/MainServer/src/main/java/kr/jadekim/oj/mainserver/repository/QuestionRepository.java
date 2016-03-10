@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Created by ohyongtaek on 2016. 1. 19..
  */
-public interface QuestionRepository extends JpaRepository<Question,Integer>{
+public interface QuestionRepository extends JpaRepository<Question, Integer> {
 }

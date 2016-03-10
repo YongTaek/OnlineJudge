@@ -8,18 +8,18 @@ import java.util.List;
  * Created by ohyongtaek on 2016. 1. 19..
  */
 @Entity
-@Table(name="tbl_question")
-public class Question{
+@Table(name = "tbl_question")
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @OneToOne
-    @JoinColumn(name="post")
+    @JoinColumn(name = "post")
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name="problem")
+    @JoinColumn(name = "problem")
     private Problem problem;
 
     @OneToMany(mappedBy = "question")
@@ -37,6 +37,9 @@ public class Question{
         return answers;
     }
 
+    public Post getPost() {
+        return post;
+    }
 
     public void setProblem(Problem problem) {
         this.problem = problem;
@@ -46,9 +49,10 @@ public class Question{
         this.answers = answers;
     }
 
-    public Question(){}
+    public Question() {
+    }
 
-    public Question(Post post,Problem problem){
+    public Question(Post post, Problem problem) {
         this.post = post;
         this.problem = problem;
         this.answers = new ArrayList<>();

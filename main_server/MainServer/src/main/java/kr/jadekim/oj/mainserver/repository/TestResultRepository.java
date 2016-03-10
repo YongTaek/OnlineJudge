@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Created by ohyongtaek on 2016. 1. 26..
  */
-public interface TestResultRepository extends JpaRepository<TestResult,Integer> {
+public interface TestResultRepository extends JpaRepository<TestResult, Integer> {
 }

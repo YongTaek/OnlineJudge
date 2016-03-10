@@ -11,39 +11,42 @@ import java.sql.Date;
 @Table(name="tbl_hint")
 public class Hint implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @OneToOne
-    @JoinColumn(name="problem")
+    @JoinColumn(name = "problem")
     private Problem problem;
 
-    @Column(name="content")
+    @Column(name = "content")
     private String content;
 
-    @JoinColumn(name="author")
+    @JoinColumn(name = "author")
     private User author;
 
-    @Column(name="time")
+    @Column(name = "time")
     private Date time;
 
-    @Column(name="likeCount")
+    @Column(name = "likeCount")
     private int likeCount;
 
-    @Column(name="badCount")
+    @Column(name = "badCount")
     private int badCount;
 
-    public Hint(){}
+    public Hint() {
+    }
 
-    public Hint(Problem problem, String content, User author, Date time){
+    public Hint(Problem problem, String content, User author, Date time) {
         this.problem = problem;
-        this.content =content;
+        this.content = content;
         this.author = author;
         this.time = time;
-        likeCount =0;
-        badCount =0;
+        likeCount = 0;
+        badCount = 0;
     }
+
     public int getId() {
         return id;
     }

@@ -20,8 +20,8 @@ public class ContestService {
     private ContestRepository contestRepository;
 
     @Async
-    public Future<Contest> getContest(int contest_id){
-        Contest contest= contestRepository.getOne(contest_id);
+    public Future<Contest> getContest(int contest_id) {
+        Contest contest = contestRepository.getOne(contest_id);
         return new AsyncResult<Contest>(contest);
     }
 }

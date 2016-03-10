@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ohyongtaek on 2016. 1. 19..
  */
 @Entity
-@Table(name="tbl_problemSet")
+@Table(name = "tbl_problemSet")
 public class ProblemSet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,20 +18,23 @@ public class ProblemSet {
     @JoinColumn(name="author")
     private User author;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="clearUsers")
+    @JoinColumn(name = "clearUsers")
     private List<User> clearUsers;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "problemSet")
+
     private List<Problem> problemList;
 
-    public ProblemSet(){}
+    public ProblemSet() {
+    }
 
     public ProblemSet(User author, String name){
         this.author = author;
+
         this.name = name;
         this.clearUsers = new ArrayList<>();
         this.problemList = new ArrayList<>();

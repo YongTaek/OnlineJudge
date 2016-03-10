@@ -10,26 +10,27 @@ import java.util.*;
 @Entity
 @Table(name="tbl_contest")
 public class Contest implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="startTime")
+    @Column(name = "startTime")
     private Date startTime;
 
-    @Column(name="endTime")
+    @Column(name = "endTime")
     private Date endTime;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="problemSet")
+    @JoinColumn(name = "problemSet")
     private ProblemSet problemSet;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="manageTeam")
+    @JoinColumn(name = "manageTeam")
     private Team manageTeam;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="teams")
+    @JoinColumn(name = "teams")
     private List<Team> teams;
 
     @Column(name = "name")
@@ -37,15 +38,15 @@ public class Contest implements Serializable {
 
 
     @ElementCollection
-    @MapKey(name="team")
-    private Map<Team,AnswerList> solvedProblem;
+    @MapKey(name = "team")
+    private Map<Team, AnswerList> solvedProblem;
 
-    public Contest(){
+    public Contest() {
         this.teams = new ArrayList<>();
         this.solvedProblem = new HashMap<>();
     }
 
-    public Contest(Team manageTeam, Date startTime,Date endTime, String name,ProblemSet problemSet){
+    public Contest(Team manageTeam, Date startTime, Date endTime, String name, ProblemSet problemSet) {
         this.manageTeam = manageTeam;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -55,32 +56,33 @@ public class Contest implements Serializable {
         this.problemSet = problemSet;
     }
 
-    public AnswerList getAnswerList(Team team){
-        if(!solvedProblem.containsKey(team)){
+    public AnswerList getAnswerList(Team team) {
+        if (!solvedProblem.containsKey(team)) {
             return null;
         }
         return solvedProblem.get(team);
     }
 
-    public boolean addSolvedProblem(Team team,Answer answer){
-        if(!solvedProblem.containsKey(team)){
+    public boolean addSolvedProblem(Team team, Answer answer) {
+        if (!solvedProblem.containsKey(team)) {
             AnswerList answers = new AnswerList(team);
             answers.setAnswers(new ArrayList<Answer>());
             answers.setTeam(team);
-            solvedProblem.put(team,answers);
+            solvedProblem.put(team, answers);
         }
         AnswerList answerList = solvedProblem.get(team);
         answerList.addAnswer(answer);
         return true;
     }
 
-    public List<Answer> getSolvedProblem(Team team){
-        if(!solvedProblem.containsKey(team)){
+    public List<Answer> getSolvedProblem(Team team) {
+        if (!solvedProblem.containsKey(team)) {
             return null;
-        }else{
+        } else {
             return solvedProblem.get(team).getAnswers();
         }
     }
+
     public Date getStartTime() {
         return startTime;
     }
@@ -97,7 +99,6 @@ public class Contest implements Serializable {
     public List<Team> getTeams() {
         return teams;
     }
-
 
 
     public void setStartTime(Date startTime) {

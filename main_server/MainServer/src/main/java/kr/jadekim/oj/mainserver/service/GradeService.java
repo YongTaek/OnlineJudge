@@ -23,14 +23,14 @@ public class GradeService {
     private GradeResultRepository gradeResultRepository;
 
     @Async
-    public Future<String> sendForGrade(int problem_id, String lang, String code,int answerId){
+    public Future<String> sendForGrade(int problem_id, String lang, String code, int answerId) {
         RestTemplate restTemplate = new RestTemplate();
-        MultiValueMap<String, Object> map= new LinkedMultiValueMap<String,Object>();
-        map.add("lang",lang);
-        map.add("code",code);
-        map.add("submitId",answerId);
-        map.add("problemId",problem_id);
-        String gradeResult = restTemplate.postForObject("http://localhost:8080/api/join",map,String.class);
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+        map.add("lang", lang);
+        map.add("code", code);
+        map.add("submitId", answerId);
+        map.add("problemId", problem_id);
+        String gradeResult = restTemplate.postForObject("http://localhost:8080/api/join", map, String.class);
         return new AsyncResult<>(gradeResult);
     }
 }

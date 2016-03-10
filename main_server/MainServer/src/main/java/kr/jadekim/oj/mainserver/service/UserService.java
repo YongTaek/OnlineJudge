@@ -24,21 +24,21 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Async
-    public Future<User> join(String login_id, String login_pw, String name, String email){
+    public Future<User> join(String login_id, String login_pw, String name, String email) {
         String password = bCryptPasswordEncoder.encode(login_pw);
-        User user = new User(login_id,password,name,email);
+        User user = new User(login_id, password, name, email);
 
         return new AsyncResult<User>(userRepository.save(user));
     }
 
     @Async
-    public Future<User> login(String login_id,String login_pw){
-        User user =userRepository.findByloginId(login_id).get(0);
-        if(user == null)
+    public Future<User> login(String login_id, String login_pw) {
+        User user = userRepository.findByloginId(login_id).get(0);
+        if (user == null)
             return null;
-        if(bCryptPasswordEncoder.matches(login_pw,user.getloginPw())){
+        if (bCryptPasswordEncoder.matches(login_pw, user.getloginPw())) {
             return new AsyncResult<>(user);
-        }else{
+        } else {
             return null;
         }
     }
