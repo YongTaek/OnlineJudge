@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '질문하기',
+layout 'test.tpl', title: '질문수정',
         content: contents {
             link(rel:'stylesheet', href: '/css/table.css')
             div(class: 'container') {
@@ -12,26 +12,25 @@ layout 'test.tpl', title: '질문하기',
                                 a(href: '/question', 'Q&A')
                             }
                         }
-
                     }
                 }
 
                 div(class: 'prob-container') {
-                    form(id : 'write_question', action:'/question/write', method:'post') {
+                    form(id : 'write_question', action:'/question/modify/'+messages.id, method:'post') {
                         div(class: 'col-md-12') {
                             span '제목'
-                            input(type: 'text', value: '', name: 'question_title', id : 'title');
+                            input(type: 'text', value: messages.title, name: 'question_title', id : 'title');
 
                         }
                         div(class: 'col-md-12') {
                             span '질문 문제 번호'
-                            input(type: 'text', value: '', name: 'question_problem', id : 'question');
+                            input(type: 'text', value: messages.problem_id, name: 'question_problem', id : 'question');
                         }
                         div(class: 'col-md-12') {
                             span ' 내용'
                         }
                         div(class: 'col-md-12') {
-                            input(type: 'text', value: '', name: 'question_contents', size : '40', style : "height : 100px;, id : 'content")
+                            input(type: 'text', value: messages.contents, name: 'question_contents', size : '40', style : "height : 100px;, id : 'content")
                         }
                         div(class: 'col-md-12') {
                             div(class: 'row') {
