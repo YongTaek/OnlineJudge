@@ -130,6 +130,7 @@ public class WebBoardController {
         String user = notice.getAuthor().getName();
         String date = simpleDateFormat.format(notice.getTime());
         String contents = notice.getContent();
+        map.put("id", notice.getId());
         map.put("number", num);
         map.put("user", user);
         map.put("date", date);
@@ -333,6 +334,64 @@ public class WebBoardController {
         questionAnswerRepository.delete(questionAnswer);
         postRepository.delete(post);
         modelAndView.setViewName("redirect:/question/"+question_id);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/notice/write", method = RequestMethod.GET)
+    public ModelAndView showwriteNotice(ModelAndView modelAndView){
+        modelAndView.setViewName("noticewrite");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/notice/write", method = RequestMethod.POST)
+    public ModelAndView writeNotice(HttpServletRequest request, ModelAndView modelAndView, HttpSession session){
+        String title = request.getParameter("notice_title");
+        String contents = request.getParameter("notice_contents");
+        Board board = boardRepository.findOne(1);
+        User loginUser = (User) session.getAttribute("loginUserInfo");
+        modelAndView.setViewName("redirect:/notice");
+        if(loginUser == null){
+            return modelAndView;
+        }else{
+            //System.out.println(loginUser.getLoginId());
+        }
+        Date date = new Date();
+        Post post = new Post(board, loginUser, date, title, contents);
+        postRepository.save(post);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "notice/modify/{id}", method = RequestMethod.GET)
+    public ModelAndView shownoticemodify(ModelAndView modelAndView, @PathVariable("id")int id){
+        Map<String, Object> map = new HashMap<>();
+        Post post = postRepository.findOne(id);
+        map.put("id", id);
+        map.put("title", post.getTitle());
+        map.put("contents", post.getContent());
+        System.out.println(post.getTitle());
+        modelAndView.addObject("messages", map);
+        modelAndView.setViewName("noticemodify");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "notice/modify/{id}", method = RequestMethod.POST)
+    public ModelAndView modifyNotice(HttpServletRequest request, ModelAndView modelAndView, HttpSession session, @PathVariable("id")int id){
+        String title = request.getParameter("notice_title");
+        String contents = request.getParameter("notice_contents");
+        Post post = postRepository.findOne(id);
+        post.setContent(contents);
+        post.setTitle(title);
+        postRepository.save(post);
+        modelAndView.setViewName("redirect:/notice");
+        return modelAndView;
+    }
+
+    @RequestMapping("notice/delete/{id}")
+    public ModelAndView deleteNotice(ModelAndView modelAndView, @PathVariable("id")int id){
+        Post post = postRepository.findOne(id);
+        System.out.println(post.getContent());
+        postRepository.delete(post);
+        modelAndView.setViewName("redirect:/notice");
         return modelAndView;
     }
 }

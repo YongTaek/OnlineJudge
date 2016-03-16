@@ -22,7 +22,7 @@ layout 'test.tpl', title: '게시판',
                                 }
                             }
                             button(type: "submit", id: 'searchButton', class: "btn btn-primary", '검색')
-
+                            a(href: '/notice/write', '공지 작성')
                         }
                     }
                 }

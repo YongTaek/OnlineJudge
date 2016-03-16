@@ -24,9 +24,9 @@ layout 'test.tpl', title: '공지',
                                         span messages.title
                                         span messages.date
                                         span messages.user
+                                        a(href: '/notice/modify/'+ messages.id, '수정')
+                                        a(href: '/notice/delete/'+ messages.id, '삭제')
                                     }
-
-
                                 }
                                 div(class: 'panel-body') {
                                     div(class : 'content-post', style : 'line-height : 30px') {
