@@ -1,35 +1,42 @@
 layout 'test.tpl', title: '공지',
         content: contents {
+            link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
-                div(class: 'prob-nav') {
-                    ul(){
-                        li(){
-                            a(href : '/notice', '공지사항')
-                        }
-                        li(){
-                            a(href : '/question', 'Q&A')
+                div(class: 'container') {
+                    div(class: 'row') {
+                        div(class: 'col-md-8 col-xs-12 col-sm-6') {
+                            ul(class: 'nav nav-pills') {
+                                li(class: 'active') {
+                                    a(href: '/notice', '공지사항')
+                                }
+                                li() {
+                                    a(href: '/question', 'Q&A')
+                                }
+                            }
                         }
                     }
-                    form(id: 'search-form', action = '', method = 'post') {
-                        input(type: 'text', value: '', name: 'search')
-                        input(type: 'button', value: '검색')
+
+                    div(class: 'prob-container') {
+                        div(class: 'col-md-12') {
+                            div(class : 'panel panel-default') {
+                                div(class : 'panel panel-heading') {
+                                    h3(class : 'panel-title') {
+                                        span messages.title
+                                        span messages.date
+                                        span messages.user
+                                        a(href: '/notice/modify/'+ messages.id, '수정')
+                                        a(href: '/notice/delete/'+ messages.id, '삭제')
+                                    }
+                                }
+                                div(class: 'panel-body') {
+                                    div(class : 'content-post', style : 'line-height : 30px') {
+                                        span messages.contents
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
-            div(class: 'prob-container') {
-
-                    div(class:'col-md-12'){
-                        h2 messages.title
-                    }
-                    div(class:'col-md-2'){
-                        span messages.user
-                    }
-                    div(class:'col-md-2'){
-                        span messages.date
-                    }
-                    div(class:'col-md-12'){
-                        p messages.contents
-                    }
             }
         }
 
