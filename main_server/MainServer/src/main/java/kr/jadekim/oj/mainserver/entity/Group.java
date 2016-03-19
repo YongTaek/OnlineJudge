@@ -32,13 +32,17 @@ public class Group implements Serializable{
     @JoinColumn(name = "jjang")
     private User jjang;
 
+    @Column(name = "name")
+    private String name;
+
     public Group() {
     }
 
-    public Group(User jjang, boolean isPrivateJoin) {
+    public Group(User jjang, boolean isPrivateJoin,String name) {
         this.jjang = jjang;
         this.users = new ArrayList<>();
         this.users.add(jjang);
+        this.name = name;
         this.mustProblemSet = new ArrayList<>();
         this.isPrivateJoin = isPrivateJoin;
     }
@@ -63,6 +67,8 @@ public class Group implements Serializable{
         return jjang;
     }
 
+    public String getName(){ return name;}
+
     public void setUsers(List<User> users) {
         this.users = users;
     }
@@ -78,4 +84,6 @@ public class Group implements Serializable{
     public void setJjang(User jjang) {
         this.jjang = jjang;
     }
+
+    public void setName(String name){this.name = name;}
 }
