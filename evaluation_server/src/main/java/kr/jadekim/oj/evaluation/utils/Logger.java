@@ -5,23 +5,23 @@ package kr.jadekim.oj.evaluation.utils;
  */
 public class Logger {
 
+    public static final String LOGGER_NAME = "kr.jadekim.oj.evaluation";
+
+    public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LOGGER_NAME);
+
     public static void info(String message) {
-        //TODO
+        logger.info(message);
     }
 
     public static void warning(String message) {
-        //TODO
-    }
-
-    public static void error(String message) {
-        //TODO
+        logger.warning(message);
     }
 
     public static void error(Throwable error) {
-        //TODO
+        error(error.getMessage());
     }
 
-    public static void debug(String message) {
-        //TODO
+    public static void error(String message) {
+        logger.severe(message);
     }
 }
