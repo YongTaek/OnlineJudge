@@ -1,0 +1,8 @@
+{
+  "debug": true,
+  "resource_path":"/home/jdekim43/Documents/Project/OnlineJudge/evaluation_server/src/main/resources",
+  "evaluation_temp_path": "/home/jdekim43/Documents/Project/OnlineJudge/evaluation_server/src/main/resources/tmp",
+  "char_set": "UTF-8",
+  "evaluator_count": 2,
+  "docker_container_name": "container"
+}
