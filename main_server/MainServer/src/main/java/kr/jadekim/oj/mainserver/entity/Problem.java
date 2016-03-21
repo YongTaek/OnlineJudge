@@ -1,7 +1,6 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="tbl_problem")
-public class Problem implements Serializable {
+public class Problem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +38,9 @@ public class Problem implements Serializable {
     @JoinColumn(name = "problem_id")
     private ProblemSet problemSet;
 
+    @OneToOne
+    @JoinColumn(name="author")
+    private User author;
 
     public List<User> getSubmitUsers() {
         return submitUsers;

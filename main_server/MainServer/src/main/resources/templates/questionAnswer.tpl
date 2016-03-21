@@ -32,8 +32,10 @@ layout 'test.tpl', title: 'Q&A',
                                         span messages.title
                                         span messages.question_date
                                         span messages.question_user
-                                        a(href: '/question/modify/'+ messages.id, '수정')
-                                        a(href: '/question/delete/'+ messages.id, '삭제')
+                                        if(messages.canModifyAndDelete){
+                                            a(href: '/question/modify/'+ messages.id, '수정')
+                                            a(href: '/question/delete/'+ messages.id, '삭제')
+                                        }
 
                                     }
                                 }
@@ -54,8 +56,10 @@ layout 'test.tpl', title: 'Q&A',
                                                 span answer.answer_title
                                                 span answer.answer_date
                                                 span answer.answer_user
-                                                a(href: '/question/answermodify/'+ answer.answer_id, '수정')
-                                                a(href: '/question/answerdelete/'+ answer.answer_id, '삭제')
+                                                if(answer.canModifyAndDelete) {
+                                                    a(href: '/question/answermodify/' + answer.answer_id, '수정')
+                                                    a(href: '/question/answerdelete/' + answer.answer_id, '삭제')
+                                                }
                                             }
                                         }
                                         div(class: 'panel-body') {

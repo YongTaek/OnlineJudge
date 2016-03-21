@@ -1,7 +1,6 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -9,7 +8,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name="tbl_hint")
-public class Hint implements Serializable {
+public class Hint {
 
 
     @Id
@@ -23,6 +22,7 @@ public class Hint implements Serializable {
     @Column(name = "content")
     private String content;
 
+    @OneToOne
     @JoinColumn(name = "author")
     private User author;
 

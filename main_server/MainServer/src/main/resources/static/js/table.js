@@ -46,7 +46,7 @@ var problem = $('#problem');
 var recent = $('#recent');
 var prob_ranking = $('#ranking');
 
-if (jQuery(location).attr('pathname') ==='/problem'){
+if (jQuery(location).attr('pathname') ==='/problem/list'){
     if(!problem.hasClass('active')) {
         problem.addClass('active');
     }
@@ -79,27 +79,3 @@ if (jQuery(location).attr('pathname') ==='/problem'){
     $('#prob-ranking').css('width', '5%');
     $('#prob-name').css('width','50%');
 };
-$('#searchButton').click(function(){
-    $.ajax({
-        url:'./search',
-        type:'post',
-        dataType:'json',
-        data:$('#searchForm').serialize(),
-        success:function(data){
-            var result = "";
-            if(data == null){
-                result = "<tr><td colspan='5'>No Problem</td></tr> ";
-            }else {
-                for (i = 0; i < data.length; ++i) {
-                    result += "<tr>";
-                    result += "<td class=\"common-table\">" + data[i]['id'] + "</td>";
-                    result += "<td class=\"common-table\">" + data[i]['name'] + "</td>";
-                    result += "<td class=\"common-table\">" + data[i]['count'] + "</td>";
-                    result += "<td class=\"common-table\">" + data[i]['rate'] + "</td>";
-                    result += "</tr>";
-                }
-            }
-            prob_tbody.html(result);
-        }
-    })
-});

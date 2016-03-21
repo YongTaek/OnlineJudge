@@ -6,4 +6,6 @@ package kr.jadekim.oj.mainserver.config;
 public class Setting {
 
     public static String EvaluationServer = "";
+
+
 }

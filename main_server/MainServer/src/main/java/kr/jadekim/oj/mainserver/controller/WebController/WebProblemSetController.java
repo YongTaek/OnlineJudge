@@ -6,12 +6,16 @@ import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.ProblemSetRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
+import kr.jadekim.oj.mainserver.service.ProblemSetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +25,7 @@ import java.util.Map;
  */
 
 @Controller
+@SessionAttributes("loginUserInfo")
 @RequestMapping("/problemset")
 public class WebProblemSetController {
 
@@ -33,22 +38,25 @@ public class WebProblemSetController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ProblemSetService problemSetService;
+
     @RequestMapping
-    public ModelAndView list(ModelAndView modelAndView){
-        User user =userRepository.findByloginId("ka123ak").get(0);
+    public ModelAndView list(ModelAndView modelAndView,HttpSession session,Pageable pageable){
+        User loginUser = (User) session.getAttribute("loginUserInfo");
         ArrayList<Map> messages = new ArrayList<>();
-        Iterable<ProblemSet> problemSets = problemSetRepository.findAll();
+        Iterable<ProblemSet> problemSets = problemSetService.findAllProblemSet(pageable);
         for(ProblemSet p : problemSets){
             Map<String,Object> map = new HashMap<>();
             int num = p.getId();
             String name = p.getName();
-            String author = p.getauthor().getName();
             int total = p.getProblemList().size();
-            int success = problemSetRepository.countAllProblem(p.getId(),user.getId());
-            System.out.println(success);
-            map.put("rate",success+"/"+total);
+            int success;
+            if(loginUser!=null){
+                success = problemSetService.countAllProblem(p.getId(),loginUser.getId());
+                map.put("rate",success+"/"+total);
+            }
             map.put("id",num);
-            map.put("author",author);
             map.put("name",name);
             messages.add(map);
         }

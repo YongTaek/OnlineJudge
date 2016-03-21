@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '질문수정',
+layout 'test.tpl', title: '질문수정',loginUser:loginUser,
         content: contents {
             link(rel:'stylesheet', href: '/css/table.css')
             div(class: 'container') {
