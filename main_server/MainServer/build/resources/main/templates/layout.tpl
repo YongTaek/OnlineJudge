@@ -17,10 +17,10 @@ html {
                 form(class: "form-horizontal") {
                     div(class: "form-group") {
                         label(for: "inputEmail3", class: "col-sm-2 control-label") {
-                            yield "Email"
+                            yield "ID"
                         }
                         div(class: "col-sm-10") {
-                            input(type: "email", class: "form-control", id: "inputEmail3", placeholder: "Email")
+                            input(type: "ID", class: "form-control", id: "inputEmail3", placeholder: "ID")
                         }
                     }
                     div(class: "form-group") {
@@ -52,11 +52,11 @@ html {
                 }
                 div(class:"find_id") {
                     a(href: "#") {
-                        yield "ID/PW 찾기"
+                        yield "ID/PW 찾기 "
                     }
-                    p { "|" }
+                    p (id:"bar"){ yield "|" }
                     a(href: "#") {
-                        yield "회원가입"
+                        yield " 회원가입"
                     }
                 }
             }
