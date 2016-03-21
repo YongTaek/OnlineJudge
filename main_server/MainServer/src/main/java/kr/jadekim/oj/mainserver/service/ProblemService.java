@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.service;
 
 
+import kr.jadekim.oj.mainserver.entity.GradeResult;
 import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.AnswerRepository;
@@ -8,8 +9,8 @@ import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,42 +38,46 @@ public class ProblemService {
     @Autowired
     private ProblemRepository problemRepository;
 
-    @Async
     public Future<Problem> getProblem(int problem_id){
         Problem problem = problemRepository.findOne(problem_id);
         return new AsyncResult<Problem>(problem);
     }
 
-    @Async
+
     public Future<Iterable<Problem>> findAllProblem(Pageable pageable){
         Iterable<Problem> problems = problemRepository.findAll(pageable);
         return new AsyncResult<>(problems);
     }
 
-    @Async
+
     public Future<Iterable<Problem>> findByName(String name){
         Iterable<Problem> problems = problemRepository.findByName(name);
         return new AsyncResult<>(problems);
     }
 
-    @Async
-    public Future<ModelAndView> getSortedProbByrank(ModelAndView modelAndView){
+    public Future<ModelAndView> getSortedProbByrank(ModelAndView modelAndView,User loginUser){
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemRepository.findOrderBySubmitUsers();
-        User user = userRepository.findAll().get(1);
         int i= 0;
         for(Problem p : problems){
             Map<String,Object> map = new HashMap<>();
             int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
             int total_count = answerRepository.countByProblemId(p.getId());
             double rate = success_count/total_count *100;
-            boolean isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(),p.getId());
+
+            GradeResult isSuccess;
+            if(loginUser!=null) {
+                isSuccess = answerRepository.findIsSuccessTop1ByUserId(loginUser.getId(), p.getId());
+                if (isSuccess != null) {
+                    map.put("result", isSuccess.getIsSuccess());
+                }
+            }
             map.put("rank",++i);
             map.put("id",p.getId());
             map.put("name",p.getName());
             map.put("count",success_count);
             map.put("rate",rate);
-            map.put("result",isSuccess);
+
             messages.add(map);
         }
         ArrayList<Integer> pages = new ArrayList<>();
@@ -81,5 +86,14 @@ public class ProblemService {
         modelAndView.addObject("pages",pages);
         return new AsyncResult<>(modelAndView);
 
+    }
+
+    public Future<Integer> countAllProblem(){
+        return new AsyncResult<>(problemRepository.countAll());
+    }
+
+
+    public Iterable<Problem> findProblemRecent(){
+        return problemRepository.findAll(new PageRequest(0,100));
     }
 }

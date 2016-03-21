@@ -1,7 +1,6 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="tbl_gradeResult")
-public class GradeResult implements Serializable{
+public class GradeResult{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +33,25 @@ public class GradeResult implements Serializable{
         testResults = new ArrayList<>();
     }
 
+    public List<TestResult> getTestResults() {
+        return testResults;
+    }
+
+    public void setTestResults(List<TestResult> testResults) {
+        this.testResults = testResults;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public void setGrade() {
         int count = testResults.size();
@@ -56,7 +74,7 @@ public class GradeResult implements Serializable{
         return id;
     }
 
-    public boolean isSuccess() {
+    public boolean getIsSuccess() {
         return isSuccess;
     }
 

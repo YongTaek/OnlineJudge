@@ -3,11 +3,9 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,13 +66,8 @@ public class WebBoardController {
     @RequestMapping("/notice")
     public ModelAndView showBoard(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUserInfo");
-        if(loginUser == null){
-            System.out.println("로그인 안함");
-        }else{
-            System.out.println(loginUser.getLoginId());
-        }
         ArrayList<Map> messages = new ArrayList<>();
-        Iterable<Post> post = postRepository.findAll(pageable);
+        Iterable<Post> post = postRepository.findByBoardId(1,pageable);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 
         for (Post p : post) {
@@ -89,6 +82,9 @@ public class WebBoardController {
             map.put("title", name);
             messages.add(map);
         }
+        if(loginUser!=null) {
+            modelAndView.addObject("loginUser", loginUser);
+        }
         modelAndView.addObject("messages", messages);
         modelAndView.setViewName("board");
 
@@ -96,11 +92,11 @@ public class WebBoardController {
     }
 
     @RequestMapping("/question")
-    public ModelAndView showQuestion(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable) {
+    public ModelAndView showQuestion(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable,HttpSession session) {
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Question> questions = questionRepository.findAll(pageable);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-
+        User loginUser = (User) session.getAttribute("loginUserInfo");
         for (Question p : questions) {
             Map<String, Object> map = new HashMap<>();
             int num = p.getId();
@@ -113,18 +109,27 @@ public class WebBoardController {
             map.put("date", date);
             map.put("title", name);
             map.put("question", quest);
+            if(loginUser!= null && p.getPost().getAuthor().getId() == loginUser.getId()){
+                map.put("canModify",true);
+                map.put("canDelete",true);
+            }
             messages.add(map);
+        }
+        if(loginUser!=null) {
+            modelAndView.addObject("loginUser", loginUser);
         }
         modelAndView.addObject("messages", messages);
         modelAndView.setViewName("questionlist");
         return modelAndView;
     }
 
+
     @RequestMapping("/notice/{id}")
-    public ModelAndView notice(ModelAndView modelAndView, Pageable pageable, @PathVariable("id")int id) {
+    public ModelAndView notice(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session) {
         Post notice = postRepository.findOne(id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Map<String, Object> map = new HashMap<>();
+        User loginUser = (User) session.getAttribute("loginUserInfo");
         int num = id;
         String title = notice.getTitle();
         String user = notice.getAuthor().getName();
@@ -136,16 +141,22 @@ public class WebBoardController {
         map.put("date", date);
         map.put("title", title);
         map.put("contents", contents);
+        if(loginUser!=null) {
+            modelAndView.addObject("loginUser", loginUser);
+        }
         modelAndView.addObject("messages", map);
         modelAndView.setViewName("notice");
         return modelAndView;
     }
     @RequestMapping("/question/{id}")
-    public ModelAndView showQuestion(ModelAndView modelAndView, @PathVariable("id")int id){
+    public ModelAndView showQuestion(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
         Question question = questionRepository.findOne(id);
+        if(question==null){
+            modelAndView.setViewName("redirect:problem/"+id);
+        }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Map<String, Object> map = new HashMap<>();
-
+        User loginUser = (User) session.getAttribute("loginUserInfo");
         Post post = question.getPost();
         List<QuestionAnswer> answers = question.getAnswers();
         Problem problem = question.getProblem();
@@ -160,6 +171,9 @@ public class WebBoardController {
         map.put("question_contents", contents);
         map.put("problem_id", problem.getId());
         map.put("problem_name", problem.getName());
+        if(loginUser!= null && question.getPost().getAuthor().getId()==loginUser.getId()){
+            map.put("canModifyAndDelete",true);
+        }
         ArrayList<Map> answerMessages = new ArrayList<>();
         if(!answers.isEmpty()){
             String answer_title, answer_date, answer_user, answer_contents;
@@ -178,15 +192,21 @@ public class WebBoardController {
                 answermap.put("answer_date", answer_date);
                 answermap.put("answer_user", answer_user);
                 answermap.put("answer_contents", answer_contents);
-                System.out.println(answer_title);
+                if(loginUser!=null && ans.getPost().getAuthor().getId()!=loginUser.getId()){
+                    answermap.put("canModifyAndDelete",true);
+                }
                 answerMessages.add(answermap);
             }
+        }
+        if(loginUser!=null) {
+            modelAndView.addObject("loginUser", loginUser);
         }
         modelAndView.addObject("messages", map);
         modelAndView.addObject("answers", answerMessages);
         modelAndView.setViewName("questionAnswer");
         return modelAndView;
     }
+
     @RequestMapping(value = "/question/write", method = RequestMethod.GET)
     public ModelAndView writeQuestion(ModelAndView modelAndView, HttpSession session){
         User user = (User) session.getAttribute("loginUserInfo");
@@ -194,9 +214,11 @@ public class WebBoardController {
             modelAndView.setViewName("redirect:/question");
             return modelAndView;
         }
+        modelAndView.addObject("loginUser",user);
         modelAndView.setViewName("questionWrite");
         return modelAndView;
     }
+
     @RequestMapping(value = "/question/write" ,method = RequestMethod.POST)
     public ModelAndView saveQuestion(HttpServletRequest request, ModelAndView modelAndView,HttpSession session){
         String title = request.getParameter("question_title");
@@ -217,14 +239,20 @@ public class WebBoardController {
         modelAndView.setViewName("redirect:/question");
         return modelAndView;
     }
+
     @RequestMapping(value = "/question/answerwrite/{id}", method = RequestMethod.GET)
-    public ModelAndView writeAnswer(ModelAndView modelAndView, @PathVariable("id")int id){
+    public ModelAndView writeAnswer(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
+        User loginUser = (User) session.getAttribute("loginUserInfo");
+        if(loginUser!=null) {
+            modelAndView.addObject("loginUser", loginUser);
+        }
         modelAndView.addObject("messages",map);
         modelAndView.setViewName("answerWrite");
         return modelAndView;
     }
+
     @RequestMapping(value = "/question/answerwrite/{id}", method = RequestMethod.POST)
     public ModelAndView saveAnswer(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id")int id){
         String title = request.getParameter("answer_title");
@@ -243,9 +271,15 @@ public class WebBoardController {
         modelAndView.setViewName("redirect:/question/{id}");
         return modelAndView;
     }
+
     @RequestMapping(value = "/question/delete/{id}")
-    public ModelAndView deleteQuestion(ModelAndView modelAndView, @PathVariable("id")int id){
+    public ModelAndView deleteQuestion(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
         Question question = questionRepository.findOne(id);
+        User loginUser = (User) session.getAttribute("loginUserInfo");
+        if(loginUser==null || question.getPost().getAuthor().getId()!=loginUser.getId()){
+            modelAndView.setViewName("redirect:/question");
+            return modelAndView;
+        }
         Post post = question.getPost();
         List<QuestionAnswer> questionAnswers = question.getAnswers();
         for(QuestionAnswer questionAnswer : questionAnswers){
@@ -258,10 +292,12 @@ public class WebBoardController {
         modelAndView.setViewName("redirect:/question");
         return modelAndView;
     }
+
     @RequestMapping(value = "/question/modify/{id}", method = RequestMethod.GET)
-    public ModelAndView showm_modifyQuestion(ModelAndView modelAndView, @PathVariable("id")int id){
+    public ModelAndView showm_modifyQuestion(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
         Map<String, Object> map = new HashMap<>();
         Question question = questionRepository.findOne(id);
+        User loginUser = (User) session.getAttribute("loginUserInfo");
         Post post = question.getPost();
         String title = post.getTitle();
         String contents = post.getContent();
@@ -270,8 +306,12 @@ public class WebBoardController {
         map.put("title", title);
         map.put("contents", contents);
         map.put("problem_id", problem_id);
+        if(loginUser!=null){
+            modelAndView.addObject("loginUser",loginUser);
+        }
         modelAndView.addObject("messages", map);
         modelAndView.setViewName("questionModify");
+
         return modelAndView;
     }
 

@@ -1,7 +1,6 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "tbl_user")
-public class User implements Serializable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -25,8 +24,9 @@ public class User implements Serializable {
     @Column(name="email",nullable = false)
 
     private String email;
-    @Column(name = "rate")
-    private double rate;
+
+    @Column(name = "success_count")
+    private int success_count;
 
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -83,7 +83,7 @@ public class User implements Serializable {
         this.loginPw = loginPw;
         this.name = name;
         this.email = email;
-        this.rate = 0;
+        this.success_count = 0;
         this.teamList = null;
         this.group = null;
         this.teamList = new ArrayList<>();
@@ -91,18 +91,22 @@ public class User implements Serializable {
 
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public int getSuccess_count() {
+        return success_count;
     }
 
+    public void setSuccess_count(int success_count) {
+        this.success_count = success_count;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 
     public String getEmail() {
         return email;
     }
 
-    public double getRate() {
-        return rate;
-    }
 
     public void addAnswer(Answer answer) {
         this.answers.add(answer);

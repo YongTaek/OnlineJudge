@@ -14,9 +14,8 @@ public class ProblemSet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne
-    @JoinColumn(name="author")
-    private User author;
+    @Column(name = "canModify")
+    private boolean canModify;
 
     @Column(name = "name")
     private String name;
@@ -33,7 +32,6 @@ public class ProblemSet {
     }
 
     public ProblemSet(User author, String name){
-        this.author = author;
 
         this.name = name;
         this.clearUsers = new ArrayList<>();
@@ -44,9 +42,6 @@ public class ProblemSet {
         return id;
     }
 
-    public User getauthor() {
-        return author;
-    }
 
     public String getName() {
         return name;
@@ -60,9 +55,6 @@ public class ProblemSet {
         return problemList;
     }
 
-    public void setauthor(User author) {
-        this.author = author;
-    }
 
     public void setName(String name) {
         this.name = name;

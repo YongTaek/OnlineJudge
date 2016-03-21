@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '문제',
+layout 'test.tpl', title: '문제', loginUser:loginUser,
         content: contents {
             div(class: 'container') {
                 link(rel:'stylesheet', href: '/css/table.css')
@@ -7,7 +7,7 @@ layout 'test.tpl', title: '문제',
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
                             li( id: 'problem') {
-                                a(href: '/problem', '문제')
+                                a(href: '/problem/list', '문제')
                             }
                             li(id:'recent') {
                                 a(href: '/problem/recent', '추가된 문제')

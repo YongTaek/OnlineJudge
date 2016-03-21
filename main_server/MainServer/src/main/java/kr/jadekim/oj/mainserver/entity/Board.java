@@ -1,7 +1,6 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by ohyongtaek on 2016. 1. 19..
@@ -9,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="tbl_board")
 
-public class Board implements Serializable {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

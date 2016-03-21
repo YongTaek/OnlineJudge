@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '질문게시판',
+layout 'test.tpl', title: '질문게시판',loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
@@ -40,7 +40,7 @@ layout 'test.tpl', title: '질문게시판',
                         }
                         tbody {
                             if (messages.empty) {
-                                tr { td(colspan: '6', 'No Problem') }
+                                tr { td(colspan: '6', 'No Question') }
                             } else {
                                 messages.each { message ->
                                     tr {

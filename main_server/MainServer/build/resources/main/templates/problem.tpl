@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '문제',
+layout 'test.tpl', title: '문제', loginUser:loginUser,
         content:contents{
             div(class:'container'){
                 div(class:'row') {
@@ -8,7 +8,7 @@ layout 'test.tpl', title: '문제',
                                 a(href:'#', messages.num)
                             }
                             li(id:'problem-submit'){
-                                a(href: '#', '제출하기')
+                                a(href: 'submit/'+messages.num, '제출하기')
                             }
                             li(id: 'grade-now'){
                                 a(href: '#', '채점 현황')
@@ -17,7 +17,7 @@ layout 'test.tpl', title: '문제',
                                 a(href: '#','내 채점현황')
                             }
                             li(id: 'q&a'){
-                                a(href: '#','Q&A')
+                                a(href: '../question/'+messages.num,'Q&A')
                             }
                         }
                     }
@@ -25,7 +25,9 @@ layout 'test.tpl', title: '문제',
                         div(class:'page-header'){
                             h1{
                                 span(id:'problem-title', messages.title)
-                                span(id:'problem-label', messages.label)
+                                if(messages.label!=null) {
+                                    span(id: 'problem-label', messages.label)
+                                }
                             }
                         }
                     }

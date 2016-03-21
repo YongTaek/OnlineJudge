@@ -1,7 +1,6 @@
 package kr.jadekim.oj.mainserver.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="tbl_group")
-public class Group implements Serializable{
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +21,6 @@ public class Group implements Serializable{
 
     @ManyToMany
     @JoinColumn(name="problemSet")
-
     private List<ProblemSet> mustProblemSet;
 
     @Column(name = "isPrivateJoin")

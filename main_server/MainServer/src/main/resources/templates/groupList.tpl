@@ -1,15 +1,17 @@
-layout 'test.tpl', title: '게시판',
+layout 'test.tpl', title: '게시판', loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
+            link(rel: 'stylesheet', href: '/css/groupList.css')
             div(class: 'container') {
                 div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
+                    div(class: 'col-md-6 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
                             li(class: 'active') {
                                 a(href: '/group', 'Group 목록')
                             }
                             li() {
-                                a(href: '/group/my', '내 Group')
+
+                                a(href: '/group/info', '내 Group')
                             }
                         }
 
@@ -22,8 +24,13 @@ layout 'test.tpl', title: '게시판',
                                 }
                             }
                             button(type: "submit", id: 'searchButton', class: "btn btn-primary", '검색')
+
                             a(href: '/group/create', '그룹 만들기')
+
                         }
+                    }
+                    div(class:'col-md-2'){
+                        a(class:'btn btn-primary',href: '/group/create', '그룹 만들기')
                     }
                 }
                 div(class: 'prob-container') {
@@ -49,8 +56,11 @@ layout 'test.tpl', title: '게시판',
                                         }
                                         td (class : 'common-table', message.user)
                                         td (class : 'common-table', message.isprivate)
-                                        td(class: 'common-table'){
-                                            a(href: '/group/join/'+ message.id, "가입 신청")
+
+                                        td(class: 'common-table') {
+                                            if (!message.isMyGroup) {
+                                                a(href: '/group/join/' + message.id, "가입 신청")
+                                            }
                                         }
                                     }
                                 }

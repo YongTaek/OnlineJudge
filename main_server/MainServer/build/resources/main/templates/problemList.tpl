@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '문제',
+layout 'test.tpl', title: '문제', loginUser: loginUser,
         content: contents {
             div(class: 'container') {
                 link(rel:'stylesheet', href: '/css/table.css')
@@ -7,7 +7,7 @@ layout 'test.tpl', title: '문제',
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
                             li(class: 'active', id: 'problem') {
-                                a(href: '/problem', '문제')
+                                a(href: '/problem/list', '문제')
                             }
                             li(id:'recent') {
                                 a(href: '/problem/recent', '추가된 문제')
@@ -21,16 +21,17 @@ layout 'test.tpl', title: '문제',
                                     p 'asdf'
                                 }
                             }
+
                         }
                     }
                     div(class: 'col-md-4') {
-                        form(class: "form-inline",id: 'searchForm') {
+                        form(class: "form-inline",id: 'searchForm',action:'list') {
                             div(class: "form-group") {
                                 div(class: 'input-group') {
                                     input(type: "text", class: 'form-control', id: 'exampleInputAmount',name:'search')
                                 }
                             }
-                            button(type: "submit",id: 'searchButton' , class: "btn btn-primary", '검색')
+                            button(type: "submit",id: 'searchButton', class: "btn btn-primary", '검색')
                         }
                     }
                 }
@@ -52,13 +53,19 @@ layout 'test.tpl', title: '문제',
                                 messages.each { message ->
                                     tr {
                                         td(class: 'common-table', message.id)
-                                        td(class: 'common-table', message.name)
+                                        td(class: 'common-table'){
+                                            a(href:message.id,message.name)
+                                        }
                                         td(class: 'common-table', message.count)
                                         td(class: 'common-table', message.rate)
-                                        if(message.result == true) {
-                                            td(class: 'common-table', 'O')
+                                        if(message.result != null) {
+                                            if (message.result == true) {
+                                                td(class: 'common-table', 'O')
+                                            } else {
+                                                td(class: 'common-table', 'X')
+                                            }
                                         }else{
-                                            td(class: 'common-table', 'X')
+                                            td(class:'common-table')
                                         }
                                     }
                                 }

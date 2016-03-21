@@ -51,7 +51,8 @@ public class GradeController {
             submitTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
             user = userRepository.findByloginId(user_id).get(0);
             problem = problemRepository.findOne(problem_id);
-            answer = answerService.saveAnswer(user, code, submitTime, problem).get();
+            answer = new Answer(user,code,submitTime,problem);
+            answer = answerService.saveAnswer(answer).get();
             RestTemplate restTemplate = new RestTemplate();
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("lang", lang);
