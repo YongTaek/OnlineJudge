@@ -34,9 +34,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 	
-	//1.1.0에서 AbstractOnSubscribe가 사라졌는데 rxjava-string:1.0.1 에서 사용중이라서 하위 버전을 사용함
-	compile 'io.reactivex:rxjava:1.0.17'
-	compile 'io.reactivex:rxjava-string:1.0.1'
+	compile 'io.reactivex:rxjava:1.1.2'
+	compile 'io.reactivex:rxjava-string:1.1.0'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
 	runtime('mysql:mysql-connector-java')

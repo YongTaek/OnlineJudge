@@ -1,6 +1,7 @@
 package kr.jadekim.oj.evaluation;
 
 import com.google.gson.annotations.SerializedName;
+import kr.jadekim.oj.evaluation.utils.Logger;
 
 /**
  * Created by jdekim43 on 2016. 2. 27..
@@ -17,7 +18,13 @@ public class Setting {
 
     private static Setting instance;
 
+    private Setting() {}
+
     public static Setting get() {
+        if (instance == null) {
+            Logger.warning("not loaded setting. use default setting");
+            instance = new Setting();
+        }
         return instance;
     }
 
