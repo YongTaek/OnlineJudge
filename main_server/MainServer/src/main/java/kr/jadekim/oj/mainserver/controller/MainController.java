@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by ohyongtaek on 2016. 1. 19..
@@ -18,9 +19,9 @@ public class MainController {
 
 
     @RequestMapping("/")
-    public @ResponseBody String index(){
+    public @ResponseBody ModelAndView index(){
 
-        return "Hello!";
+        return new ModelAndView("home");
     }
 
 }
