@@ -33,8 +33,15 @@ layout 'test.tpl', title: '문제만들기',loginUser:loginUser,
                                 input(type: 'text', value: "", name: 'problem_visibleOutput', id: 'visibleoutput');
                             }
                         }
-                        div(class : 'col-md-12'){
-                            button(id:'testInputBtn','btn')
+                        div(class : 'row') {
+                            div(class: 'col-md-6') {
+                                span('테스트 케이스 input값', id : 'testInput')
+                            }
+                            div(class: 'col-md-6') {
+                                span('테스트 케이스 output값', id : 'testOutput')
+                            }
+                            button(id: "plusButton1", type: 'button', class: "btn btn-primary", '+')
+                            button(id: "minusButton", type: 'button', class: "btn btn-primary", '-')
                         }
                         div(class: 'col-md-12') {
                             div(class: 'row') {
@@ -44,5 +51,7 @@ layout 'test.tpl', title: '문제만들기',loginUser:loginUser,
                         }
                     }
                 }
+                script(type:'text/javascript',src:'../js/createProblem.js'){}
+
             }
         }
