@@ -15,3 +15,7 @@ function hidesection() {
     widget.style.display = "none";
     widgetbackground.style.display = "none";
 }
+
+$(document).ready(function(){
+    $('.problem').popover({html:true,placement:'right',trigger:'click',content: '<ul><li><a href="#" class="popovercontent">"문제집"</a></li><li><a href="#" class="popovercontent">"문제"</a></li></ul>' });
+});
