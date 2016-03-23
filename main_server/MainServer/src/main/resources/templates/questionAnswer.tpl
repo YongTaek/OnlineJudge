@@ -1,7 +1,7 @@
-layout 'test.tpl', title: 'Q&A',
+layout 'layout.tpl', title: 'Q&A',
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
-            div(class: 'container') {
+            div() {
                 div(class: 'container') {
                     div(class: 'row') {
                         div(class: 'col-md-8 col-xs-12 col-sm-6') {

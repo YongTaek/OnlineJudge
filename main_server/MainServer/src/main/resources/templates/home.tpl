@@ -1,13 +1,6 @@
-layout 'layout.tpl', title: 'OnlineJudge',
+layout 'layout.tpl', title: 'OnlineJudge',loginUser: loginUser,
         content: contents {
             div(id: 'backimg') {
-                    ul(class:"loginbar") {
-                        li(class:'lo') {
-                            a(class: 'loandjo', 'Join-in',onclick:"hidesection()")
-                        }
-                        li(class:'lo') {
-                            a(class: 'loandjo', 'Login',onclick: "viewsection()")
-                        }
-                    }
+
                 }
             }

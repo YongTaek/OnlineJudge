@@ -1,7 +1,7 @@
-layout 'test.tpl', title: '질문하기',
+layout 'layout.tpl', title: '질문하기',
         content: contents {
             link(rel:'stylesheet', href: '/css/table.css')
-            div(class: 'container') {
+            div() {
                 div(class:'row') {
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {

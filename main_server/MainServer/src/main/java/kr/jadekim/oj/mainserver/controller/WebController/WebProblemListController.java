@@ -200,7 +200,12 @@ public class WebProblemListController {
             Map<String,Object> map = new HashMap<>();
             int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
             int total_count = answerRepository.countByProblemId(p.getId());
-            double rate = success_count/total_count *100;
+            double rate;
+            if(total_count!=0) {
+                rate = success_count / total_count * 100;
+                map.put("rate",rate);
+
+            }
             GradeResult isSuccess;
             if(user != null) {
                 isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(), p.getId());
@@ -212,7 +217,6 @@ public class WebProblemListController {
             map.put("id",p.getId());
             map.put("name",p.getName());
             map.put("count",success_count);
-            map.put("rate",rate);
             messages.add(map);
         }
         return messages;

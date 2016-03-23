@@ -1,7 +1,7 @@
-layout 'test.tpl', title: '공지',loginUser:loginUser,
+layout 'layout.tpl', title: '공지',loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
-            div(class: 'container') {
+            div() {
                 div(class: 'container') {
                     div(class: 'row') {
                         div(class: 'col-md-8 col-xs-12 col-sm-6') {

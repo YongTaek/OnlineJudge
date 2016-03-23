@@ -1,6 +1,6 @@
-layout 'test.tpl', title: '문제집',
+layout 'layout.tpl', title: '문제집',
         content: contents {
-            div(class: 'container') {
+            div() {
                 link(rel:'stylesheet', href: '/css/problemset.css')
 
                 div(class: row) {
