@@ -1,7 +1,7 @@
-layout 'test.tpl', title: '질문수정',loginUser:loginUser,
+layout 'layout.tpl', title: '질문수정',loginUser:loginUser,
         content: contents {
             link(rel:'stylesheet', href: '/css/table.css')
-            div(class: 'container') {
+            div() {
                 div(class:'row') {
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {

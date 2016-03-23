@@ -7,7 +7,6 @@
     overflow:auto;
 }
 .right{
-    background-color: #d6e9c6;
     position:relative;
     float:right;
     width:80%;
@@ -20,9 +19,13 @@
     background-image: url("http://img.phombo.com/img1/photocombo/15066/80_Wonderful_Wallpapers_HQPixsBlog-41.jpg_HQ_Pixs_Blog_1.jpg");
 
 }
+.contents{
+    margin-top:10%;
+}
 .lo{
     float:right;
 }
+
 .loandjo{
     display:block;
     margin:5px;
@@ -122,4 +125,8 @@
 }
 #bar{
     display: inline-block;
+}
+.logins{
+    float: right;
+    margin-top: 10px;
 }

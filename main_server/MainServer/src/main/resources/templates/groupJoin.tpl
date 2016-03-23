@@ -1,6 +1,6 @@
-layout 'test.tpl', title: '그룹 가입 신청',
+layout 'layout.tpl', title: '그룹 가입 신청',
         content: contents {
-            div(class: 'container') {
+            div() {
                 div(class: 'prob-container') {
                     form(id : 'write_question', action:'/group/join', method:'post') {\
                         h2 'Group - 가입 신청'
