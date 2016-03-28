@@ -11,6 +11,7 @@ layout 'layout.tpl', title: '게시판',
                             li() {
                                 a(href: '/question', 'Q&A')
                             }
+
                         }
                     }
                     div(class: 'col-md-4') {
