@@ -2,12 +2,28 @@ layout 'test.tpl', title: '마이페이지',loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
-                div(class : 'col-md-12'){
-                    div(class : 'row') {
-                        h2 (messages.user_id)
-                        span (messages.user_name)
+                div(class : 'row') {
+                    div(class: 'col-md-12') {
+                        p() {
+                            span(style: 'font-size : 35', messages.user_id)
+                            span(messages.user_name)
+                        }
                     }
                 }
+                div(class: 'row') {
+                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
+                        ul(class: 'nav nav-tabs') {
+                            li(class : 'active') {
+                                a(href: '/myPage', '활동')
+                            }
+                            li() {
+                                a(href: '/myPage/setting', '설정')
+                            }
+                        }
+
+                    }
+                }
+                hr(class : 'half-rule')
                 div(class : 'col-md-4') {
                     div(class: 'prob-container') {
                         table(class: 'table table-striped') {
@@ -17,7 +33,7 @@ layout 'test.tpl', title: '마이페이지',loginUser:loginUser,
                                 } else {
                                     tr{
                                        td(class : 'common-table', "푼 문제")
-                                       td(class : 'common-table', messages.solvedProblemnum)
+                                       td(class : 'common-table', messages.solvedProblem)
                                     }
                                     tr{
                                        td(class : 'common-table', "제출 수")

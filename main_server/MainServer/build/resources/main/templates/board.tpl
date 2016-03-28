@@ -1,6 +1,7 @@
 layout 'layout.tpl', title: '게시판',
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
+<<<<<<< HEAD
             div() {
                 div(class: 'row') {
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
@@ -11,6 +12,16 @@ layout 'layout.tpl', title: '게시판',
                             li() {
                                 a(href: '/question', 'Q&A')
                             }
+=======
+            div(class: 'container') {
+                div(class: 'prob-nav') {
+                    ul() {
+                        li() {
+                            a(href: '/notice', '공지사항')
+                        }
+                        li() {
+                            a(href: '/question', 'Q&A')
+>>>>>>> 13efdd3... [추가] 마이페이지 설정 초안
                         }
                     }
                     div(class: 'col-md-4') {

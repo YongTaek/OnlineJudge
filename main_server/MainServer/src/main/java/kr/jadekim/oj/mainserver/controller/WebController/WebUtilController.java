@@ -134,6 +134,30 @@ public class WebUtilController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/myPage/setting", method = RequestMethod.GET)
+    public ModelAndView showSetting(ModelAndView modelAndView, HttpSession session){
+        User user = (User) session.getAttribute("loginUserInfo");
+        if(user == null){
+            modelAndView.setViewName("rediret:/notice");
+            return modelAndView;
+        }else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", user.getName());
+            map.put("email", user.getEmail());
+            modelAndView.addObject("messages", map);
+            modelAndView.setViewName("settinglist");
+            return modelAndView;
+        }
+    }
 
-
+    @RequestMapping(value = "/myPage/setting", method = RequestMethod.POST)
+    public ModelAndView modifyinfo(ModelAndView modelAndView, HttpSession session, HttpServletRequest request){
+        User user = (User) session.getAttribute("loginUserInfo");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        user.setName(name);
+        user.setEmail(email);
+        modelAndView.setViewName("redirect:/myPage/setting");
+        return modelAndView;
+    }
 }
