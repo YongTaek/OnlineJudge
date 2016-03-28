@@ -1,4 +1,4 @@
-layout 'test.tpl', title: '마이페이지',loginUser:loginUser,
+layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
