@@ -22,7 +22,7 @@ public class MainController {
     @RequestMapping("/")
     public @ResponseBody ModelAndView index(){
 
-        return new ModelAndView("join");
+        return new ModelAndView("home");
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

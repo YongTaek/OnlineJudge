@@ -47,7 +47,7 @@ layout 'layout.tpl',title:'로그인',
                             yield "ID/PW 찾기 "
                         }
                         p(id: "bar") { yield "|" }
-                        a(href: "#") {
+                        a(href: "/join") {
                             yield " 회원가입"
                         }
                     }

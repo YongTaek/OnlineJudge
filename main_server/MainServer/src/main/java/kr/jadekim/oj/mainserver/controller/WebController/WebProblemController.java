@@ -2,12 +2,10 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 
 
 import kr.jadekim.oj.mainserver.entity.*;
-<<<<<<< HEAD
 
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
-=======
->>>>>>> 766a9f6... [수정] 로그인 권한 수정 완료 (홈화면 제외)
+
 import kr.jadekim.oj.mainserver.service.AnswerService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;

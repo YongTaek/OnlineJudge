@@ -24,7 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
 
     @Override
@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.USER))
+                    .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
                     .antMatchers("/myPage/**").hasAuthority(String.valueOf(Role.USER))
                     .antMatchers("/**").permitAll()
                     .and()
@@ -52,7 +52,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/logint?logout")
                 .deleteCookies("remember-me")
                 .logoutSuccessUrl("/")
                 .permitAll()

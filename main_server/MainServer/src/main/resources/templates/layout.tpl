@@ -10,7 +10,7 @@ html {
         script(src: "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js") {}
     }
     body {
-        script(type: "text/javascript", src: "../js/script.js") {}
+        script(type: "text/javascript", src: "../js/layout.js") {}
         include template: 'loginForm.tpl'
         include template: 'homeNav.tpl'
         div(class: 'right') {
