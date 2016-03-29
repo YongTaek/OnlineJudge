@@ -21,7 +21,7 @@ public class MainController {
     @RequestMapping("/")
     public @ResponseBody ModelAndView index(){
 
-        return new ModelAndView("home");
+        return new ModelAndView("join");
     }
 
 }

@@ -1,0 +1,33 @@
+.join{
+    width: 90%;
+    padding-top: 50px;
+    margin:auto;
+}
+.jointext{
+    font-size: 30px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000000;
+}
+.join-group{
+    width: 50%;
+    height: 10%;
+    margin-bottom: 20px;
+}
+
+.join-item{
+    text-align: right;
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    width:16.666666667%;
+    float: left;
+}
+.join-bottom{
+    border-top:1px solid #000000;
+}
+.join-button1{
+    float: left;
+}
+.join-button2{
+    float:right;
+}
