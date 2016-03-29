@@ -1,6 +1,6 @@
-layout 'test.tpl', title: '그룹 만들기',
+layout 'layout.tpl', title: '그룹 만들기',
         content: contents {
-            div(class: 'container') {
+            div() {
                 div(class: 'prob-container') {
                     form(id : 'write_question', action:'/group/create', method:'post') {\
                         h2 'Group - 만들기'

@@ -22,7 +22,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
     @Query(value = "select b from Answer a join a.result b join a.problem p on p.id=:prob_id join a.submitter u on u.id=:user_id order by a.submitTime desc")
     GradeResult findIsSuccessTop1ByUserId(@Param("user_id") int user_id, @Param("prob_id") int prob_id);
 
-    @Query("select count(u.id) from Answer a join a.submitter u join a.problem p where p.id=:prob_id group by u")
+    @Query("select count(u.id) from Answer a join a.submitter u join a.problem p on p.id=:prob_id group by u")
     int countUserByProblemId(@Param("prob_id")int prob_id);
 
 }

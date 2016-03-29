@@ -51,8 +51,6 @@ th{
 #prob-user-result{
     width:10%;
 }
-
-.container{
-    width:940px;
-    height:100%;
+.form-inline{
+    float: right;
 }

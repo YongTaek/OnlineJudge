@@ -1,8 +1,8 @@
-layout 'test.tpl', title: '게시판', loginUser:loginUser,
+layout 'layout.tpl', title: '게시판', loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             link(rel: 'stylesheet', href: '/css/groupList.css')
-            div(class: 'container') {
+            div() {
                 div(class: 'row') {
                     div(class: 'col-md-6 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {

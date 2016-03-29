@@ -1,6 +1,6 @@
-layout 'test.tpl', title: '문제', loginUser: loginUser,
+layout 'layout.tpl', title: '문제', loginUser: loginUser,
         content: contents {
-            div(class: 'container') {
+            div() {
                 link(rel:'stylesheet', href: '/css/table.css')
 
                 div(class: 'row') {

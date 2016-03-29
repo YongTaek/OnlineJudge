@@ -8,7 +8,6 @@
     z-index: 999990;
 }
 .right{
-    background-color: #d6e9c6;
     position:relative;
     float:right;
     width:80%;
@@ -17,6 +16,7 @@
 .lo{
     float:right;
 }
+
 .loandjo{
     display:block;
     margin:5px;
@@ -48,6 +48,10 @@
 .icon{
     max-width: 100%;
 }
-.popover{
+.popover {
     overflow: visible;
+}
+.logins{
+    float: right;
+    margin-top: 10px;
 }

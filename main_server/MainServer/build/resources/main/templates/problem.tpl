@@ -1,6 +1,6 @@
-layout 'test.tpl', title: '문제', loginUser:loginUser,
+layout 'layout.tpl', title: '문제', loginUser:loginUser,
         content:contents{
-            div(class:'container'){
+            div(){
                 div(class:'row') {
                     div(class: 'col-md-12'){
                         ul(class: 'nav nav-pills'){
