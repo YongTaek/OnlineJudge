@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '질문하기',
+layout 'layout.tpl', title: '질문하기',loginUser:loginUser,
         content: contents {
             link(rel:'stylesheet', href: '/css/table.css')
             div() {

@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '게시판',
+layout 'layout.tpl', title: '게시판',loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             div() {

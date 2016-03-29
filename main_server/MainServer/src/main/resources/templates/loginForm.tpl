@@ -26,7 +26,7 @@ section(id: "login_widget") {
                 div(class: "col-sm-offset-2 col-sm-10") {
                     div(class: "checkbox") {
                         label {
-                            input(type: "checkbox") {
+                            input(type: "checkbox",name: '_spring_security_remember_me') {
                                 yield "Remember me"
                             }
                         }
@@ -46,7 +46,7 @@ section(id: "login_widget") {
                 yield "ID/PW 찾기 "
             }
             p (id:"bar"){ yield "|" }
-            a(href: "#") {
+            a(href: "/join") {
                 yield " 회원가입"
             }
         }

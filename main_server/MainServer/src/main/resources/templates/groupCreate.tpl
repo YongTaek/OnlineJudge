@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '그룹 만들기',
+layout 'layout.tpl', title: '그룹 만들기', loginUser:loginUser,
         content: contents {
             div() {
                 div(class: 'prob-container') {

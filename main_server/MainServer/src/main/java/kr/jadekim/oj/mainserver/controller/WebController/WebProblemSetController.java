@@ -1,5 +1,6 @@
 package kr.jadekim.oj.mainserver.controller.WebController;
 
+import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.ProblemSet;
 import kr.jadekim.oj.mainserver.entity.User;
@@ -9,13 +10,13 @@ import kr.jadekim.oj.mainserver.repository.UserRepository;
 import kr.jadekim.oj.mainserver.service.ProblemSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +43,15 @@ public class WebProblemSetController {
     ProblemSetService problemSetService;
 
     @RequestMapping
-    public ModelAndView list(ModelAndView modelAndView,HttpSession session,Pageable pageable){
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+    public ModelAndView list(ModelAndView modelAndView, Pageable pageable, Authentication authentication){
+        CurrentUser currentUser = null;
+        if(authentication!=null){
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<ProblemSet> problemSets = problemSetService.findAllProblemSet(pageable);
         for(ProblemSet p : problemSets){

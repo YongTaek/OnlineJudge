@@ -3,6 +3,7 @@ package kr.jadekim.oj.mainserver.controller;
 
 import kr.jadekim.oj.mainserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +22,19 @@ public class MainController {
     @RequestMapping("/")
     public @ResponseBody ModelAndView index(){
 
-        return new ModelAndView("join");
+        return new ModelAndView("home");
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping("/admin")
+    public @ResponseBody String adminIndex(){
+        return "true";
+    }
+
+    @RequestMapping("/success")
+    public @ResponseBody String loginTest(){
+        return "true";
+    }
+
 
 }

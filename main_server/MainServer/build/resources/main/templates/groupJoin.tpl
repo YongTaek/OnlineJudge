@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '그룹 가입 신청',
+layout 'layout.tpl', title: '그룹 가입 신청',loginUser:loginUser,
         content: contents {
             div() {
                 div(class: 'prob-container') {

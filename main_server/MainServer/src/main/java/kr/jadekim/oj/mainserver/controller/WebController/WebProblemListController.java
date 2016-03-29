@@ -2,10 +2,7 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import kr.jadekim.oj.mainserver.entity.Answer;
-import kr.jadekim.oj.mainserver.entity.GradeResult;
-import kr.jadekim.oj.mainserver.entity.Problem;
-import kr.jadekim.oj.mainserver.entity.User;
+import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.repository.GradeResultRepository;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
@@ -16,6 +13,7 @@ import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -102,14 +99,22 @@ public class WebProblemListController {
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public ModelAndView list(ModelAndView modelAndView , @PageableDefault(sort = { "id" }, size = 10) Pageable pageable,HttpSession session){
+    public ModelAndView list(ModelAndView modelAndView , @PageableDefault(sort = { "id" }, size = 10) Pageable pageable, Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = null;
+
         User user = null;
         int total_count = 0;
         try {
             problems = problemService.findAllProblem(pageable).get();
-            user = (User) session.getAttribute("loginUserInfo");
+            if(currentUser!=null) {
+                user = currentUser.getUser();
+
+            }
             total_count = problemService.countAllProblem().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -139,9 +144,16 @@ public class WebProblemListController {
         return modelAndView;
     }
     @RequestMapping("recent")
-    public ModelAndView recentList(ModelAndView modelAndView,HttpSession session){
+    public ModelAndView recentList(ModelAndView modelAndView,Authentication authentication){
 
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        CurrentUser currentUser= null;
+        User loginUser = null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemService.findProblemRecent();
         messages = makeMessages(messages,problems,loginUser);
@@ -158,8 +170,15 @@ public class WebProblemListController {
     }
 
     @RequestMapping("ranking")
-    public ModelAndView probRanking(ModelAndView modelAndView,HttpSession session){
-        User user = (User) session.getAttribute("loginUserInfo");
+    public ModelAndView probRanking(ModelAndView modelAndView,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User user = null;
+        if(currentUser!=null) {
+            user = currentUser.getUser();
+        }
 
         try {
             modelAndView = problemService.getSortedProbByrank(modelAndView, user).get();
@@ -175,8 +194,11 @@ public class WebProblemListController {
     }
 
     @RequestMapping(value = "list",method = RequestMethod.POST)
-    public ModelAndView search(HttpServletRequest request,HttpSession session,ModelAndView modelAndView){
-
+    public ModelAndView search(HttpServletRequest request,ModelAndView modelAndView,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         String problem_name = request.getParameter("search");
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = null;
@@ -187,7 +209,10 @@ public class WebProblemListController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         messages = makeMessages(messages,problems,loginUser);
 
         modelAndView.addObject("messages",messages);
@@ -209,6 +234,7 @@ public class WebProblemListController {
             GradeResult isSuccess;
             if(user != null) {
                 isSuccess = answerRepository.findIsSuccessTop1ByUserId(user.getId(), p.getId());
+                System.out.println(user.getRole());
                 try {
                     map.put("result", isSuccess.getIsSuccess());
                 }catch (NullPointerException e){

@@ -2,7 +2,7 @@ nav(class: 'navbar') {
     ul(class: 'menu') {
         li(class: 'llist') {
             a(href: '/problem/list') {
-                yield img(class: "icon", src: '/ img / tool.png ')
+                yield img(class: "icon", src: '/img/tool.png ')
             }
         }
         li(class: 'llist') {

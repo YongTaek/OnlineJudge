@@ -1,7 +1,7 @@
-layout 'layout.tpl', title: 'OnlineJudge',
+layout 'layout.tpl', title: '회원가입',
         content: contents {
             div(class: 'container') {
-                form(class: "join") {
+                form(class: "join",action:'/join',method:'post') {
                     p(class:'jointext'){
                         yield "회원가입"
                     }
@@ -10,7 +10,7 @@ layout 'layout.tpl', title: 'OnlineJudge',
                             yield "이름"
                         }
                         div(class: "col-sm-10") {
-                            input(type: "text", class: "form-control", id: "inputEmail3")
+                            input(type: "text", class: "form-control", id: "inputEmail3",name:'name')
                         }
                     }
                     div(class: "join-group"){
@@ -18,7 +18,7 @@ layout 'layout.tpl', title: 'OnlineJudge',
                             yield "E-Mail"
                         }
                         div(class: "col-sm-10") {
-                            input(type: "email", class: "form-control", id: "inputEmail3")
+                            input(type: "email", class: "form-control", id: "inputEmail3",name:'email')
                         }
                     }
                     div(class: "join-group"){
@@ -26,7 +26,7 @@ layout 'layout.tpl', title: 'OnlineJudge',
                             yield "ID"
                         }
                         div(class: "col-sm-10") {
-                            input(type: "id", class: "form-control", id: "inputEmail3")
+                            input(type: "id", class: "form-control", id: "inputEmail3",name: 'login_id')
                         }
                     }
                     div(class: "join-group"){
@@ -34,7 +34,7 @@ layout 'layout.tpl', title: 'OnlineJudge',
                             yield "Password"
                         }
                         div(class: "col-sm-10") {
-                            input(type: "password", class: "form-control", id: "inputPassword3")
+                            input(type: "password", class: "form-control", id: "inputPassword3",name: 'login_pw')
                         }
                     }
                 div(class: "join-bottom") {
