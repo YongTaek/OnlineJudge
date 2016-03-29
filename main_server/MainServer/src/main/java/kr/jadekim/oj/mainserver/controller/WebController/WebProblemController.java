@@ -2,21 +2,24 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 
 
 import kr.jadekim.oj.mainserver.entity.*;
+<<<<<<< HEAD
 
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
+=======
+>>>>>>> 766a9f6... [수정] 로그인 권한 수정 완료 (홈화면 제외)
 import kr.jadekim.oj.mainserver.service.AnswerService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,27 +45,30 @@ public class WebProblemController {
     TestcaseRepository testcaseRepository;
 
     @RequestMapping("{id}")
-    public ModelAndView problem(ModelAndView modelAndView, @PathVariable("id") int problem_id,HttpSession session){
+    public ModelAndView problem(ModelAndView modelAndView, @PathVariable("id") int problem_id, Authentication authentication) {
+        CurrentUser currentUser = null;
+        if (authentication != null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         Problem problem;
-        System.out.println(problem_id);
-        Map<String,Object> messages = new HashMap<>();
-        User user;
+        Map<String, Object> messages = new HashMap<>();
+        User loginUser = null;
+        if (currentUser != null) {
+            loginUser = currentUser.getUser();
+        }
         try {
-            user = (User) session.getAttribute("loginUserInfo");
             problem = problemService.getProblem(problem_id).get();
             System.out.println(problem);
             int submit = answerService.countByProblemId(problem_id).get();
             int success_count = answerService.countSuccessByProblemId(problem_id).get();
 
             GradeResult label;
-            if(user!=null) {
-                label = answerService.findIsSuccessByUserId(user.getId(), problem_id).get();
-                modelAndView.addObject("loginUser",user);
-                System.out.println(user.getLoginId());
-
+            if (loginUser != null) {
+                label = answerService.findIsSuccessByUserId(loginUser.getId(), problem_id).get();
+                modelAndView.addObject("loginUser", loginUser);
                 try {
-                    messages.put("label",label.getIsSuccess());
-                }catch (NullPointerException e){
+                    messages.put("label", label.getIsSuccess());
+                } catch (NullPointerException e) {
                 }
 
             }
@@ -80,28 +86,30 @@ public class WebProblemController {
             }else {
                 messages.put("rate", success_count / submit * 100);
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
         modelAndView.setViewName("problem");
-        modelAndView.addObject("messages",messages);
+        modelAndView.addObject("messages", messages);
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "/submit",method = RequestMethod.POST)
-    public ModelAndView submitAnswer(HttpServletRequest request, HttpSession session, ModelAndView modelAndView){
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public ModelAndView submitAnswer(HttpServletRequest request, ModelAndView modelAndView, Authentication authentication) {
         Problem problem;
-        User loginUser;
         String content;
-
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
         try {
             problem = problemService.getProblem(Integer.parseInt(request.getParameter("problem_id"))).get();
-            loginUser = (User) session.getAttribute("loginUserInfo");
+
             content = request.getParameter("code");
-            Answer answer = new Answer(loginUser,content,new Date(),problem);
+            Answer answer = new Answer(loginUser, content, new Date(), problem);
             answerService.saveAnswer(answer);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -111,31 +119,30 @@ public class WebProblemController {
         modelAndView.setViewName("redirect:/problem/list");
         return modelAndView;
     }
-    @RequestMapping(value = "submit/{id}",method = RequestMethod.GET)
-    public ModelAndView submitAnswerForm(@PathVariable("id")int problem_id,HttpSession session,ModelAndView modelAndView){
-        User user = (User) session.getAttribute("loginUserInfo");
-        if(user==null){
-            modelAndView.setViewName("redirect:/problem/"+problem_id);
-            return modelAndView;
-        }else {
-            Problem problem;
-            try {
-                problem = problemService.getProblem(problem_id).get();
-                modelAndView.setViewName("submitAnswer");
-                modelAndView.addObject("problem",problem);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            return modelAndView;
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "submit/{id}", method = RequestMethod.GET)
+    public ModelAndView submitAnswerForm(@PathVariable("id") int problem_id, ModelAndView modelAndView) {
+        Problem problem;
+        try {
+            problem = problemService.getProblem(problem_id).get();
+            modelAndView.setViewName("submitAnswer");
+            modelAndView.addObject("problem", problem);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+        return modelAndView;
+
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public ModelAndView ShowCreateProblem(ModelAndView modelAndView, HttpSession session){
-        User user = (User) session.getAttribute("loginUserInfo");
-        if(user == null){
+    public ModelAndView ShowCreateProblem(ModelAndView modelAndView, Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        if(loginUser == null){
             modelAndView.setViewName("redirect:/problem/list");
         }else{
             modelAndView.setViewName("problemCreate");
@@ -143,8 +150,11 @@ public class WebProblemController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView CreateProblem(ModelAndView modelAndView, HttpServletRequest request, HttpSession session){
+    public ModelAndView CreateProblem(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
         String title = request.getParameter("problem_title");
         String contents = request.getParameter("problem_contents");
         int time_limit = Integer.valueOf(request.getParameter("problem_timeLimit"));

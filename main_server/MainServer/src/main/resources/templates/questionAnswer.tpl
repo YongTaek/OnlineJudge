@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: 'Q&A',
+layout 'layout.tpl', title: 'Q&A',loginUser:loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             div() {

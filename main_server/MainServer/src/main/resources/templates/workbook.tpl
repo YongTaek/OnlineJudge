@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '문제집',
+layout 'layout.tpl', title: '문제집',loginUser:loginUser,
         content: contents {
             div() {
                 link(rel:'stylesheet', href: '/css/problemset.css')

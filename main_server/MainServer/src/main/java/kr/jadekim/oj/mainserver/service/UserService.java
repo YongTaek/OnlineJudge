@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 /**
@@ -47,10 +48,16 @@ public class UserService {
     public Future<User> findUser(String login_id){
         User user = userRepository.findByloginId(login_id).get(0);
         if(user == null){
+            System.out.println(login_id+"!!!");
             return null;
         }else{
             return new AsyncResult<>(user);
         }
+    }
+
+    public Optional<User> getUserByLoginId(String login_id){
+        Optional<User> user = userRepository.getByLoginId(login_id);
+        return user;
     }
 
     @Async

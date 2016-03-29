@@ -5,6 +5,7 @@ import kr.jadekim.oj.mainserver.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -64,8 +64,15 @@ public class WebBoardController {
     }
 
     @RequestMapping("/notice")
-    public ModelAndView showBoard(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, HttpSession session) {
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+    public ModelAndView showBoard(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Post> post = postRepository.findByBoardId(1,pageable);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
@@ -92,11 +99,18 @@ public class WebBoardController {
     }
 
     @RequestMapping("/question")
-    public ModelAndView showQuestion(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable,HttpSession session) {
+    public ModelAndView showQuestion(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable,Authentication authentication) {
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Question> questions = questionRepository.findAll(pageable);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         for (Question p : questions) {
             Map<String, Object> map = new HashMap<>();
             int num = p.getId();
@@ -125,11 +139,18 @@ public class WebBoardController {
 
 
     @RequestMapping("/notice/{id}")
-    public ModelAndView notice(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session) {
+    public ModelAndView notice(ModelAndView modelAndView, @PathVariable("id")int id,Authentication authentication) {
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         Post notice = postRepository.findOne(id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Map<String, Object> map = new HashMap<>();
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         int num = id;
         String title = notice.getTitle();
         String user = notice.getAuthor().getName();
@@ -149,14 +170,21 @@ public class WebBoardController {
         return modelAndView;
     }
     @RequestMapping("/question/{id}")
-    public ModelAndView showQuestion(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
+    public ModelAndView showQuestion(ModelAndView modelAndView, @PathVariable("id")int id,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         Question question = questionRepository.findOne(id);
         if(question==null){
             modelAndView.setViewName("redirect:problem/"+id);
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Map<String, Object> map = new HashMap<>();
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         Post post = question.getPost();
         List<QuestionAnswer> answers = question.getAnswers();
         Problem problem = question.getProblem();
@@ -208,24 +236,35 @@ public class WebBoardController {
     }
 
     @RequestMapping(value = "/question/write", method = RequestMethod.GET)
-    public ModelAndView writeQuestion(ModelAndView modelAndView, HttpSession session){
-        User user = (User) session.getAttribute("loginUserInfo");
-        if(user == null){
+    public ModelAndView writeQuestion(ModelAndView modelAndView, Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
+        if(loginUser == null){
             modelAndView.setViewName("redirect:/question");
             return modelAndView;
         }
-        modelAndView.addObject("loginUser",user);
+        modelAndView.addObject("loginUser",loginUser);
         modelAndView.setViewName("questionWrite");
         return modelAndView;
     }
 
     @RequestMapping(value = "/question/write" ,method = RequestMethod.POST)
-    public ModelAndView saveQuestion(HttpServletRequest request, ModelAndView modelAndView,HttpSession session){
+    public ModelAndView saveQuestion(HttpServletRequest request, ModelAndView modelAndView,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         String title = request.getParameter("question_title");
         int question_problem = Integer.valueOf(request.getParameter("question_problem"));
         String content = request.getParameter("question_contents");
         Board board = boardRepository.findOne(2);
-        User user = (User) session.getAttribute("loginUserInfo");
+        User user = currentUser.getUser();
         if(user == null){
             modelAndView.setViewName("redirect:/question");
             return modelAndView;
@@ -241,10 +280,17 @@ public class WebBoardController {
     }
 
     @RequestMapping(value = "/question/answerwrite/{id}", method = RequestMethod.GET)
-    public ModelAndView writeAnswer(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
+    public ModelAndView writeAnswer(ModelAndView modelAndView, @PathVariable("id")int id,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         if(loginUser!=null) {
             modelAndView.addObject("loginUser", loginUser);
         }
@@ -273,9 +319,16 @@ public class WebBoardController {
     }
 
     @RequestMapping(value = "/question/delete/{id}")
-    public ModelAndView deleteQuestion(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
+    public ModelAndView deleteQuestion(ModelAndView modelAndView, @PathVariable("id")int id,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         Question question = questionRepository.findOne(id);
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         if(loginUser==null || question.getPost().getAuthor().getId()!=loginUser.getId()){
             modelAndView.setViewName("redirect:/question");
             return modelAndView;
@@ -294,10 +347,17 @@ public class WebBoardController {
     }
 
     @RequestMapping(value = "/question/modify/{id}", method = RequestMethod.GET)
-    public ModelAndView showm_modifyQuestion(ModelAndView modelAndView, @PathVariable("id")int id,HttpSession session){
+    public ModelAndView showm_modifyQuestion(ModelAndView modelAndView, @PathVariable("id")int id,Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         Map<String, Object> map = new HashMap<>();
         Question question = questionRepository.findOne(id);
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         Post post = question.getPost();
         String title = post.getTitle();
         String contents = post.getContent();
@@ -384,11 +444,18 @@ public class WebBoardController {
     }
 
     @RequestMapping(value = "/notice/write", method = RequestMethod.POST)
-    public ModelAndView writeNotice(HttpServletRequest request, ModelAndView modelAndView, HttpSession session){
+    public ModelAndView writeNotice(HttpServletRequest request, ModelAndView modelAndView, Authentication authentication){
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
         String title = request.getParameter("notice_title");
         String contents = request.getParameter("notice_contents");
         Board board = boardRepository.findOne(1);
-        User loginUser = (User) session.getAttribute("loginUserInfo");
+        User loginUser = null;
+        if(currentUser!=null) {
+            loginUser = currentUser.getUser();
+        }
         modelAndView.setViewName("redirect:/notice");
         if(loginUser == null){
             return modelAndView;
@@ -415,7 +482,7 @@ public class WebBoardController {
     }
 
     @RequestMapping(value = "notice/modify/{id}", method = RequestMethod.POST)
-    public ModelAndView modifyNotice(HttpServletRequest request, ModelAndView modelAndView, HttpSession session, @PathVariable("id")int id){
+    public ModelAndView modifyNotice(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id")int id){
         String title = request.getParameter("notice_title");
         String contents = request.getParameter("notice_contents");
         Post post = postRepository.findOne(id);

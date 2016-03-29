@@ -19,6 +19,10 @@ public class Group {
     @JoinColumn(name = "users")
     private List<User> users;
 
+    @OneToMany
+    @JoinColumn(name = "waitUsers")
+    private List<User> waitUsers;
+
     @ManyToMany
     @JoinColumn(name="problemSet")
     private List<ProblemSet> mustProblemSet;
@@ -42,7 +46,16 @@ public class Group {
         this.users.add(jjang);
         this.name = name;
         this.mustProblemSet = new ArrayList<>();
+        this.waitUsers = new ArrayList<>();
         this.isPrivateJoin = isPrivateJoin;
+    }
+
+    public List<User> getWaitUsers() {
+        return waitUsers;
+    }
+
+    public void setWaitUsers(List<User> waitUsers) {
+        this.waitUsers = waitUsers;
     }
 
     public int getId() {

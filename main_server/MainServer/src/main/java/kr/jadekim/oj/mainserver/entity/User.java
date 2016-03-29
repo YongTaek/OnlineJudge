@@ -36,9 +36,24 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "submitter")
     private List<Answer> answers;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @Column(name="group_state")
+    private int group_state;
+
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+
 
     public void setId(int id) {
         this.id = id;
@@ -86,9 +101,19 @@ public class User {
         this.success_count = 0;
         this.teamList = null;
         this.group = null;
+        this.group_state = 0;
         this.teamList = new ArrayList<>();
         this.answers = new ArrayList<>();
+        this.role = Role.USER;
 
+    }
+
+    public int getGroup_state() {
+        return group_state;
+    }
+
+    public void setGroup_state(int group_state) {
+        this.group_state = group_state;
     }
 
     public int getSuccess_count() {

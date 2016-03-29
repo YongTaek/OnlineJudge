@@ -33,8 +33,8 @@ public class WebUtilController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/userLogout",method = RequestMethod.GET)
-    public java.lang.String logout(SessionStatus sessionStatus){
+    @RequestMapping(value = "/login?logout", method = RequestMethod.GET)
+    public java.lang.String logout(SessionStatus sessionStatus) {
 
         sessionStatus.setComplete();
 
@@ -42,17 +42,18 @@ public class WebUtilController {
 
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ModelAndView login(HttpServletRequest request, ModelAndView modelAndView){
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ModelAndView login(HttpServletRequest request, ModelAndView modelAndView) {
         String login_id = request.getParameter("login_id");
         String login_pw = request.getParameter("login_pw");
         User user = null;
         try {
-            user = userService.login(login_id,login_pw).get();
-            if(user !=null) {
-                request.getSession().setAttribute("loginUserInfo",user);
+            user = userService.login(login_id, login_pw).get();
+            if (user != null) {
+                request.getSession().setAttribute("loginUserInfo", user);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -60,6 +61,7 @@ public class WebUtilController {
         return modelAndView;
     }
 
+<<<<<<< HEAD
     @RequestMapping("/myPage")
     public ModelAndView mypage(ModelAndView modelAndView, HttpSession session){
         ArrayList<Map> message = new ArrayList<>();
@@ -148,6 +150,11 @@ public class WebUtilController {
             modelAndView.setViewName("settinglist");
             return modelAndView;
         }
+=======
+    @RequestMapping("/login")
+    public ModelAndView loginPage() {
+        return new ModelAndView("loginPage");
+>>>>>>> 766a9f6... [수정] 로그인 권한 수정 완료 (홈화면 제외)
     }
 
     @RequestMapping(value = "/myPage/setting", method = RequestMethod.POST)
