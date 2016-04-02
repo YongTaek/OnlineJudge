@@ -19,6 +19,9 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                             li() {
                                 a(href: '/myPage/setting', '설정')
                             }
+                            li(){
+                                a(href: '/problem/create', '문제 만들기')
+                            }
                         }
 
                     }

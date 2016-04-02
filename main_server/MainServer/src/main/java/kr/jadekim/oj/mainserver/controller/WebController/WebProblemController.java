@@ -143,6 +143,11 @@ public class WebProblemController {
         if(loginUser == null){
             modelAndView.setViewName("redirect:/problem/list");
         }else{
+            Map<String, Object> map = new HashMap<>();
+            System.out.println("#"+user.getLoginId());
+            map.put("user_id", user.getloginId());
+            map.put("user_name", user.getName());
+            modelAndView.addObject("messages", map);
             modelAndView.setViewName("problemCreate");
         }
         return modelAndView;
@@ -159,6 +164,7 @@ public class WebProblemController {
         int memory_limit = Integer.valueOf(request.getParameter("problem_memoryLimit"));
         String visibleInput = request.getParameter("problem_visibleInput");
         String visibleOutput = request.getParameter("problem_visibleOutput");
+        System.out.println("*"+contents);
         Problem problem = new Problem(title, contents, 0);
         problem.setLimitMemory(memory_limit);
         problem.setLimitTime(time_limit);

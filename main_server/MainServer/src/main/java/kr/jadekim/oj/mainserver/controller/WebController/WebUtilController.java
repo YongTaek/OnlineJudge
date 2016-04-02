@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import kr.jadekim.oj.mainserver.entity.Answer;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.User;
+import kr.jadekim.oj.mainserver.repository.UserRepository;
 import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,11 +13,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +34,39 @@ public class WebUtilController {
 
     @Autowired
     UserService userService;
+
+
+
+    @Autowired
+    UserRepository userRepository;
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/userLogout",method = RequestMethod.GET)
+    public java.lang.String logout(SessionStatus sessionStatus){
+
+        sessionStatus.setComplete();
+
+        return "redirect:/problem/list";
+
+    }
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public ModelAndView login(HttpServletRequest request, ModelAndView modelAndView){
+        String login_id = request.getParameter("login_id");
+        String login_pw = request.getParameter("login_pw");
+        User user = null;
+        try {
+            user = userService.login(login_id,login_pw).get();
+            if(user !=null) {
+                request.getSession().setAttribute("loginUserInfo",user);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        modelAndView.setViewName("redirect:/problem/list");
+        return modelAndView;
+    }
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping("/myPage")
@@ -118,6 +155,8 @@ public class WebUtilController {
             return modelAndView;
         } else {
             Map<String, Object> map = new HashMap<>();
+            map.put("user_id", loginUser.getLoginId());
+            map.put("user_name", loginUser.getName());
             map.put("name", loginUser.getName());
             map.put("email", loginUser.getEmail());
             modelAndView.addObject("messages", map);
@@ -136,6 +175,61 @@ public class WebUtilController {
         loginUser.setName(name);
         loginUser.setEmail(email);
         modelAndView.setViewName("redirect:/myPage/setting");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/myPage/setting/password", method = RequestMethod.GET)
+    public ModelAndView showsettingpw(ModelAndView modelAndView, HttpSession session){
+        User user = (User) session.getAttribute("loginUserInfo");
+        if(user == null){
+            modelAndView.setViewName("rediret:/notice");
+            return modelAndView;
+        }else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("user_id", user.getLoginId());
+            map.put("user_name", user.getName());
+            modelAndView.addObject("messages", map);
+            modelAndView.setViewName("settingPassword");
+            return modelAndView;
+        }
+    }
+
+    @RequestMapping(value = "/myPage/setting/password", method = RequestMethod.POST)
+    public ModelAndView settingpw(ModelAndView modelAndView, HttpServletRequest request, HttpSession session){
+        String origin_password = request.getParameter("origin_password");
+        String new_password = request.getParameter("new_password");
+        String new_password1 = request.getParameter("new_password1");
+        User user = (User) session.getAttribute("loginUserInfo");
+        modelAndView.setViewName("redirect:/myPage/setting");
+        if(user.getLoginPw().equals(origin_password)){
+            return modelAndView;
+        }else{
+            if(new_password.equals(new_password1)){
+                user.setLoginPw(new_password);
+            }
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/myPage/setting/withdrawal", method = RequestMethod.GET)
+    public ModelAndView showWithdrawl(ModelAndView modelAndView, HttpSession session){
+        modelAndView.setViewName("withdrawl");
+        Map<String, Object> map = new HashMap<>();
+        User user = (User) session.getAttribute("loginUserInfo");
+        map.put("user_id", user.getloginId());
+        map.put("user_name", user.getName());
+        modelAndView.addObject("messages",map);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/myPage/setting/withdrawal", method = RequestMethod.POST)
+    public ModelAndView withdrawal(ModelAndView modelAndView, HttpSession session){
+        User user = (User) session.getAttribute("loginUserInfo");
+        if(user.getGroup() != null){
+            List<User> groupUser = user.getGroup().getUsers();
+            groupUser.remove(user);
+        }
+        userRepository.delete(user);
         return modelAndView;
     }
 }
