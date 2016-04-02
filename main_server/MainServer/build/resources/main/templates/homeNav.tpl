@@ -11,7 +11,7 @@ nav(class: 'navbar') {
             }
         }
         li(class: 'list') {
-            a(href: 'notice') {
+            a(href: '/ranking') {
                 yield img(class: "icon", src: '/img/three.png')
             }
         }

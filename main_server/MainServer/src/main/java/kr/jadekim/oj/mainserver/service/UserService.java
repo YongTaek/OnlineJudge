@@ -64,4 +64,11 @@ public class UserService {
     public void saveUser(User user){
         userRepository.save(user);
     }
+
+    public User changeInfo(String email,String login_pw,User user){
+        user.setloginPw(bCryptPasswordEncoder.encode(login_pw));
+        user.setEmail(email);
+        userRepository.save(user);
+        return user;
+    }
 }

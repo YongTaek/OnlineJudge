@@ -38,9 +38,28 @@ public class Problem {
     @JoinColumn(name = "problem_id")
     private ProblemSet problemSet;
 
+    @Column(name = "isOpen")
+    private boolean isOpen;
+
     @OneToOne
     @JoinColumn(name="author")
     private User author;
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     public List<User> getSubmitUsers() {
         return submitUsers;

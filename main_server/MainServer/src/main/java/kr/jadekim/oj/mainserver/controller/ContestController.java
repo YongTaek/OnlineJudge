@@ -34,7 +34,6 @@ public class ContestController {
         Team team = new Team();
         Date startDate = new Date();
         Date endDate = new Date();
-        contest = new Contest(team, startDate, endDate, "kaak", problemSet);
         Gson gson = new GsonBuilder().create();
         return gson.toJson(contest);
     }

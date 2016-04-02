@@ -56,7 +56,6 @@ public class WebProblemController {
         }
         try {
             problem = problemService.getProblem(problem_id).get();
-            System.out.println(problem);
             int submit = answerService.countByProblemId(problem_id).get();
             int success_count = answerService.countSuccessByProblemId(problem_id).get();
 
@@ -71,9 +70,11 @@ public class WebProblemController {
 
             }
             int success_user_count = 0;
+            Testcase testcase = testcaseRepository.findVisibleTestcaseByProbId(problem_id);
             messages.put("num",problem_id);
             messages.put("title",problem.getName());
-
+            messages.put("inputData",testcase.getInput());
+            messages.put("outputData",testcase.getOutput());
             messages.put("time",problem.getLimitTime());
             messages.put("memory",problem.getLimitMemory());
             messages.put("submit",submit);
@@ -144,9 +145,8 @@ public class WebProblemController {
             modelAndView.setViewName("redirect:/problem/list");
         }else{
             Map<String, Object> map = new HashMap<>();
-            System.out.println("#"+user.getLoginId());
-            map.put("user_id", user.getloginId());
-            map.put("user_name", user.getName());
+            map.put("user_id", loginUser.getloginId());
+            map.put("user_name", loginUser.getName());
             modelAndView.addObject("messages", map);
             modelAndView.setViewName("problemCreate");
         }
@@ -164,12 +164,20 @@ public class WebProblemController {
         int memory_limit = Integer.valueOf(request.getParameter("problem_memoryLimit"));
         String visibleInput = request.getParameter("problem_visibleInput");
         String visibleOutput = request.getParameter("problem_visibleOutput");
-        System.out.println("*"+contents);
+        int testcase_count = Integer.parseInt(request.getParameter("testcase_count"));
         Problem problem = new Problem(title, contents, 0);
         problem.setLimitMemory(memory_limit);
         problem.setLimitTime(time_limit);
-        Testcase testcase = new Testcase(problem, visibleInput, visibleOutput);
         problemRepository.save(problem);
+        for(int i =0;i<testcase_count;++i){
+            String testInput = request.getParameter("testInput"+i);
+            String testOutput = request.getParameter("testOutput"+i);
+            Testcase testcase = new Testcase(problem,testInput,testOutput);
+            testcase.setCanVisible(false);
+            testcaseRepository.save(testcase);
+        }
+        Testcase testcase = new Testcase(problem, visibleInput, visibleOutput);
+        testcase.setCanVisible(true);
         testcaseRepository.save(testcase);
         problem.getTestcases().add(testcase);
         problemRepository.save(problem);

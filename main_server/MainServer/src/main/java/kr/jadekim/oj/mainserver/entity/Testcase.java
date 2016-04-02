@@ -22,6 +22,8 @@ public class Testcase {
     @Column(name = "type")
     private int type;
 
+    @Column(name = "canVisible")
+    private boolean canVisible;
 
     @ManyToOne
     @JoinColumn(name = "problemId")
@@ -43,6 +45,22 @@ public class Testcase {
     public String getInput() {
 
         return input;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public boolean isCanVisible() {
+        return canVisible;
+    }
+
+    public void setCanVisible(boolean canVisible) {
+        this.canVisible = canVisible;
     }
 
     public void setInput(String input) {

@@ -4,13 +4,13 @@ import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +26,9 @@ public class WebUserController {
     @Autowired
     UserService userService;
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/login?logout", method = RequestMethod.GET)
-    public java.lang.String logout(SessionStatus sessionStatus) {
-
-        sessionStatus.setComplete();
-
+    public java.lang.String logout() {
         return "redirect:/problem/list";
 
     }
@@ -67,5 +65,17 @@ public class WebUserController {
             e.printStackTrace();
         }
         return new ModelAndView("redirect:/problem/list");
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/user/change",method = RequestMethod.POST)
+    public ModelAndView changeInfo(HttpServletRequest request,Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+
+        User loginUser = currentUser.getUser();
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        loginUser = userService.changeInfo(email,password,loginUser);
+        return new ModelAndView("redirect:/home");
     }
 }

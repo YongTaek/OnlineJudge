@@ -12,20 +12,16 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 a(href: '/group/info', '내 Group')
                             }
                         }
-
                     }
                 }
                 div('group-container') {
                     div(class: 'col-md-6') {
-
-
-
-                        div(class:'prob-set-container') {
+                        div(class: 'prob-set-container') {
                             table(class: 'prob-set-table') {
-                                thead{
+                                thead {
                                     tr {
-                                        th(class: 'common-table',id:'require-set', '필수 문제집')
-                                        th(class: 'common-table',id:'set-rate', '성취도')
+                                        th(class: 'common-table', id: 'require-set', '필수 문제집')
+                                        th(class: 'common-table', id: 'set-rate', '성취도')
                                     }
                                 }
                                 tbody(class: 'prob-set-table-body') {
@@ -58,6 +54,13 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 if (members.empty) {
                                     h2 'No group member'
                                 } else {
+                                    waitMembers.each { waitMember ->
+                                        tr {
+                                            td(class: 'common-table',waitMember.name)
+                                            td(class: 'common-table',waitMember.prob_count)
+                                            td(class: 'common-table',waitMember.rate)
+                                        }
+                                    }
                                     members.each { member ->
                                         tr {
                                             td(class: 'common-table', member.name)
