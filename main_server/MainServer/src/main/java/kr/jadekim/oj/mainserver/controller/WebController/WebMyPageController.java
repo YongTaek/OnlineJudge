@@ -28,7 +28,7 @@ import java.util.Map;
  */
 
 @Controller
-public class WebUtilController {
+public class WebMyPageController {
 
     Gson gson = new GsonBuilder().create();
 
