@@ -132,6 +132,7 @@ public class WebProblemListController {
             for(int i=0;i<total_count/pageable.getPageSize()+1;++i){
                 pages.add(i+1);
             }
+
         }
 
         modelAndView.setViewName("problemList");

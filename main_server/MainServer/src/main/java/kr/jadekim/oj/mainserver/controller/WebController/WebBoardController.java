@@ -186,6 +186,10 @@ public class WebBoardController {
             loginUser = currentUser.getUser();
         }
         Post post = question.getPost();
+        if(post == null){
+            modelAndView.setViewName("redirect:/question");
+            return modelAndView;
+        }
         List<QuestionAnswer> answers = question.getAnswers();
         Problem problem = question.getProblem();
         String title = post.getTitle();
