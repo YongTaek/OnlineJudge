@@ -28,7 +28,8 @@ import java.util.Map;
  */
 
 @Controller
-public class WebUtilController {
+@RequestMapping("/myPage")
+public class WebMyPageController {
 
     Gson gson = new GsonBuilder().create();
 
@@ -69,7 +70,7 @@ public class WebUtilController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping("/myPage")
+    @RequestMapping()
     public ModelAndView mypage(ModelAndView modelAndView, Authentication authentication){
         ArrayList<Map> message = new ArrayList<>();
         CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
@@ -146,7 +147,7 @@ public class WebUtilController {
 
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/myPage/setting", method = RequestMethod.GET)
+    @RequestMapping(value = "/setting", method = RequestMethod.GET)
     public ModelAndView showSetting(ModelAndView modelAndView, Authentication authentication) {
         CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -166,7 +167,7 @@ public class WebUtilController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/myPage/setting", method = RequestMethod.POST)
+    @RequestMapping(value = "/setting", method = RequestMethod.POST)
     public ModelAndView modifyinfo(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication){
         CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();

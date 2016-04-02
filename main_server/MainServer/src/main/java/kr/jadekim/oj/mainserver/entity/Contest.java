@@ -24,9 +24,17 @@ public class Contest  {
     @JoinColumn(name = "problemSet")
     private ProblemSet problemSet;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "manageTeam")
-    private Team manageTeam;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "admins")
+    private List<User> adminUsers;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "examiners")
+    private List<User> examiners;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sponsors")
+    private List<User> sponsors;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "teams")
@@ -34,7 +42,6 @@ public class Contest  {
 
     @Column(name = "name")
     private String name;
-
 
     @ElementCollection
     @MapKey(name = "team")
@@ -45,14 +52,15 @@ public class Contest  {
         this.solvedProblem = new HashMap<>();
     }
 
-    public Contest(Team manageTeam, Date startTime, Date endTime, String name, ProblemSet problemSet) {
-        this.manageTeam = manageTeam;
+    public Contest(Date startTime, Date endTime, String name,List<User> adminUsers,List<User> examiners,List<User> sponsors) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.name = name;
         solvedProblem = new HashMap<>();
         teams = new ArrayList<>();
-        this.problemSet = problemSet;
+        this.adminUsers = adminUsers;
+        this.examiners = examiners;
+        this.sponsors = sponsors;
     }
 
     public AnswerList getAnswerList(Team team) {
@@ -112,10 +120,6 @@ public class Contest  {
         this.problemSet = problemSet;
     }
 
-    public void setManageTeam(Team manageTeam) {
-        this.manageTeam = manageTeam;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -124,10 +128,6 @@ public class Contest  {
         this.solvedProblem = solvedProblem;
     }
 
-    public Team getManageTeam() {
-
-        return manageTeam;
-    }
 
     public String getName() {
         return name;

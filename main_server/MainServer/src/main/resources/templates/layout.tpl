@@ -22,6 +22,7 @@ html {
                         div(class: 'btn lo') {
                             a(href: '/myPage', loginUser.name)
                             span('님 어서오세요')
+                            a(href: '/login?logout','로그아웃')
                         }
                     }
                 }

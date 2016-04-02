@@ -79,8 +79,10 @@ layout 'layout.tpl', title: '문제만들기',loginUser:loginUser,
                                 input(type: 'text', value: "", name: 'problem_visibleOutput', id: 'visibleoutput');                            }
                         }
                         div(class : 'row') {
+
+                            input(type:'hidden',name: 'testcase_count',id:'testcase_count')
                             div(class: 'col-md-4') {
-                                p(class : 'lead text-center','테스트 케이스 input값', id : 'testInput')
+                                p(class:'lead text-center','테스트 케이스 input값', id : 'testInput')
                             }
                             div(class: 'col-md-8') {
                                 p(class : 'lead text-left','테스트 케이스 output값', id : 'testOutput')

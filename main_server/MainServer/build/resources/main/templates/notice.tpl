@@ -9,6 +9,7 @@ layout 'layout.tpl', title: '공지',loginUser:loginUser,
                                 li(class: 'active') {
                                     a(href: '/notice', '공지사항')
                                 }
+
                                 li() {
                                     a(href: '/question', 'Q&A')
                                 }
