@@ -26,7 +26,7 @@ html {
         }
         div(id: 'content') {
             p(class: 'title', "Online Judge")
-            p(class: 'sub-title', "at. Hanyang University")
+            p(class: 'sub-title', "of Hanyang University")
         }
     }
 }

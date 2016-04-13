@@ -5,7 +5,6 @@ body {
     padding: 0;
     font-family: 'Nanum Gothic', sans-serif;
     font-weight: 100;
-    color: white;
 }
 
 #background {
@@ -41,7 +40,8 @@ body {
     left: 0;
     right: 0;
     font-size: 16px;
-    border-bottom: solid white 1px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
 }
 
 #nav p {
@@ -55,7 +55,6 @@ body {
     list-style-type: none;
     margin: 0 24px;
     float: right;
-    font-family: 'Raleway', sans-serif;
 }
 
 #nav li a {
@@ -64,6 +63,29 @@ body {
     line-height: 56px;
 }
 
-#main-container {
-    margin-top: 96px;
+#content-area {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    padding-top: 48px;
+    overflow: auto;
+}
+
+.push-left {
+    margin-left: 12px !important;
+}
+
+.push-bottom {
+    margin-bottom: 12px !important;
+}
+
+.push-right {
+    margin-right: 12px !important;
+}
+
+.push-top {
+    margin-top: 12px !important;
 }

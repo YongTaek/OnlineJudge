@@ -1,71 +1,63 @@
 layout 'layout.tpl', title: '문제', loginUser: loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
+        },
         content: contents {
-            div() {
-                link(rel:'stylesheet', href: '/css/table.css')
-
-                div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-pills') {
+            div(class: 'container') {
+                form(id: 'search-form', action: '.', class: 'form-inline') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active', id: 'problem') {
                                 a(href: '/problem/list', '문제')
                             }
-                            li(id:'recent') {
+                            li(id: 'recent') {
                                 a(href: '/problem/recent', '추가된 문제')
                             }
-                            li(id:'ranking') {
+                            li(id: 'ranking') {
                                 a(href: '/problem/ranking', '문제순위')
                             }
                             li {
-                                a(id:'click-etc',href: '#','기타',role:'button')
-                                div(id:'etc'){
-                                    p 'asdf'
-                                }
+                                a(id: 'click-etc', href: '#', '기타', role: 'button')
                             }
 
                         }
-                    }
-                    div(class: 'col-md-4') {
-                        form(class: "form-inline",id: 'searchForm',action:'list') {
-                            div(class: "form-group") {
-                                div(class: 'input-group') {
-                                    input(type: "text", class: 'form-control', id: 'exampleInputAmount',name:'search')
-                                }
-                            }
-                            button(type: "submit",id: 'searchButton', class: "btn btn-primary", '검색')
+                        div (class: 'head-item') {
+                            input(type: "text", class: 'form-control', name: 'search')
+                        }
+                        div (class: 'head-item') {
+                            button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
                         }
                     }
                 }
-                div(class: 'prob-container') {
-                    table(class: 'prob-table') {
-                        thead(class: 'prob-table-head', id:'test-id') {
+                div(id: 'problem-container') {
+                    table(class: 'table table-striped') {
+                        thead() {
                             tr {
-                                th(class: 'common-table', id: 'prob-id', '문제번호')
-                                th(class: 'common-table', id: 'prob-name', '제목')
-                                th(class: 'common-table', id: 'prob-success-count', '정답 수')
-                                th(class: 'common-table', id: 'prob-success-rate', '정답 비율')
-                                th(class: 'common-table', id: 'prob-user-result', 'O/X')
+                                th(class: 'center', '문제번호')
+                                th(class: 'center', '제목')
+                                th(class: 'center', '정답 수')
+                                th(class: 'center', '정답 비율')
+                                th(class: 'center', 'O/X')
                             }
                         }
-                        tbody(id:'prob-tbody') {
+                        tbody() {
                             if (messages.empty) {
-                                tr { td(colspan: '5', 'No Problem') }
+                                tr { td(colspan: '100%', 'No Problem') }
                             } else {
                                 messages.each { message ->
-                                    tr {
-                                        td(class: 'common-table', message.id)
-                                        td(class: 'common-table'){
-                                            a(href:message.id,message.name)
-                                        }
-                                        td(class: 'common-table', message.count)
-                                        td(class: 'common-table', message.rate)
-                                        if(message.result != null) {
+                                    tr(item_id: message.id) {
+                                        td(class: 'center', message.id)
+                                        td(message.name)
+                                        td(class: 'center', message.count)
+                                        td(class: 'center', message.rate)
+                                        if (message.result != null) {
                                             if (message.result == true) {
-                                                td(class: 'common-table', 'O')
+                                                td(class: 'center', 'O')
                                             } else {
-                                                td(class: 'common-table', 'X')
+                                                td(class: 'center', 'X')
                                             }
-                                        }else{
-                                            td(class:'common-table')
+                                        } else {
+                                            td(class: 'center')
                                         }
                                     }
                                 }
@@ -89,6 +81,4 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                     }
                 }
             }
-            script(type:'text/javascript',src:'../js/table.js'){}
-
         }
