@@ -42,7 +42,7 @@ public class WebUserController {
 
     @RequestMapping("/login")
     public ModelAndView loginPage() {
-        return new ModelAndView("loginPage");
+        return new ModelAndView("login");
     }
 
     @RequestMapping(value = "/join",method = RequestMethod.GET)

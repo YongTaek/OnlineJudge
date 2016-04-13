@@ -121,6 +121,12 @@ public class WebProblemListController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+//        테스트용 데이터 삽입 코드
+//        ArrayList<Problem> problemList = new ArrayList<>();
+//        for (int i=1; i<20; i++) {
+//            problemList.add(new Problem("이름"+i, "내용"+i, 0));
+//        }
+//        problems = problemList;
         messages = makeMessages(messages,problems,user);
         ArrayList<Integer> pages = new ArrayList<>();
 
