@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 layout 'layout.tpl', title: '게시판',loginUser:loginUser,
-=======
-layout 'layout.tpl', title: '게시판', loginUser: loginUser,
->>>>>>> 934b567... [수정] 설정 수정
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             div() {
