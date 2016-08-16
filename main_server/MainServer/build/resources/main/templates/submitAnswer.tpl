@@ -4,6 +4,8 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
 
                 link(rel:'stylesheet', href: '/css/submitAnswer.css')
                 link(rel:'stylesheet', href: '/css/codemirror.css')
+                script(type:'text/javascript',src:'/js/codemirror.js'){}
+                script(type: 'text/javascript',src:'/js/submitAnswer.js'){}
 
 
 
@@ -22,14 +24,12 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                         div(class:'form-group'){
                             label(class:'col-md-2 control-label',for:'source','소스 코드')
                             div(class:'col-md-10'){
-                                textarea (id:'source',autofocus:'autofocus',class:'code-java')
+                                textarea (id:'code',autofocus:'autofocus',class:'code-java')
 
                             }
                         }
 
                     }
                 }
-                script(type:'text/javascript',src:'../js/codemirror.js'){}
-                script(type: 'text/javascript',src:'../js/submitAnswer.js'){}
             }
         }
