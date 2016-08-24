@@ -12,6 +12,9 @@ html {
         div(id: 'background-overlap') {}
         ul(id: 'nav') {
             li() {
+                a(href: "/login", "로그인")
+            }
+            li() {
                 a(href: "/problem/list", "문제 풀러 가기")
             }
             li() {

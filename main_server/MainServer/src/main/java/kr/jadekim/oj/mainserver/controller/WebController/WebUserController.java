@@ -36,7 +36,7 @@ public class WebUserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/problem/list");
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 

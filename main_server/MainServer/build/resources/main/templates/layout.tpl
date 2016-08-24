@@ -14,6 +14,9 @@ html {
             p("Hanyang Online Judge")
             ul() {
                 li() {
+                    a(href: "", "$loginUser")
+                }
+                li() {
                     a(href: "/problem/list", "대회")
                 }
                 li() {

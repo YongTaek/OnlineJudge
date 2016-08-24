@@ -25,6 +25,9 @@ html {
                 li() {
                     a(href: "/problem/list", "문제 풀러 가기")
                 }
+                li() {
+                    a(href: "", "$loginUser")
+                }
             }
         }
         div(id: 'content-area') {
