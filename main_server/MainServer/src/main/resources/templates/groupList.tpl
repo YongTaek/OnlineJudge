@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '게시판', loginUser:loginUser,
+layout 'layout.tpl', title: '게시판', loginUser: loginUser,
         content: contents {
             link(rel: 'stylesheet', href: '/css/table.css')
             link(rel: 'stylesheet', href: '/css/groupList.css')
@@ -10,7 +10,6 @@ layout 'layout.tpl', title: '게시판', loginUser:loginUser,
                                 a(href: '/group', 'Group 목록')
                             }
                             li() {
-
                                 a(href: '/group/info', '내 Group')
                             }
                         }
@@ -29,19 +28,19 @@ layout 'layout.tpl', title: '게시판', loginUser:loginUser,
 
                         }
                     }
-                    div(class:'col-md-2'){
-                        a(class:'btn btn-primary',href: '/group/create', '그룹 만들기')
+                    div(class: 'col-md-2') {
+                        a(class: 'btn btn-primary', href: '/group/create', '그룹 만들기')
                     }
                 }
                 div(class: 'prob-container') {
                     table(class: 'table table-striped') {
                         thead {
                             tr {
-                                td (class : 'common-table','번호')
-                                td (class : 'common-table','그룹명')
-                                td (class : 'common-table','그룹장')
-                                td (class : 'common-table','가입 제한 여부')
-                                td (class : 'common-table','가입신청')
+                                td(class: 'common-table', '번호')
+                                td(class: 'common-table', '그룹명')
+                                td(class: 'common-table', '그룹장')
+                                td(class: 'common-table', '가입 제한 여부')
+                                td(class: 'common-table', '가입신청')
                             }
                         }
                         tbody {
@@ -50,12 +49,12 @@ layout 'layout.tpl', title: '게시판', loginUser:loginUser,
                             } else {
                                 messages.each { message ->
                                     tr {
-                                        td (class : 'common-table',message.id)
-                                        td (class : 'common-table'){
+                                        td(class: 'common-table', message.id)
+                                        td(class: 'common-table') {
                                             a(href: '/group/' + message.id, message.name)
                                         }
-                                        td (class : 'common-table', message.user)
-                                        td (class : 'common-table', message.isprivate)
+                                        td(class: 'common-table', message.user)
+                                        td(class: 'common-table', message.isprivate)
 
                                         td(class: 'common-table') {
                                             if (!message.isMyGroup) {

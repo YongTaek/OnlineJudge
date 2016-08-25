@@ -22,6 +22,7 @@ import java.util.*;
  */
 
 @Controller
+@RequestMapping("/board")
 public class WebBoardController {
 
     @Autowired
@@ -90,7 +91,7 @@ public class WebBoardController {
             messages.add(map);
         }
         if(loginUser!=null) {
-            modelAndView.addObject("loginUser", loginUser);
+            modelAndView.addObject("loginUser", loginUser.getName());
         }
         modelAndView.addObject("messages", messages);
         modelAndView.setViewName("board");

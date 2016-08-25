@@ -46,25 +46,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                 .loginPage("/login")
+                .failureHandler((request, response, exception) -> response.addHeader("error",exception.getLocalizedMessage()))
                 .usernameParameter("login_id")
                 .passwordParameter("login_pw")
-                .defaultSuccessUrl("/problem/list")
+                .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()
-                .deleteCookies("remember-me")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies()
+                .logoutUrl("/login?logout")
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
                 .rememberMe()
-                .and()
-        .csrf().disable();
+                .and();
 
         http.sessionManagement()
-                .maximumSessions(1)
-                .expiredUrl("/login?expired")
-                .maxSessionsPreventsLogin(true)
-                .and()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .invalidSessionUrl("/");
 

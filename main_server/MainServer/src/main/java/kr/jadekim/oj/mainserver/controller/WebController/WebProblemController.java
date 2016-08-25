@@ -73,6 +73,7 @@ public class WebProblemController {
             Testcase testcase = testcaseRepository.findVisibleTestcaseByProbId(problem_id);
             messages.put("num",problem_id);
             messages.put("title",problem.getName());
+            messages.put("content",problem.getContent());
             messages.put("inputData",testcase.getInput());
             messages.put("outputData",testcase.getOutput());
             messages.put("time",problem.getLimitTime());
@@ -159,7 +160,7 @@ public class WebProblemController {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
         String title = request.getParameter("problem_title");
-        String contents = request.getParameter("problem_contents");
+        String contents = request.getParameter("problem-contents");
         int time_limit = Integer.valueOf(request.getParameter("problem_timeLimit"));
         int memory_limit = Integer.valueOf(request.getParameter("problem_memoryLimit"));
         String visibleInput = request.getParameter("problem_visibleInput");

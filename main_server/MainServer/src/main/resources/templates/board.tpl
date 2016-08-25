@@ -1,40 +1,40 @@
-layout 'layout.tpl', title: '게시판',loginUser:loginUser,
+layout 'layout.tpl', title: '게시판', loginUser: loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', href: '/css/problemList.css')
+        },
         content: contents {
-            link(rel: 'stylesheet', href: '/css/table.css')
-            div() {
-                div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-pills') {
+            div(class: 'container') {
+                form(id: 'search-form', action:'.',class:'form-inline') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active') {
-                                a(href: '/notice', '공지사항')
+                                a(href: 'notice', '공지사항')
                             }
                             li() {
-                                a(href: '/question', 'Q&A')
+                                a(href: 'question', 'Q&A')
                             }
-
                         }
-                    }
-                    div(class: 'col-md-4') {
-                        form(class: "form-inline", id: 'searchForm') {
-                            div(class: "form-group") {
-                                div(class: 'input-group') {
-                                    input(type = "text", class: 'form-control', id: 'exampleInputAmount', name: 'search')
-                                }
-                            }
-                            button(type: "submit", id: 'searchButton', class: "btn btn-primary", '검색')
-                            a(class:'btn btn-primary',href: '/notice/write', '글쓰기')
+                        div(class: 'head-item') {
+
+                            input(type = "text", class: 'form-control', id: 'exampleInputAmount', name: 'search')
+                        }
+                        div (class: 'head-item') {
+                            button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
+                            a(class: 'btn btn-primary push-left', href: '/notice/write', '글쓰기')
                         }
                     }
                 }
+
+
             }
-            div(class: 'prob-container') {
+            div(id: 'problem-container') {
                 table(class: 'table table-striped') {
                     thead {
                         tr {
-                            td(class : 'common-table', '번호')
-                            td(class : 'common-table', '제목')
-                            td(class : 'common-table', '작성자')
-                            td(class : 'common-table', '날짜')
+                            td(class: 'common-table', '번호')
+                            td(class: 'common-table', '제목')
+                            td(class: 'common-table', '작성자')
+                            td(class: 'common-table', '날짜')
                         }
                     }
                     tbody {
@@ -43,12 +43,12 @@ layout 'layout.tpl', title: '게시판',loginUser:loginUser,
                         } else {
                             messages.each { message ->
                                 tr {
-                                    td(class : 'common-table', message.number)
-                                    td(class : 'common-table') {
-                                        a(href: '/notice/' + message.number, message.title)
+                                    td(class: 'common-table', message.number)
+                                    td(class: 'common-table') {
+                                        a(href: '/notice/'+message.number, message.title)
                                     }
-                                    td(class : 'common-table', message.user)
-                                    td(class : 'common-tbale', message.date)
+                                    td(class: 'common-table', message.user)
+                                    td(class: 'common-tbale', message.date)
                                 }
                             }
                         }

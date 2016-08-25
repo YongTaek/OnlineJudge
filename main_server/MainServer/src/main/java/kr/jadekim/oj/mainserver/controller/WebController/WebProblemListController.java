@@ -113,7 +113,6 @@ public class WebProblemListController {
             problems = problemService.findAllProblem(pageable).get();
             if(currentUser!=null) {
                 user = currentUser.getUser();
-
             }
             total_count = problemService.countAllProblem().get();
         } catch (InterruptedException e) {
@@ -143,7 +142,7 @@ public class WebProblemListController {
 
         modelAndView.setViewName("problemList");
         if(user!=null){
-            modelAndView.addObject("loginUser",user);
+            modelAndView.addObject("loginUser",user.getName());
             System.out.println(user.getLoginId());
         }
         modelAndView.addObject("messages",messages);
