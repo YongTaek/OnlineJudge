@@ -44,7 +44,9 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 
-#nav p {
+#nav a {
+    text-decoration: none;
+    color: #FFFFFF;
     line-height: 56px;
     font-weight: 200;
     float:left;

@@ -26,19 +26,18 @@ public class WebUserController {
     @Autowired
     UserService userService;
 
-    @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/login?logout", method = RequestMethod.GET)
-    public java.lang.String logout() {
-        return "redirect:/problem/list";
-
-    }
-
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/");
-        return modelAndView;
-    }
+//    @PreAuthorize("hasAuthority('USER')")
+//    @RequestMapping(value = "/login?logout", method = RequestMethod.GET)
+//    public java.lang.String logout() {
+//        System.out.println("logout Success");
+//        return "redirect:/problem/list";
+//    }
+//
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public ModelAndView login(ModelAndView modelAndView) {
+//        modelAndView.setViewName("redirect:/");
+//        return modelAndView;
+//    }
 
     @RequestMapping("/login")
     public ModelAndView loginPage() {

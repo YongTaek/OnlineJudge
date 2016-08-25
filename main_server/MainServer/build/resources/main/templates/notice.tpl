@@ -7,11 +7,11 @@ layout 'layout.tpl', title: '공지',loginUser:loginUser,
                         div(class: 'col-md-8 col-xs-12 col-sm-6') {
                             ul(class: 'nav nav-pills') {
                                 li(class: 'active') {
-                                    a(href: '/notice', '공지사항')
+                                    a(href: 'notice', '공지사항')
                                 }
 
                                 li() {
-                                    a(href: '/question', 'Q&A')
+                                    a(href: 'question', 'Q&A')
                                 }
                             }
                         }

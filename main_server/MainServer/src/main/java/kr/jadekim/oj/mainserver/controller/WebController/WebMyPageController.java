@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,43 +41,11 @@ public class WebMyPageController {
     UserRepository userRepository;
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/userLogout",method = RequestMethod.GET)
-    public java.lang.String logout(SessionStatus sessionStatus){
-
-        sessionStatus.setComplete();
-
-        return "redirect:/problem/list";
-
-    }
-
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ModelAndView login(HttpServletRequest request, ModelAndView modelAndView){
-        String login_id = request.getParameter("login_id");
-        String login_pw = request.getParameter("login_pw");
-        User user = null;
-        try {
-            user = userService.login(login_id,login_pw).get();
-            if(user !=null) {
-                request.getSession().setAttribute("loginUserInfo",user);
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        modelAndView.setViewName("redirect:/problem/list");
-        return modelAndView;
-    }
-
-    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping()
     public ModelAndView mypage(ModelAndView modelAndView, Authentication authentication){
         ArrayList<Map> message = new ArrayList<>();
         CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
-        if(loginUser == null){
-            modelAndView.setViewName("redirect:/notice");
-            return modelAndView;
-        }
         ArrayList<Integer> solvedProblemnum = new ArrayList<>();
         ArrayList<Integer> unsolvedProblemnum = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
@@ -140,6 +107,7 @@ public class WebMyPageController {
         map.put("user_name", loginUser.getName());
         map.put("user_id", loginUser.getloginId());
 
+        modelAndView.addObject("loginUser",loginUser.getName());
         modelAndView.addObject("messages", map);
         modelAndView.setViewName("mypage");
         return modelAndView;
@@ -179,7 +147,7 @@ public class WebMyPageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/myPage/setting/password", method = RequestMethod.GET)
+    @RequestMapping(value = "/setting/password", method = RequestMethod.GET)
     public ModelAndView showsettingpw(ModelAndView modelAndView, HttpSession session){
         User user = (User) session.getAttribute("loginUserInfo");
         if(user == null){
@@ -195,7 +163,7 @@ public class WebMyPageController {
         }
     }
 
-    @RequestMapping(value = "/myPage/setting/password", method = RequestMethod.POST)
+    @RequestMapping(value = "/setting/password", method = RequestMethod.POST)
     public ModelAndView settingpw(ModelAndView modelAndView, HttpServletRequest request, HttpSession session){
         String origin_password = request.getParameter("origin_password");
         String new_password = request.getParameter("new_password");
@@ -212,7 +180,7 @@ public class WebMyPageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/myPage/setting/withdrawal", method = RequestMethod.GET)
+    @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.GET)
     public ModelAndView showWithdrawl(ModelAndView modelAndView, HttpSession session){
         modelAndView.setViewName("withdrawl");
         Map<String, Object> map = new HashMap<>();
@@ -223,7 +191,7 @@ public class WebMyPageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/myPage/setting/withdrawal", method = RequestMethod.POST)
+    @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.POST)
     public ModelAndView withdrawal(ModelAndView modelAndView, HttpSession session){
         User user = (User) session.getAttribute("loginUserInfo");
         if(user.getGroup() != null){

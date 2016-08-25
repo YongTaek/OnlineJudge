@@ -113,7 +113,6 @@ public class WebProblemListController {
             problems = problemService.findAllProblem(pageable).get();
             if(currentUser!=null) {
                 user = currentUser.getUser();
-
             }
             total_count = problemService.countAllProblem().get();
         } catch (InterruptedException e) {

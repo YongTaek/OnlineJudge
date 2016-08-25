@@ -1,0 +1,10 @@
+.hidden {
+    display: none;
+}
+
+.popover-content li {
+    list-style-type: none;
+}
+.popover-content li a{
+    color: black;
+}

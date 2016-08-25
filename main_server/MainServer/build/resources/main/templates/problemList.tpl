@@ -47,7 +47,9 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 messages.each { message ->
                                     tr(item_id: message.id) {
                                         td(class: 'center', message.id)
-                                        td(message.name)
+                                        td{
+                                            a(href: "/problem/${message.id}", message.name)
+                                        }
                                         td(class: 'center', message.count)
                                         td(class: 'center', message.rate)
                                         if (message.result != null) {
