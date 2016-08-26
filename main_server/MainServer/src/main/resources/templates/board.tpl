@@ -20,39 +20,42 @@ layout 'layout.tpl', title: '게시판', loginUser: loginUser,
                         }
                         div (class: 'head-item') {
                             button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
+                        }
+                        div(class: 'head-item') {
                             a(class: 'btn btn-primary push-left', href: '/notice/write', '글쓰기')
                         }
+                        di
                     }
                 }
 
-
-            }
-            div(id: 'problem-container') {
-                table(class: 'table table-striped') {
-                    thead {
-                        tr {
-                            td(class: 'common-table', '번호')
-                            td(class: 'common-table', '제목')
-                            td(class: 'common-table', '작성자')
-                            td(class: 'common-table', '날짜')
+                div(id: 'problem-container') {
+                    table(class: 'table table-striped') {
+                        thead {
+                            tr {
+                                td(class: 'common-table', '번호')
+                                td(class: 'common-table', '제목')
+                                td(class: 'common-table', '작성자')
+                                td(class: 'common-table', '날짜')
+                            }
                         }
-                    }
-                    tbody {
-                        if (messages.empty) {
-                            tr { td(colspan: '4', 'No Problem') }
-                        } else {
-                            messages.each { message ->
-                                tr {
-                                    td(class: 'common-table', message.number)
-                                    td(class: 'common-table') {
-                                        a(href: '/notice/'+message.number, message.title)
+                        tbody {
+                            if (messages.empty) {
+                                tr { td(colspan: '4', 'No Problem') }
+                            } else {
+                                messages.each { message ->
+                                    tr {
+                                        td(class: 'common-table', message.number)
+                                        td(class: 'common-table') {
+                                            a(href: '/notice/'+message.number, message.title)
+                                        }
+                                        td(class: 'common-table', message.user)
+                                        td(class: 'common-tbale', message.date)
                                     }
-                                    td(class: 'common-table', message.user)
-                                    td(class: 'common-tbale', message.date)
                                 }
                             }
                         }
                     }
                 }
             }
+
         }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -38,7 +40,13 @@ public class WebUserController {
 //        modelAndView.setViewName("redirect:/");
 //        return modelAndView;
 //    }
-
+    @RequestMapping(value = "/login?logout", method = RequestMethod.POST)
+    public ModelAndView logout(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+        for(Cookie cookie : request.getCookies()){
+            cookie.setMaxAge(0);
+        }
+        return mav;
+    }
     @RequestMapping("/login")
     public ModelAndView loginPage() {
         return new ModelAndView("login");

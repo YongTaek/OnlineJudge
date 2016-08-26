@@ -50,22 +50,6 @@ input.form-control {
     text-shadow: none;
 }
 
-#problem-container > table > thead th:nth-child(1) {
-    width: 80px;
-}
-
-#problem-container > table > thead th:nth-child(3) {
-    width: 70px;
-}
-
-#problem-container > table > thead th:nth-child(4) {
-    width: 90px;
-}
-
-#problem-container > table > thead th:nth-child(5) {
-    width: 46px;
-}
-
 .center {
     text-align: center;
 }
