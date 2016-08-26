@@ -6,7 +6,7 @@ allProblems(class: 'navbar') {
             }
         }
         li(class: 'llist') {
-            a(href: '/notice') {
+            a(href: 'notice') {
                 yield img(class: "icon", src: '/img/editing.png')
             }
         }
