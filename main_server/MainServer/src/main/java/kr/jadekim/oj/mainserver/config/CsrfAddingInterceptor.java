@@ -17,10 +17,10 @@ public class CsrfAddingInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest req, HttpServletResponse res, Object handler, ModelAndView mav) {
         CsrfToken token = (CsrfToken) req.getAttribute(CsrfToken.class.getName());
         if (token != null) {
-            Map<String,String> map = new HashMap<>();
-            map.put("parameterName",token.getParameterName());
-            map.put("token",token.getToken());
-            mav.addObject("_csrf",map);
+            Map<String, String> map = new HashMap<>();
+            map.put("parameterName", token.getParameterName());
+            map.put("token", token.getToken());
+            mav.addObject("_csrf", map);
         }
     }
 }

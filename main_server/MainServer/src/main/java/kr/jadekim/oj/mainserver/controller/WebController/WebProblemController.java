@@ -2,10 +2,8 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 
 
 import kr.jadekim.oj.mainserver.entity.*;
-
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
-
 import kr.jadekim.oj.mainserver.service.AnswerService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +41,9 @@ public class WebProblemController {
     TestcaseRepository testcaseRepository;
 
     @RequestMapping("{id}")
-    public ModelAndView problem(ModelAndView modelAndView, @PathVariable("id") int problem_id, Authentication authentication) {
+    public ModelAndView problem(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id") int problem_id, Authentication authentication) {
         CurrentUser currentUser = null;
+
         if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
@@ -62,7 +61,6 @@ public class WebProblemController {
             GradeResult label;
             if (loginUser != null) {
                 label = answerService.findIsSuccessByUserId(loginUser.getId(), problem_id).get();
-                modelAndView.addObject("loginUser", loginUser);
                 try {
                     messages.put("label", label.getIsSuccess());
                 } catch (NullPointerException e) {
@@ -156,9 +154,7 @@ public class WebProblemController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView CreateProblem(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication){
-        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-        User loginUser = currentUser.getUser();
+    public ModelAndView CreateProblem(ModelAndView modelAndView, HttpServletRequest request){
         String title = request.getParameter("problem_title");
         String contents = request.getParameter("problem-contents");
         int time_limit = Integer.valueOf(request.getParameter("problem_timeLimit"));
@@ -185,6 +181,4 @@ public class WebProblemController {
         modelAndView.setViewName("redirect:/problem/list");
         return modelAndView;
     }
-
-
 }

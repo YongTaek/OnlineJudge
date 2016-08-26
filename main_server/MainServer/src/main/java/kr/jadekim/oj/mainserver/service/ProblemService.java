@@ -81,7 +81,7 @@ public class ProblemService {
             messages.add(map);
         }
         ArrayList<Integer> pages = new ArrayList<>();
-        modelAndView.setViewName("problemRanking");
+        modelAndView.setViewName("rankingProblems");
         modelAndView.addObject("messages",messages);
         modelAndView.addObject("pages",pages);
         return new AsyncResult<>(modelAndView);

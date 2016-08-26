@@ -108,49 +108,27 @@ public class WebProblemListController {
         Iterable<Problem> problems = null;
 
         User user = null;
-        int total_count = 0;
         try {
             problems = problemService.findAllProblem(pageable).get();
             if(currentUser!=null) {
                 user = currentUser.getUser();
             }
-            total_count = problemService.countAllProblem().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-//        테스트용 데이터 삽입 코드
-//        ArrayList<Problem> problemList = new ArrayList<>();
-//        for (int i=1; i<20; i++) {
-//            problemList.add(new Problem("이름"+i, "내용"+i, 0));
-//        }
-//        problems = problemList;
+
         messages = makeMessages(messages,problems,user);
-        ArrayList<Integer> pages = new ArrayList<>();
+        ArrayList<Integer> pages = generatePagenation(messages.size(),pageable.getPageSize());
 
-        if(total_count%pageable.getPageSize()==0){
-            for(int i=0;i<total_count/pageable.getPageSize();++i){
-                pages.add(i+1);
-            }
-        }else{
-            for(int i=0;i<total_count/pageable.getPageSize()+1;++i){
-                pages.add(i+1);
-            }
-
-        }
-
-        modelAndView.setViewName("problemList");
-        if(user!=null){
-            modelAndView.addObject("loginUser",user.getName());
-            System.out.println(user.getLoginId());
-        }
+        modelAndView.setViewName("allProblems");
         modelAndView.addObject("messages",messages);
         modelAndView.addObject("pages",pages);
         return modelAndView;
     }
     @RequestMapping("recent")
-    public ModelAndView recentList(ModelAndView modelAndView,Authentication authentication){
+    public ModelAndView recentList(ModelAndView modelAndView,@PageableDefault(sort = { "id" }, size = 10) Pageable pageable, Authentication authentication){
 
         CurrentUser currentUser= null;
         User loginUser = null;
@@ -162,15 +140,13 @@ public class WebProblemListController {
         }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<Problem> problems = problemService.findProblemRecent();
+
         messages = makeMessages(messages,problems,loginUser);
-        ArrayList<Integer> pages = new ArrayList<>();
-        modelAndView.setViewName("problemList");
+        ArrayList<Integer> pages = generatePagenation(messages.size(),pageable.getPageSize());
+
+        modelAndView.setViewName("allProblems");
         modelAndView.addObject("messages", messages);
         modelAndView.addObject("pages", pages);
-        if(loginUser!=null){
-            modelAndView.addObject("loginUser",loginUser);
-            System.out.println(loginUser.getLoginId());
-        }
 
         return modelAndView;
     }
@@ -192,9 +168,6 @@ public class WebProblemListController {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-        if(user!=null){
-            modelAndView.addObject("loginUser",user);
         }
         return modelAndView;
     }
@@ -222,7 +195,7 @@ public class WebProblemListController {
         messages = makeMessages(messages,problems,loginUser);
 
         modelAndView.addObject("messages",messages);
-        modelAndView.setViewName("problemList");
+        modelAndView.setViewName("allProblems");
         return modelAndView;
     }
 
@@ -252,5 +225,21 @@ public class WebProblemListController {
             messages.add(map);
         }
         return messages;
+    }
+
+    public ArrayList<Integer> generatePagenation(int totalPages,int pageSize) {
+        ArrayList<Integer> pages = new ArrayList<>();
+        int totalCount = 0;
+        if(totalCount%pageSize==0){
+            for(int i=0;i<totalCount/pageSize;++i){
+                pages.add(i+1);
+            }
+        }else{
+            for(int i=0;i<totalCount/pageSize+1;++i){
+                pages.add(i+1);
+            }
+
+        }
+        return pages;
     }
 }

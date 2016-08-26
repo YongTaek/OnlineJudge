@@ -13,19 +13,21 @@ html {
     body {
         div(id: 'background') {}
         div(id: 'background-overlap') {}
-        nav(id: 'nav') {
+        allProblems(id: 'nav') {
             a(href: "/", "Hanyang Online Judge")
             ul() {
                 if (loginUser != null) {
                     li() {
-                        a(href: "#", "data-toggle": "popover", "data-placement": "bottom", "data-container": "body", "$loginUser")
+                        a(href: "#", "data-toggle": "popover", "data-placement": "bottom", "data-trigger":"focus", "data-container": "body", "$loginUser")
                     }
                     ul(class: "hidden", id: "profile-data") {
                         li() {
                             a(class: "profile-link", href: "/myPage", "My Page")
                         }
                         li() {
-                            a(class: "profile-link", href: "/login?logout", "Logout")
+                            form(id: 'form-id', action:'/logout', method:'post') {
+                                a(id: 'logout', class: "profile-link", href:'#', onclick:"document.getElementById('form-id').submit()", "Logout")
+                            }
                         }
                     }
 
@@ -47,7 +49,6 @@ html {
                 li() {
                     a(href: "/problem/list", "문제 풀러 가기")
                 }
-
 
 
             }
