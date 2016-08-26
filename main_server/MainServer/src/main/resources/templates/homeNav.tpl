@@ -1,4 +1,4 @@
-nav(class: 'navbar') {
+allProblems(class: 'navbar') {
     ul(class: 'menu') {
         li(class: 'llist') {
             a(href: '/problem/list') {

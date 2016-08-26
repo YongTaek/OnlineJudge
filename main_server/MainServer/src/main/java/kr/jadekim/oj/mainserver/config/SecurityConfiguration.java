@@ -53,20 +53,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
+                .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .deleteCookies()
-                .logoutUrl("/login?logout")
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
                 .rememberMe()
-                .and();
+                .and()
+        .csrf().disable();
 
         http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .invalidSessionUrl("/");
-
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         http
                 .authorizeRequests().anyRequest().authenticated();
 

@@ -8,3 +8,7 @@
 .popover-content li a{
     color: black;
 }
+
+.popover-content li form{
+    margin-bottom:0;
+}

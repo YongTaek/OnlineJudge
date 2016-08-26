@@ -36,7 +36,7 @@ html {
                         label(for: 'email', 'Email')
                         input(type: 'email', name:'email', class: 'form-control')
                     }
-                    input(type: 'hidden', name:"${_csrf.parameterName}", value:"${_csrf.token}")
+//                    input(type: 'hidden', name:"${_csrf.parameterName}", value:"${_csrf.token}")
                     button(type: 'submit', class: 'btn', "Login")
                     a(id: 'join-button', href: '#', "처음 오셨나요?")
                 }

@@ -1,13 +1,15 @@
 /**
  * Created by ohyongtaek on 2016. 3. 19..
  */
-window.onload = function() {
-    var editor  = CodeMirror.fromTextArea(document.getElementById("code"),{
-        mode:"/mode/javascript",
-        styleActiveLine: true,
-        lineNumbers: true,
-        lineWrapping:true
 
-    }
-    );
-};
+$(document).ready(function() {
+    var textarea = document.getElementById('code')
+    CodeMirror.fromTextArea(textarea, {
+        lineNumbers: true,
+        lineWrapping: true,
+        theme: "eclipse",
+        val: textarea.value,
+        mode: "text/javascript"
+    })
+
+})

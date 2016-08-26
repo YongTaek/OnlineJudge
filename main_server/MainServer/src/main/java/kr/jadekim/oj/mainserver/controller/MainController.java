@@ -1,13 +1,19 @@
 package kr.jadekim.oj.mainserver.controller;
 
 
+import kr.jadekim.oj.mainserver.controller.WebController.LoginInterceptor;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by ohyongtaek on 2016. 1. 19..
@@ -34,9 +40,18 @@ public class MainController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping("/success")
-    public @ResponseBody String loginTest(){
-        return "true";
+    public @ResponseBody String loginTest(HttpServletRequest request){
+        return request.getSession().getId();
     }
 
+    @Bean
+    public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(new LoginInterceptor());
+            }
+        };
+    }
 
 }

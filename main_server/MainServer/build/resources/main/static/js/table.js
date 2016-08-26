@@ -38,11 +38,7 @@ prob_id.click(function(){
     asc3 = 1;
 })
 
-$('#click-etc').click(function(){
-    $('#etc').slideToggle('fast',function(){});
-});
-
-var problem = $('#problem');
+var problem = $('#list');
 var recent = $('#recent');
 var prob_ranking = $('#ranking');
 

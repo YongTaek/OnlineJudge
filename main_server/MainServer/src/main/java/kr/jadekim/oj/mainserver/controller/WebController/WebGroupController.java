@@ -28,6 +28,7 @@ import java.util.Map;
  * Created by ohyongtaek on 2016. 3. 17..
  */
 @Controller
+@PreAuthorize("hasAuthority('USER')")
 @RequestMapping("/group")
 public class WebGroupController {
 
