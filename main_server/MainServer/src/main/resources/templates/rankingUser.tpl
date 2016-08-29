@@ -33,12 +33,12 @@ layout 'layout.tpl', title: '랭킹', loginUser: loginUser,
                             } else {
                                 messages.each { message ->
                                     tr {
-//                                        td(class: 'center', message.number)
-//                                        td(class: 'center') {
-//                                            a(href: '/notice/'+message.number, message.title)
-//                                        }
-//                                        td(class: 'center', message.user)
-//                                        td(class: 'center', message.date)
+                                        td(class: 'center', message.number)
+                                        td(class: 'center') {
+                                            a(href: '/notice/'+message.number, message.title)
+                                        }
+                                        td(class: 'center', message.user)
+                                        td(class: 'center', message.date)
                                     }
                                 }
                             }

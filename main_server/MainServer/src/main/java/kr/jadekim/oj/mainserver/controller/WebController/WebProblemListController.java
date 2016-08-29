@@ -172,6 +172,28 @@ public class WebProblemListController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "ranking",method = RequestMethod.POST)
+    public ModelAndView searchRanking(HttpServletRequest request, ModelAndView modelAndView, Authentication authentication) {
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User user = null;
+        if(currentUser!=null) {
+            user = currentUser.getUser();
+        }
+
+        try {
+            modelAndView = problemService.getSortedProbByrank(modelAndView, user,request.getParameter("search")).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public ModelAndView search(HttpServletRequest request,ModelAndView modelAndView,Authentication authentication){
         CurrentUser currentUser= null;

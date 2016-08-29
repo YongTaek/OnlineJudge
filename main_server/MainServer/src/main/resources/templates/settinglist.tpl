@@ -57,9 +57,15 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                                     p("이름")
                                     p("이메일")
                                 }
+<<<<<<< HEAD
                                 div(class: 'col-md-5 margin') {
                                     input(type: 'text', value: messages.name, name: 'user_name', id: 'name')
                                     input(type: 'text', value: messages.email, name: 'user_email', id: 'email')
+=======
+                                div(class: 'col-md-5') {
+                                    input(type: 'text', value: messages.name, name: 'name', id: 'name')
+                                    input(type: 'text', value: messages.email, name: 'email', id: 'email')
+>>>>>>> 3e9c5c9... [수정] 그룹 페이지 수정
                                 }
                             }
 

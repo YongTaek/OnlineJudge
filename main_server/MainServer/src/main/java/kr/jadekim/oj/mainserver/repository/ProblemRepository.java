@@ -28,4 +28,6 @@ public interface ProblemRepository extends JpaRepository<Problem,Integer> {
     @Query("select p from Problem p where p.name like concat('%',:problem_name,'%')")
     List<Problem> findByName(@Param("problem_name") String problem_name);
 
+    @Query("select distinct p from Answer a join a.problem p join a.submitter u where u.id=:user_id")
+    List<Problem> findProblemByUserId(@Param("user_id")int user_id);
 }

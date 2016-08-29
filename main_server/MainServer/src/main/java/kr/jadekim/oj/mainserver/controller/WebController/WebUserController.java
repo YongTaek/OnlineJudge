@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -48,8 +49,13 @@ public class WebUserController {
         return mav;
     }
     @RequestMapping("/login")
-    public ModelAndView loginPage() {
-        return new ModelAndView("login");
+    public ModelAndView loginPage(@RequestParam(value = "matcherror", required = false) boolean error, ModelAndView mav) {
+        if(error) {
+            mav.addObject("matcherror",true);
+            System.out.println("error");
+        }
+        mav.setViewName("login");
+        return mav;
     }
 
     @RequestMapping(value = "/join",method = RequestMethod.GET)

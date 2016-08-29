@@ -4,11 +4,13 @@ package kr.jadekim.oj.mainserver.service;
 import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
@@ -70,5 +72,10 @@ public class UserService {
         user.setEmail(email);
         userRepository.save(user);
         return user;
+    }
+
+    @Async
+    public Future<List<User>> findUserOrderBySuccessCount(Pageable pageable) {
+        return new AsyncResult<>(userRepository.findUserOrderBySuccessCount(pageable));
     }
 }

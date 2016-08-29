@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.repository;
 
 import kr.jadekim.oj.mainserver.entity.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     int countBySuccessCount();
 
     Optional<User> getByLoginId(String user_id);
+
+
+    @Query("select u from User u order by success_count")
+    List<User> findUserOrderBySuccessCount(Pageable pageable);
+
 }

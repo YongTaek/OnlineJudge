@@ -54,3 +54,10 @@ th{
 .form-inline{
     float: right;
 }
+
+.panel-default>.panel-heading-custom {
+    color: #ffffff;
+    background-image: none;
+    background-color: #1F3860;
+    border-color: #1F3860;
+}
