@@ -8,10 +8,10 @@ layout 'layout.tpl', title: '질문게시판',loginUser:loginUser,
                         div(class: 'head-container') {
                             ul(class: 'nav nav-pills head-item main') {
                                 li(id: 'notice') {
-                                    a(href: '/notice', '공지사항')
+                                    a(href: '/board/notice', '공지사항')
                                 }
                                 li(class: 'active', id: 'question') {
-                                    a(href: '/question', 'Q&A')
+                                    a(href: '/board/question', 'Q&A')
                                 }
 
                             }

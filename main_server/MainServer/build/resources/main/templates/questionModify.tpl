@@ -6,10 +6,10 @@ layout 'layout.tpl', title: '질문수정',loginUser:loginUser,
                     div(class: 'col-md-8 col-xs-12 col-sm-6') {
                         ul(class: 'nav nav-pills') {
                             li() {
-                                a(href: '/notice', '공지사항')
+                                a(href: '/board/notice', '공지사항')
                             }
                             li(class: 'active') {
-                                a(href: '/question', 'Q&A')
+                                a(href: '/board/question', 'Q&A')
                             }
                         }
                     }
