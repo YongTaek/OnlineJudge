@@ -42,7 +42,7 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                             a(href: '/myPage/setting/withdrawal', '회원 탈퇴')
                         }
                         li(class : 'list-group-item'){
-                            a(href: '/myPage/setting/group', '그룹 설정')
+                            a(href: '/group/list', '그룹 설정')
                         }
                         li(class : 'list-group-item'){
                             a(href: '/myPage/setting/team', '팀 설정')

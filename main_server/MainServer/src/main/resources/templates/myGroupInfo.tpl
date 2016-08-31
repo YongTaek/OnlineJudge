@@ -1,6 +1,13 @@
-layout 'group.tpl', title: '문제', loginUser: loginUser,
+layout 'group.tpl', title: '문제', loginUser: loginUser,userGroup:userGroup,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
+        },
+        jjang_head: contents {
+            if(jjang) {
+                li(id: 'group_setting') {
+                    a(href: '/group/myGroup/setting', '그룹 설정')
+                }
+            }
         },
         tables: contents {
             if (!userGroup) {
@@ -43,8 +50,8 @@ layout 'group.tpl', title: '문제', loginUser: loginUser,
                                 }
                             }
                             tbody() {
-                                if (members) {
-                                    h2 'No group member'
+                                if (!members) {
+                                    tr { td(colspan: '100%', 'No group member') }
                                 } else {
                                     waitMembers.each { waitMember ->
                                         tr {

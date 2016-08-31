@@ -25,6 +25,14 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
                             li(){
                                 a(href: '/problem/create', '문제 만들기')
                             }
+                            if(!messages.group){
+                                li() {
+                                    a(href: '/group/list', '그룹')
+                                }
+                                li() {
+                                    a(href: '/group/create','그룹 만들기')
+                                }
+                            }
                         }
 
                     }
@@ -58,7 +66,9 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
                                        if(messages.group == null){
                                            td(class : 'common-table')
                                        }else{
-                                           td(class : 'common-table', messages.group)
+                                           td(class : 'common-table'){
+                                               a(href: '/group/myGroup',messages.group)
+                                           }
                                        }
                                     }
                                 }
@@ -68,7 +78,7 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
                 }
                 div(class : 'col-md-8'){
                     div(class : 'panel panel-default') {
-                        div(class: 'panel panel-heading panel-heading-custom') {
+                        div(class: 'panel panel-heading') {
                             h3(class: 'panel-title') {
                                 span '푼 문제'
                             }

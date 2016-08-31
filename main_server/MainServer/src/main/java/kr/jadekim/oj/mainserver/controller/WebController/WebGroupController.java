@@ -8,6 +8,7 @@ import kr.jadekim.oj.mainserver.repository.GroupRepository;
 import kr.jadekim.oj.mainserver.repository.ProblemSetRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
 import kr.jadekim.oj.mainserver.service.GroupService;
+import kr.jadekim.oj.mainserver.service.ProblemSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -46,13 +47,15 @@ public class WebGroupController {
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    ProblemSetService problemSetService;
+
 
     ArrayList<Map> makeMembersInfo(List<User> users) {
         ArrayList<Map> members = new ArrayList<>();
         for (User u : users) {
             Map<String, Object> map = new HashMap<>();
             map.put("name", u.getName());
-
             map.put("prob_count", u.getSuccess_count());
             if (u.getAnswers().size() != 0) {
                 map.put("rate", u.getSuccess_count() + "/" + u.getAnswers().size());
@@ -64,7 +67,6 @@ public class WebGroupController {
 
     @RequestMapping("info/{id}")
     public ModelAndView myGroupInfo(@PathVariable("id")int id, ModelAndView modelAndView, Authentication authentication) {
-        modelAndView.setViewName("groupInfo");
         Group group;
         ArrayList<Map> messages = new ArrayList<>();
         try {
@@ -76,51 +78,26 @@ public class WebGroupController {
                 messages.add(map);
             }
             List<User> groupUsers = group.getUsers();
+            System.out.println(groupUsers.get(0).getName());
             ArrayList<Map> members = makeMembersInfo(groupUsers);
+            System.out.println(members.get(0).get("name"));
             modelAndView.addObject("members", members);
             modelAndView.addObject("userGroup", group.getName());
             modelAndView.addObject("id",group.getId());
+            modelAndView.addObject("messages",messages);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+        modelAndView.setViewName("groupInfo");
         return modelAndView;
     }
-    @RequestMapping("info")
+    @RequestMapping("myGroup")
     public ModelAndView groupInfo(ModelAndView modelAndView, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
-        ArrayList<Map> messages = new ArrayList<>();
-        Group group = null;
-        try {
-            group = groupService.findByUserId(loginUser.getId()).get();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        if (group != null) {
-            List<ProblemSet> problemSets = group.getMustProblemSet();
-            for (ProblemSet p : problemSets) {
-                int success_count = problemSetRepository.countByUserSuccess(p.getId(), loginUser.getId());
-                int total_count = problemSetRepository.countById(p.getId());
-                Map<String, Object> map = new HashMap<>();
-                map.put("name", p.getName());
-                map.put("rate", success_count + "/" + total_count);
-                messages.add(map);
-            }
-            List<User> groupUsers = group.getUsers();
-            ArrayList<Map> members = makeMembersInfo(groupUsers);
-            modelAndView.addObject("members", members);
-            List<User> waitUsers = group.getWaitUsers();
-            ArrayList<Map> waitMembers = makeMembersInfo(waitUsers);
-            modelAndView.addObject("waitMembers", waitMembers);
-            modelAndView.addObject("userGroup", group.getName());
-        }
-        modelAndView.addObject("messages", messages);
+        modelAndView = createMyPage(modelAndView,loginUser);
         modelAndView.setViewName("myGroupInfo");
         return modelAndView;
     }
@@ -193,6 +170,7 @@ public class WebGroupController {
             }
             messages.add(map);
         }
+        modelAndView.addObject("userGroup", loginUser.getGroup());
         modelAndView.addObject("loginUser", loginUser);
         modelAndView.addObject("messages", messages);
         modelAndView.setViewName("groupList");
@@ -218,7 +196,7 @@ public class WebGroupController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("(hasAuthority('USER') or hasAuthority('ADMIN'))")
     @RequestMapping(value = "/join/{id}", method = RequestMethod.POST)
     public ModelAndView JoinGroup(ModelAndView modelAndView, @PathVariable("id") int id, HttpServletRequest request, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
@@ -237,6 +215,126 @@ public class WebGroupController {
             }
         }
         modelAndView.setViewName("redirect:/group");
+        return modelAndView;
+    }
+
+    @RequestMapping("/myGroup/setting")
+    public ModelAndView groupSetting(ModelAndView modelAndView, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        if(loginUser.getGroup() == null || loginUser.getGroup().getJjang().getId() != loginUser.getId()) {
+            modelAndView.addObject("error","권한이 없습니다.");
+            modelAndView.setViewName("redirect:/group/info");
+            return modelAndView;
+        }
+        modelAndView.addObject("me",loginUser.getName());
+        modelAndView = createMyPage(modelAndView,loginUser);
+        modelAndView.setViewName("groupSetting");
+        return modelAndView;
+    }
+    
+    @RequestMapping(value = "/myGroup/setting/requiredProblem",method = RequestMethod.GET)
+    public ModelAndView modifyRequiredProblemSet(ModelAndView modelAndView, Authentication authentication,Pageable pageable) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        if(loginUser.getGroup() == null || loginUser.getGroup().getJjang().getId() != loginUser.getId()) {
+            modelAndView.addObject("error","권한이 없습니다.");
+            modelAndView.setViewName("redirect:/group/info");
+            return modelAndView;
+        }
+        try {
+            List<ProblemSet> problemSets = problemSetService.findAllProblemSets(pageable).get();
+            List<ProblemSet> groupProblemSets = loginUser.getGroup().getMustProblemSet();
+            List<Map> addProblemSets = new ArrayList<>();
+            List<Map> removeProblemSets = new ArrayList<>();
+            for(ProblemSet set: problemSets) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("name",set.getName());
+                map.put("id",set.getId());
+                map.put("count",set.getProblemList().size());
+                if(groupProblemSets.contains(set)) {
+                    removeProblemSets.add(map);
+                }else {
+                    addProblemSets.add(map);
+                }
+            }
+            ArrayList<Integer> pages = new ArrayList<>();
+            modelAndView.addObject("addProblemsets",addProblemSets);
+            modelAndView.addObject("removeProblemsets",removeProblemSets);
+            modelAndView.addObject("pages",pages);
+            modelAndView.addObject("userGroup",loginUser.getGroup().getName());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        modelAndView.setViewName("addRequiredProblemset");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/myGroup/setting/requiredProblem",method = RequestMethod.POST)
+    public ModelAndView applyRequiredProblemSet(ModelAndView modelAndView, Authentication authentication, HttpServletRequest request) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        if(loginUser.getGroup() == null || loginUser.getGroup().getJjang().getId() != loginUser.getId()) {
+            modelAndView.addObject("error","권한이 없습니다.");
+            modelAndView.setViewName("redirect:/group/info");
+            return modelAndView;
+        }
+        String id = request.getParameter("id");
+        try {
+            ProblemSet problemSet = problemSetService.findOne(Integer.parseInt(id)).get();
+            Group group = loginUser.getGroup();
+            if(group.getMustProblemSet().contains(problemSet)) {
+                group.getMustProblemSet().remove(problemSet);
+            }else {
+                group.getMustProblemSet().add(problemSet);
+            }
+            groupService.save(group);
+        } catch (InterruptedException e) {
+            modelAndView.addObject("error","오류가 발생하였습니다.");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        modelAndView.setViewName("redirect:/addRequiredProblemSet");
+        return modelAndView;
+    }
+
+    public ModelAndView createMyPage(ModelAndView modelAndView, User loginUser) {
+        Group group = null;
+        ArrayList<Map> messages = new ArrayList<>();
+        try {
+            group = groupService.findByUserId(loginUser.getId()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (group != null) {
+            List<ProblemSet> problemSets = group.getMustProblemSet();
+            for (ProblemSet p : problemSets) {
+                int success_count = problemSetRepository.countByUserSuccess(p.getId(), loginUser.getId());
+                int total_count = problemSetRepository.countById(p.getId());
+                Map<String, Object> map = new HashMap<>();
+                map.put("name", p.getName());
+                map.put("rate", success_count + "/" + total_count);
+                messages.add(map);
+            }
+            List<User> groupUsers = group.getUsers();
+            ArrayList<Map> members = makeMembersInfo(groupUsers);
+            modelAndView.addObject("members", members);
+            List<User> waitUsers = group.getWaitUsers();
+            ArrayList<Map> waitMembers = makeMembersInfo(waitUsers);
+            modelAndView.addObject("waitMembers", waitMembers);
+            modelAndView.addObject("userGroup", group.getName());
+            if(group.getJjang().getId() == loginUser.getId()) {
+                modelAndView.addObject("jjang",loginUser.getName());
+            }
+            modelAndView.addObject("userGroup", group.getName());
+        }
+        modelAndView.addObject("messages", messages);
         return modelAndView;
     }
 

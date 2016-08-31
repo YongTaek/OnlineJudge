@@ -11,8 +11,9 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 a(href: '/group/list','Group 목록')
                             }
                             li(class: 'active', id: 'myGroup') {
-                                a(href: '/group/info', '내 Group')
+                                a(href: '/group/myGroup', '내 Group')
                             }
+                            jjang_head()
                         }
                         div(class: "head-item") {
                             input(type = "text", class: 'form-control', name: 'search')

@@ -10,7 +10,7 @@ layout 'layout.tpl', title: '그룹 만들기', loginUser: loginUser,
                 }
                 div(id: 'login-form-container') {
                     h1(id: 'form-title', class: 'title push-bottom', "Group")
-                    form(id: 'login-form', action: '/create', method: 'post') {
+                    form(id: 'login-form', action: '/group/create', method: 'post') {
                         div(class: 'form-group') {
                             label(for: 'group_name', '그룹 이름')
                             input(type: 'text', name: 'group_name', class: 'form-control')
@@ -24,9 +24,7 @@ layout 'layout.tpl', title: '그룹 만들기', loginUser: loginUser,
 
                                 input(type: 'radio', name: 'isprivate', id: 'group_public', value: 2)
                                 p('X')
-                            }ja
-
-
+                            }
                         }
                         button(type: 'submit', class: 'btn', "Create")
                     }

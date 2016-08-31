@@ -1,4 +1,4 @@
-layout 'group.tpl', title: '게시판', loginUser: loginUser,
+layout 'group.tpl', title: '게시판', loginUser: loginUser,userGroup:userGroup,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
         },
@@ -22,7 +22,7 @@ layout 'group.tpl', title: '게시판', loginUser: loginUser,
                                 tr {
                                     td(class: 'center', message.id)
                                     td(class: 'center') {
-                                        a(href: '/group/info'+message.id, message.name)
+                                        a(href: '/group/info/'+message.id, message.name)
                                     }
                                     td(class: 'center', message.user)
                                     td(class: 'center', message.isprivate)
