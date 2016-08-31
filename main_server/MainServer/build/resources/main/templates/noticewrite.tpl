@@ -4,20 +4,11 @@ layout 'layout.tpl', title: '질문하기',loginUser:loginUser,
             script(type: 'text/javascript', src: '/SE2.1.3.O8706/js/HuskyEZCreator.js', charset = "utf-8") {}
         },
         content: contents {
-<<<<<<< HEAD
             div(class: 'container') {
                 div(class: 'row') {
                     div(class: 'head-container') {
                         ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active') {
-=======
-            link(rel:'stylesheet', href: '/css/table.css')
-            div() {
-                div(class:'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-pills') {
-                            li(class : 'active') {
->>>>>>> 3e9c5c9... [수정] 그룹 페이지 수정
                                 a(href: '/board/notice', '공지사항')
                             }
                             li() {
