@@ -33,13 +33,19 @@ public class UserDetailsService implements org.springframework.security.core.use
         User user;
         try {
             user = userService.login(login_id,login_pw).get();
-            return new CurrentUser(user);
+            System.out.println("login");
+            if(user != null) {
+                return new CurrentUser(user);
+            }else {
+                System.out.println("login fail");
+                return null;
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return new CurrentUser(null);
+        return null;
     }
 
     @Override

@@ -53,3 +53,8 @@ input.form-control {
 .center {
     text-align: center;
 }
+
+.btn.btn-primary.btn-custom {
+    font-size: 8px;
+    padding: 3px 12px;
+}

@@ -6,7 +6,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
             div(class: 'container') {
                 div(class: 'head-container') {
                     ul(class: 'nav nav-pills head-item main') {
-                        li(id: 'problem-num') {
+                        li(class: 'active',id: 'problem-num') {
                             a(href: '#', messages.num)
                         }
                         li(id: 'problem-submit') {
@@ -19,7 +19,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                             a(href: '#', '내 채점현황')
                         }
                         li(id: 'q&a') {
-                            a(href: '../question/'+messages.num, 'Q&A')
+                            a(href: '/board/question/'+messages.num, 'Q&A')
                         }
                     }
                 }
@@ -69,6 +69,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 p(messages.content)
                             }
                         }
+                        hr()
                     }
                     div() {
                         section(id: 'test-input') {
@@ -79,6 +80,8 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 p(messages.input)
                             }
                         }
+                        hr()
+
                     }
                     div() {
                         section(id: 'test-output') {
@@ -89,6 +92,8 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 p(messages.output)
                             }
                         }
+                        hr()
+
                     }
                     div() {
                         div(class: 'row') {
@@ -109,6 +114,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                                 }
                             }
                         }
+                        hr()
                     }
                     div() {
                         section(id: 'source') {

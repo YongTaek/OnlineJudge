@@ -50,7 +50,7 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                     }
                 }
                 div(class : 'col-md-8') {
-                    form(id: 'modify_info', action: '/myPage/setting', method: 'post') {
+                    form(id: 'modify_info', action: '/myPage/setting/password', method: 'post') {
                         div(class: 'form-group row') {
                             div(class: 'col-md-3 margin') {
                                 p("기존 비밀번호")

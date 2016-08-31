@@ -10,6 +10,7 @@ import kr.jadekim.oj.mainserver.repository.UserRepository;
 import kr.jadekim.oj.mainserver.service.AnswerService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.service.UserService;
+import kr.jadekim.oj.mainserver.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -120,7 +121,7 @@ public class WebProblemListController {
         }
 
         messages = makeMessages(messages,problems,user);
-        ArrayList<Integer> pages = generatePagenation(messages.size(),pageable.getPageSize());
+        ArrayList<Integer> pages = Pagenation.generatePagenation(messages.size(),pageable.getPageSize());
 
         modelAndView.setViewName("allProblems");
         modelAndView.addObject("messages",messages);
@@ -142,7 +143,7 @@ public class WebProblemListController {
         Iterable<Problem> problems = problemService.findProblemRecent();
 
         messages = makeMessages(messages,problems,loginUser);
-        ArrayList<Integer> pages = generatePagenation(messages.size(),pageable.getPageSize());
+        ArrayList<Integer> pages = Pagenation.generatePagenation(messages.size(),pageable.getPageSize());
 
         modelAndView.setViewName("allProblems");
         modelAndView.addObject("messages", messages);
@@ -169,6 +170,28 @@ public class WebProblemListController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "ranking",method = RequestMethod.POST)
+    public ModelAndView searchRanking(HttpServletRequest request, ModelAndView modelAndView, Authentication authentication) {
+        CurrentUser currentUser= null;
+        if(authentication!=null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User user = null;
+        if(currentUser!=null) {
+            user = currentUser.getUser();
+        }
+
+        try {
+            modelAndView = problemService.getSortedProbByrank(modelAndView, user,request.getParameter("search")).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         return modelAndView;
     }
 
@@ -227,19 +250,5 @@ public class WebProblemListController {
         return messages;
     }
 
-    public ArrayList<Integer> generatePagenation(int totalPages,int pageSize) {
-        ArrayList<Integer> pages = new ArrayList<>();
-        int totalCount = 0;
-        if(totalCount%pageSize==0){
-            for(int i=0;i<totalCount/pageSize;++i){
-                pages.add(i+1);
-            }
-        }else{
-            for(int i=0;i<totalCount/pageSize+1;++i){
-                pages.add(i+1);
-            }
 
-        }
-        return pages;
-    }
 }

@@ -42,16 +42,16 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                             a(href: '/myPage/setting/withdrawal',style : "color: rgb(255,255,255)", '회원 탈퇴')
                         }
                         li(class : 'list-group-item'){
-                            a(href: '/myPage/setting/group', '그룹 설정')
+                            a(href: '/group/list', '그룹 설정')
                         }
                         li(class : 'list-group-item'){
                             a(href: '/myPage/setting/team', '팀 설정')
                         }
                     }
                 }
-                div(class : 'col-md-8 margin') {
-                    form(id: 'modify_info', action: '/myPage/setting', method: 'post') {
-                        p("정말로 탈퇴하시겠습니까?")
+                div(class : 'col-md-8') {
+                    form(id: 'modify_info', action: '/myPage/setting/withdrawal', method: 'post') {
+                        p(class : 'lead text-left',"정말로 탈퇴하시겠습니까?")
                         button(type: "submit", id: "postButton", class: "btn btn-primary", '탈퇴')
                     }
                 }

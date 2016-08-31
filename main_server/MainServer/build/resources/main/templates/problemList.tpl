@@ -4,7 +4,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
         },
         content: contents {
             div(class: 'container') {
-                form(id: 'search-form', action: '.', class: 'form-inline') {
+                form(id: 'search-form', action: page, class: 'form-inline') {
                     div(class: 'head-container') {
                         ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active', id: 'list') {

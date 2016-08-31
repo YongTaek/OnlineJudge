@@ -47,7 +47,6 @@ public class UserController {
             user1.setId(-1);
             return gson.toJson(user1);
         }else{
-            System.out.println(gson.toJson(user));
             return gson.toJson(user);
         }
     }

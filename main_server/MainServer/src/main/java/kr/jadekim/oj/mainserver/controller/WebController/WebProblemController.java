@@ -41,9 +41,8 @@ public class WebProblemController {
     TestcaseRepository testcaseRepository;
 
     @RequestMapping("{id}")
-    public ModelAndView problem(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id") int problem_id, Authentication authentication) {
+    public ModelAndView problem( ModelAndView modelAndView, @PathVariable("id") int problem_id, Authentication authentication) {
         CurrentUser currentUser = null;
-
         if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
@@ -137,7 +136,7 @@ public class WebProblemController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public ModelAndView ShowCreateProblem(ModelAndView modelAndView, Authentication authentication){
+    public ModelAndView showCreateProblem(ModelAndView modelAndView, Authentication authentication){
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
         if(loginUser == null){
@@ -154,7 +153,7 @@ public class WebProblemController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView CreateProblem(ModelAndView modelAndView, HttpServletRequest request){
+    public ModelAndView createProblem(ModelAndView modelAndView, HttpServletRequest request){
         String title = request.getParameter("problem_title");
         String contents = request.getParameter("problem-contents");
         int time_limit = Integer.valueOf(request.getParameter("problem_timeLimit"));
@@ -181,4 +180,5 @@ public class WebProblemController {
         modelAndView.setViewName("redirect:/problem/list");
         return modelAndView;
     }
+
 }

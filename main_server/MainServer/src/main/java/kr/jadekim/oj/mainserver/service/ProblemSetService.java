@@ -4,8 +4,12 @@ import kr.jadekim.oj.mainserver.entity.ProblemSet;
 import kr.jadekim.oj.mainserver.repository.ProblemSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.concurrent.Future;
 
 
 /**
@@ -21,7 +25,16 @@ public class ProblemSetService {
         return problemSetRepository.findAll(pageable);
     }
 
+    @Async
+    public Future<List<ProblemSet>> findAllProblemSets(Pageable pageable) {
+        return new AsyncResult<>(problemSetRepository.findAll(pageable).getContent());
+    }
     public int countAllProblem(int problemSetId,int userId){
         return problemSetRepository.countAllProblem(problemSetId,userId);
+    }
+
+    @Async
+    public Future<ProblemSet> findOne(int id) {
+        return new AsyncResult<>(problemSetRepository.getOne(id));
     }
 }
