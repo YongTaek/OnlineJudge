@@ -39,6 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers().frameOptions().disable()
+                .and()
                 .authorizeRequests()
                     .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
                     .antMatchers("/myPage/**").hasAuthority(String.valueOf(Role.USER))

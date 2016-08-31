@@ -41,14 +41,11 @@ html {
                     a(href: "/problem/list", "대회")
                 }
                 li() {
-                    a(href: "/problem/list", "랭킹")
+                    a(href: "/ranking/user", "랭킹")
                 }
                 li() {
-<<<<<<< HEAD
                     a(href: "/board/notice", "게시판")
-=======
-                    a(href: "/notice", "게시판")
->>>>>>> 7908222... 디자인 수정
+
                 }
                 li() {
                     a(href: "/problem/list", "문제 풀러 가기")

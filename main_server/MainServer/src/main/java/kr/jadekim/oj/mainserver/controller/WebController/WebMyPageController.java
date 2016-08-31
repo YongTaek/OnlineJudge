@@ -146,10 +146,11 @@ public class WebMyPageController {
     }
 
     @RequestMapping(value = "/setting/password", method = RequestMethod.GET)
-    public ModelAndView showsettingpw(ModelAndView modelAndView, HttpSession session){
-        User user = (User) session.getAttribute("loginUserInfo");
+    public ModelAndView showsettingpw(ModelAndView modelAndView, HttpSession session, Authentication authentication){
+        CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
+        User user = currentUser.getUser();
         if(user == null){
-            modelAndView.setViewName("rediret:/notice");
+            modelAndView.setViewName("redirect:/notice");
             return modelAndView;
         }else {
             Map<String, Object> map = new HashMap<>();
@@ -179,13 +180,14 @@ public class WebMyPageController {
     }
 
     @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.GET)
-    public ModelAndView showWithdrawl(ModelAndView modelAndView, HttpSession session){
-        modelAndView.setViewName("withdrawl");
+    public ModelAndView showWithdrawl(ModelAndView modelAndView, HttpSession session, Authentication authentication){
         Map<String, Object> map = new HashMap<>();
-        User user = (User) session.getAttribute("loginUserInfo");
+        CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
+        User user = currentUser.getUser();
         map.put("user_id", user.getloginId());
         map.put("user_name", user.getName());
         modelAndView.addObject("messages",map);
+        modelAndView.setViewName("withdrawal");
         return modelAndView;
     }
 

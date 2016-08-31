@@ -8,12 +8,11 @@ layout 'layout.tpl', title: '질문게시판',loginUser:loginUser,
                         div(class: 'head-container') {
                             ul(class: 'nav nav-pills head-item main') {
                                 li(id: 'notice') {
-                                    a(href: '/notice', '공지사항')
+                                    a(href: '/board/notice', '공지사항')
                                 }
                                 li(class: 'active', id: 'question') {
-                                    a(href: '/question', 'Q&A')
+                                    a(href: '/board/question', 'Q&A')
                                 }
-
                             }
                             div(class: 'head-item') {
                                 input(type: "text", class: 'form-control', name: 'search')
@@ -22,9 +21,7 @@ layout 'layout.tpl', title: '질문게시판',loginUser:loginUser,
                                 button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
                             }
                             div(class: 'head-item') {
-                                button(class: "btn btn-primary push-left") {
-                                    a(href: '/question/write', '글쓰기')
-                                }
+                                a(class: 'btn btn-primary push-left', href: '/board/question/write', '글쓰기')
                             }
                         }
                     }

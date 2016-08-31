@@ -9,8 +9,8 @@ plus_input.click(function(){
     if(!(count<0)) {
         var input_id = 'testInput' + count;
         var output_id = 'testOutput' + count;
-        var input = '<div>' + '<input type=text name=' + '"' + input_id + '"' + 'id=' + input_id + '></div>';
-        var output = '<div>' + '<input type=text name=' + '"' + output_id + '"' + 'id=' + output_id + '></div>';
+        var input = '<div>' + '<input class="input" " type=text name=' + '"' + input_id + '"' + 'id=' + input_id + '></div>';
+        var output = '<div>' + '<input class="input" type=text name=' + '"' + output_id + '"' + 'id=' + output_id + '></div>';
         $('#testInput').append(input);
         $('#testOutput').append(output);
         count++;

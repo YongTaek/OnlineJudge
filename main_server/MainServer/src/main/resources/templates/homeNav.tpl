@@ -11,7 +11,7 @@ allProblems(class: 'navbar') {
             }
         }
         li(class: 'list') {
-            a(href: '/ranking') {
+            a(href: '/ranking/user') {
                 yield img(class: "icon", src: '/img/three.png')
             }
         }
