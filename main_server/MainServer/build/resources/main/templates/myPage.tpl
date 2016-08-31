@@ -1,18 +1,21 @@
 layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', href: '/css/myPage.css')
+//            link(rel: 'stylesheet', href: '/css/table.css')
+        },
         content: contents {
-            link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
                 div(class : 'row') {
                     div(class: 'col-md-12') {
-                        p() {
+                        p(class : 'username') {
                             span(style: 'font-size : 35', messages.user_id)
                             span(messages.user_name)
                         }
                     }
                 }
                 div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-tabs') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li(class : 'active') {
                                 a(href: '/myPage', '활동')
                             }
@@ -26,9 +29,9 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
 
                     }
                 }
-                hr(class : 'half-rule')
+                br()
                 div(class : 'col-md-4') {
-                    div(class: 'prob-container') {
+                    div(id: 'problem-container') {
                         table(class: 'table table-striped') {
                             tbody {
                                 if (messages.empty) {
@@ -65,7 +68,7 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
                 }
                 div(class : 'col-md-8'){
                     div(class : 'panel panel-default') {
-                        div(class: 'panel panel-heading') {
+                        div(class: 'panel panel-heading panel-heading-custom') {
                             h3(class: 'panel-title') {
                                 span '푼 문제'
                             }

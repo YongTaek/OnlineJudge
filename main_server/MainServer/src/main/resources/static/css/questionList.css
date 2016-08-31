@@ -69,3 +69,19 @@ input.form-control {
 .center {
     text-align: center;
 }
+
+.margin > input{
+    margin-bottom: 15px;
+    background: transparent;
+    border: solid #1F3860 1px;
+    border-radius: 5px;
+}
+
+.margin > span{
+    margin-right: 20px;
+}
+
+button.submit {
+    margin-right: 5px;
+    margin-left: 15px;
+}

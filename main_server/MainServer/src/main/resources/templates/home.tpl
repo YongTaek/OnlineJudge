@@ -21,7 +21,7 @@ html {
                 a(href: "/board/notice", "게시판")
             }
             li() {
-                a(href: "/problem/list", "랭킹")
+                a(href: "/ranking/user", "랭킹")
             }
             li() {
                 a(href: "/problem/list", "대회")
@@ -40,8 +40,6 @@ html {
                         }
                     }
                 }
-
-
             } else {
                 li() {
                     a(href: "/login", "로그인")

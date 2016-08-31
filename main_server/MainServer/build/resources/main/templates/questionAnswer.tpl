@@ -7,10 +7,10 @@ layout 'layout.tpl', title: 'Q&A',loginUser:loginUser,
                         div(class: 'col-md-8 col-xs-12 col-sm-6') {
                             ul(class: 'nav nav-pills') {
                                 li() {
-                                    a(href: '/notice', '공지사항')
+                                    a(href: '/board/notice', '공지사항')
                                 }
                                 li(class: 'active') {
-                                    a(href: '/question', 'Q&A')
+                                    a(href: '/board/question', 'Q&A')
                                 }
                                 li(){
                                     a(href: '/question/answerwrite/'+ messages.id, '답변쓰기')

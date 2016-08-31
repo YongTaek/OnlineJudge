@@ -251,7 +251,7 @@ public class WebBoardController {
             loginUser = currentUser.getUser();
         }
         if(loginUser == null){
-            modelAndView.setViewName("redirect:/question");
+            modelAndView.setViewName("redirect:/board/question");
             return modelAndView;
         }
         modelAndView.addObject("loginUser",loginUser);
