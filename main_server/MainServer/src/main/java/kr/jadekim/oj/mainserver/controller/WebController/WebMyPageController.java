@@ -4,12 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import kr.jadekim.oj.mainserver.entity.Answer;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
+import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
+import kr.jadekim.oj.mainserver.service.AnswerService;
+import kr.jadekim.oj.mainserver.service.GroupService;
+import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ohyongtaek on 2016. 3. 4..
@@ -36,78 +42,62 @@ public class WebMyPageController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ProblemService problemService;
 
+    @Autowired
+    AnswerService answerService;
 
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    GroupService groupService;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+
     @RequestMapping()
-    public ModelAndView mypage(ModelAndView modelAndView, Authentication authentication){
-        ArrayList<Map> message = new ArrayList<>();
-        CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
+    public ModelAndView mypage(ModelAndView modelAndView, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
-        ArrayList<Integer> solvedProblemnum = new ArrayList<>();
-        ArrayList<Integer> unsolvedProblemnum = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
-        if(loginUser.getAnswers() == null){
-            map.put("solvedProblemnum", null);
-            map.put("unsolvedProblemnum", null);
-            map.put("user_name", loginUser.getName());
-            map.put("user_id", loginUser.getLoginId());
-            map.put("solvedProblem", 0);
-            map.put("submit", 0);
-            if(loginUser.getGroup() == null){
-                map.put("group", null);
-            }else {
-                map.put("group", loginUser.getGroup().getName());
-            }
-            map.put("correct", 0);
-            map.put("incorrect", 0);
-        }
-        for(Answer answer : loginUser.getAnswers()){
-            int temp_ans = answer.getId();
-            boolean check = true;
-            if(answer.getResult().getIsSuccess() == true){
-                for(int i=0;i<solvedProblemnum.size();i++){
-                    if(temp_ans == solvedProblemnum.get(i)){
-                        check = false;
+        try {
+            List<Problem> submitProblems = problemService.findProblemsBySubmittedUser(loginUser).get();
+            List<Answer> answers = loginUser.getAnswers();
+            List<Integer> successProblems = answerService.findSuccessAnswerByUserId(loginUser.getId()).get();
+            List<Integer> failProblems = new ArrayList<>();
+            int successCount = 0;
+            for (Answer a : answers) {
+                if (a.getResult().getIsSuccess()) {
+                    successCount++;
+                }
+                if (!a.getResult().getIsSuccess()) {
+                    if (!submitProblems.contains(a.getProblem().getId()) && !failProblems.contains(a.getProblem().getId())) {
+                        failProblems.add(a.getProblem().getId());
                     }
                 }
-                if(check == true){
-                    solvedProblemnum.add(temp_ans);
-                }
-            }else{
-                for(int i=0;i<unsolvedProblemnum.size();i++){
-                    if(temp_ans == unsolvedProblemnum.get(i)){
-                        check = false;
-                    }
-                }
-                if(check == true){
-                    unsolvedProblemnum.add(temp_ans);
-                }
             }
+            map.put("solvedProblem", submitProblems.size());
+            map.put("submit", answers.size());
+            map.put("correct", successCount);
+            map.put("incorrect", answers.size() - successCount);
+            map.put("solvedProblemnum", successProblems);
+            map.put("unsolvedProblemnum", failProblems);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-        map.put("solvedProblemnum", solvedProblemnum);
-        map.put("unsolvedProblemnum", unsolvedProblemnum);
-        map.put("solvedProblem", solvedProblemnum.size());
-        map.put("submit", solvedProblemnum.size()+unsolvedProblemnum.size());
-        if(loginUser.getGroup() == null){
+        if (loginUser.getGroup() == null) {
             map.put("group", null);
-        }else {
+        } else {
             map.put("group", loginUser.getGroup().getName());
         }
-        int count = 0;
-        for(Answer answer : loginUser.getAnswers()){
-            if(answer.getResult().getIsSuccess()){
-                count++;
-            }
-        }
-        map.put("correct", count);
-        map.put("incorrect", loginUser.getAnswers().size() - count);
         map.put("user_name", loginUser.getName());
         map.put("user_id", loginUser.getloginId());
 
-        modelAndView.addObject("loginUser",loginUser.getName());
         modelAndView.addObject("messages", map);
         modelAndView.setViewName("mypage");
         return modelAndView;
@@ -116,7 +106,7 @@ public class WebMyPageController {
 
     @RequestMapping(value = "/setting", method = RequestMethod.GET)
     public ModelAndView showSetting(ModelAndView modelAndView, Authentication authentication) {
-        CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
         if (loginUser == null) {
             modelAndView.setViewName("rediret:/notice");
@@ -134,69 +124,71 @@ public class WebMyPageController {
     }
 
     @RequestMapping(value = "/setting", method = RequestMethod.POST)
-    public ModelAndView modifyinfo(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication){
-        CurrentUser currentUser= (CurrentUser) authentication.getPrincipal();
+    public ModelAndView modifyinfo(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         loginUser.setName(name);
         loginUser.setEmail(email);
+        userService.saveUser(loginUser);
+        ((CurrentUser) authentication.getPrincipal()).setUser(loginUser);
         modelAndView.setViewName("redirect:/myPage/setting");
         return modelAndView;
     }
 
     @RequestMapping(value = "/setting/password", method = RequestMethod.GET)
-    public ModelAndView showsettingpw(ModelAndView modelAndView, HttpSession session){
-        User user = (User) session.getAttribute("loginUserInfo");
-        if(user == null){
-            modelAndView.setViewName("rediret:/notice");
-            return modelAndView;
-        }else {
-            Map<String, Object> map = new HashMap<>();
-            map.put("user_id", user.getLoginId());
-            map.put("user_name", user.getName());
-            modelAndView.addObject("messages", map);
-            modelAndView.setViewName("settingPassword");
-            return modelAndView;
-        }
+    public ModelAndView showsettingpw(ModelAndView modelAndView, Authentication authentication) {
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", user.getLoginId());
+        map.put("user_name", user.getName());
+        modelAndView.addObject("messages", map);
+        modelAndView.setViewName("settingPassword");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/setting/password", method = RequestMethod.POST)
-    public ModelAndView settingpw(ModelAndView modelAndView, HttpServletRequest request, HttpSession session){
+    public ModelAndView settingpw(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication) {
         String origin_password = request.getParameter("origin_password");
         String new_password = request.getParameter("new_password");
         String new_password1 = request.getParameter("new_password1");
-        User user = (User) session.getAttribute("loginUserInfo");
-        modelAndView.setViewName("redirect:/myPage/setting");
-        if(user.getLoginPw().equals(origin_password)){
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        if (!bCryptPasswordEncoder.matches(origin_password, user.getLoginPw())) {
+            modelAndView.setViewName("redirect:/myPage/setting/password");
             return modelAndView;
-        }else{
-            if(new_password.equals(new_password1)){
-                user.setLoginPw(new_password);
+        } else {
+            if (new_password.equals(new_password1)) {
+                user.setLoginPw(bCryptPasswordEncoder.encode(new_password));
+                userService.saveUser(user);
             }
         }
+        modelAndView.setViewName("redirect:/home");
         return modelAndView;
     }
 
     @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.GET)
-    public ModelAndView showWithdrawl(ModelAndView modelAndView, HttpSession session){
+    public ModelAndView showWithdrawl(ModelAndView modelAndView, Authentication authentication) {
         modelAndView.setViewName("withdrawl");
         Map<String, Object> map = new HashMap<>();
-        User user = (User) session.getAttribute("loginUserInfo");
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
         map.put("user_id", user.getloginId());
         map.put("user_name", user.getName());
-        modelAndView.addObject("messages",map);
+        modelAndView.addObject("messages", map);
         return modelAndView;
     }
 
     @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.POST)
-    public ModelAndView withdrawal(ModelAndView modelAndView, HttpSession session){
-        User user = (User) session.getAttribute("loginUserInfo");
-        if(user.getGroup() != null){
-            List<User> groupUser = user.getGroup().getUsers();
-            groupUser.remove(user);
+    public ModelAndView withdrawal(ModelAndView modelAndView, Authentication authentication, HttpSession session) {
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        if (user.getGroup() != null) {
+            user.getGroup().getUsers().remove(user);
+            groupService.save(user.getGroup());
         }
         userRepository.delete(user);
+        session.invalidate();
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
+
 }

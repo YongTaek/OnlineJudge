@@ -1,4 +1,3 @@
-loginUser: loginUser
 html {
     head {
         link(rel: 'stylesheet', type: 'text/css', href: '/css/login.css')
@@ -16,6 +15,9 @@ html {
             div(id: 'info-container') {
                 h1(class: 'title', "Online Judge")
                 p(class: 'sub-title', "at. Hanyang University")
+                if(matcherror){
+                    p("아이디 혹은 비밀번호가 일치하지 않습니다")
+                }
             }
             div(id: 'login-form-container') {
                 h1(id: 'form-title', class: 'title push-bottom', "Login")

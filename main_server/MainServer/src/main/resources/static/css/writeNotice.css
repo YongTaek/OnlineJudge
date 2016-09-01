@@ -76,3 +76,29 @@ input.form-control {
 .center {
     text-align: center;
 }
+
+
+.margin > p{
+    margin-bottom: 15px;
+}
+
+.margin > input{
+    margin-bottom: 15px;
+    background: transparent;
+    border: solid #1F3860 1px;
+    border-radius: 5px;
+}
+
+.username > span {
+    margin-right: 10px;
+}
+
+span.marginTitle {
+    margin-right: 79px;
+    margin-left : 30px;
+}
+
+span.marginNumber {
+    margin-right: 20px;
+    margin-left : 28px;
+}

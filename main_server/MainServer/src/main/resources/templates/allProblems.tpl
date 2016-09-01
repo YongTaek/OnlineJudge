@@ -1,4 +1,4 @@
-layout 'problemList.tpl', title: '문제', loginUser: loginUser,
+layout 'problemList.tpl', title: '문제', loginUser: loginUser, page:list,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
             link(rel: 'stylesheet', type: 'text/css', href: '/css/allProblems.css')

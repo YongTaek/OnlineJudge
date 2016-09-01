@@ -178,7 +178,8 @@ public class WebBoardController {
         }
         Question question = questionRepository.findOne(id);
         if(question==null){
-            modelAndView.setViewName("redirect:problem/"+id);
+            modelAndView.setViewName("redirect:/problem/"+id);
+            return modelAndView;
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Map<String, Object> map = new HashMap<>();
@@ -251,7 +252,7 @@ public class WebBoardController {
             loginUser = currentUser.getUser();
         }
         if(loginUser == null){
-            modelAndView.setViewName("redirect:/question");
+            modelAndView.setViewName("redirect:/board/question");
             return modelAndView;
         }
         modelAndView.addObject("loginUser",loginUser);

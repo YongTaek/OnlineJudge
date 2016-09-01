@@ -1,6 +1,6 @@
 layout 'layout.tpl', title: '게시판', loginUser: loginUser,
         custom_head: contents {
-            link(rel: 'stylesheet', href: '/css/problemList.css')
+            link(rel: 'stylesheet', href: '/css/questionList.css')
         },
         content: contents {
             div(class: 'container') {
@@ -8,23 +8,21 @@ layout 'layout.tpl', title: '게시판', loginUser: loginUser,
                     div(class: 'head-container') {
                         ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active') {
-                                a(href: 'notice', '공지사항')
+                                a(href: '/board/notice', '공지사항')
                             }
                             li() {
-                                a(href: 'question', 'Q&A')
+                                a(href: '/board/question', 'Q&A')
                             }
                         }
                         div(class: 'head-item') {
-
                             input(type = "text", class: 'form-control', id: 'exampleInputAmount', name: 'search')
                         }
                         div (class: 'head-item') {
                             button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
                         }
                         div(class: 'head-item') {
-                            a(class: 'btn btn-primary push-left', href: '/notice/write', '글쓰기')
+                            a(class: 'btn btn-primary push-left', href: '/board/notice/write', '글쓰기')
                         }
-                        di
                     }
                 }
 
@@ -32,10 +30,10 @@ layout 'layout.tpl', title: '게시판', loginUser: loginUser,
                     table(class: 'table table-striped') {
                         thead {
                             tr {
-                                td(class: 'common-table', '번호')
-                                td(class: 'common-table', '제목')
-                                td(class: 'common-table', '작성자')
-                                td(class: 'common-table', '날짜')
+                                th(class: 'center', '번호')
+                                th(class: 'center', '제목')
+                                th(class: 'center', '작성자')
+                                th(class: 'center', '날짜')
                             }
                         }
                         tbody {
@@ -44,12 +42,12 @@ layout 'layout.tpl', title: '게시판', loginUser: loginUser,
                             } else {
                                 messages.each { message ->
                                     tr {
-                                        td(class: 'common-table', message.number)
-                                        td(class: 'common-table') {
+                                        td(class: 'center', message.number)
+                                        td(class: 'center') {
                                             a(href: '/notice/'+message.number, message.title)
                                         }
-                                        td(class: 'common-table', message.user)
-                                        td(class: 'common-tbale', message.date)
+                                        td(class: 'center', message.user)
+                                        td(class: 'center', message.date)
                                     }
                                 }
                             }

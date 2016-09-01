@@ -1,32 +1,35 @@
 layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', href: '/css/setting.css')
+//            link(rel: 'stylesheet', href: '/css/table.css')
+        },
         content: contents {
-            link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
                 div(class : 'row') {
                     div(class: 'col-md-12') {
-                        p() {
+                        p(class : 'username') {
                             span(style: 'font-size : 35', messages.user_id)
                             span(messages.user_name)
                         }
                     }
                 }
                 div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-tabs') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li() {
                                 a(href: '/myPage', '활동')
                             }
-                            li(class : 'active') {
+                            li(class: 'active') {
                                 a(href: '/myPage/setting', '설정')
                             }
-                            li(){
-                               a(href: '/problem/create', '문제 만들기')
+                            li() {
+                                a(href: '/problem/create', '문제 만들기')
                             }
                         }
 
                     }
                 }
-                hr(class : 'half-rule')
+                br()
                 div(class : 'col-md-4'){
                     ul(class : 'list-group sidebar-nav-v1'){
                         li(class : 'list-group-item active'){
@@ -39,7 +42,7 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                             a(href: '/myPage/setting/withdrawal', '회원 탈퇴')
                         }
                         li(class : 'list-group-item'){
-                            a(href: '/myPage/setting/group', '그룹 설정')
+                            a(href: '/group/list', '그룹 설정')
                         }
                         li(class : 'list-group-item'){
                             a(href: '/myPage/setting/team', '팀 설정')
@@ -50,11 +53,11 @@ layout 'layout.tpl', title: '마이페이지',loginUser:loginUser,
                     form(id: 'modify_info', action: '/myPage/setting', method: 'post') {
                         div(class: 'form-group') {
                             div(class : 'row') {
-                                div(class: 'col-md-3') {
+                                div(class: 'col-md-3 margin') {
                                     p("이름")
                                     p("이메일")
                                 }
-                                div(class: 'col-md-5') {
+                                div(class: 'col-md-5 margin') {
                                     input(type: 'text', value: messages.name, name: 'user_name', id: 'name')
                                     input(type: 'text', value: messages.email, name: 'user_email', id: 'email')
                                 }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -88,6 +89,37 @@ public class ProblemService {
 
     }
 
+    public Future<ModelAndView> getSortedProbByrank(ModelAndView modelAndView, User loginUser, String searchString) {
+        ArrayList<Map> messages = new ArrayList<>();
+        Iterable<Problem> problems = problemRepository.findByName(searchString);
+        int i= 0;
+        for(Problem p : problems){
+            Map<String,Object> map = new HashMap<>();
+            int success_count = answerRepository.countBySuccessAndProblemId(p.getId());
+            int total_count = answerRepository.countByProblemId(p.getId());
+            double rate = success_count/total_count *100;
+
+            GradeResult isSuccess;
+            if(loginUser!=null) {
+                isSuccess = answerRepository.findIsSuccessTop1ByUserId(loginUser.getId(), p.getId());
+                if (isSuccess != null) {
+                    map.put("result", isSuccess.getIsSuccess());
+                }
+            }
+            map.put("rank",++i);
+            map.put("id",p.getId());
+            map.put("name",p.getName());
+            map.put("count",success_count);
+            map.put("rate",rate);
+
+            messages.add(map);
+        }
+        ArrayList<Integer> pages = new ArrayList<>();
+        modelAndView.setViewName("rankingProblems");
+        modelAndView.addObject("messages",messages);
+        modelAndView.addObject("pages",pages);
+        return new AsyncResult<>(modelAndView);
+    }
     public Future<Integer> countAllProblem(){
         return new AsyncResult<>(problemRepository.countAll());
     }
@@ -95,5 +127,10 @@ public class ProblemService {
 
     public Iterable<Problem> findProblemRecent(){
         return problemRepository.findAll(new PageRequest(0,100));
+    }
+
+    public Future<List<Problem>> findProblemsBySubmittedUser(User user) {
+        System.out.println(user.getId());
+        return new AsyncResult<>(problemRepository.findProblemByUserId(user.getId()));
     }
 }

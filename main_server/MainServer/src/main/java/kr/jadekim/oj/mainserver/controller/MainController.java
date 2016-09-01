@@ -2,10 +2,8 @@ package kr.jadekim.oj.mainserver.controller;
 
 
 import kr.jadekim.oj.mainserver.controller.WebController.LoginInterceptor;
-import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,11 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 public class MainController {
 
     @RequestMapping("/")
-    public ModelAndView index(ModelAndView modelAndView, Authentication authentication){
-        if(authentication != null ) {
-            modelAndView.addObject("loginUser", ((CurrentUser)authentication.getPrincipal()).getUser().getName());
-            System.out.println("login");
-        }
+    public ModelAndView index(ModelAndView modelAndView){
+
         modelAndView.setViewName("home");
         return modelAndView;
     }

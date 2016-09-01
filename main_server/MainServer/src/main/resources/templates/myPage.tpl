@@ -1,18 +1,21 @@
 layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', href: '/css/myPage.css')
+//            link(rel: 'stylesheet', href: '/css/table.css')
+        },
         content: contents {
-            link(rel: 'stylesheet', href: '/css/table.css')
             div(class: 'container') {
                 div(class : 'row') {
                     div(class: 'col-md-12') {
-                        p() {
+                        p(class : 'username') {
                             span(style: 'font-size : 35', messages.user_id)
                             span(messages.user_name)
                         }
                     }
                 }
                 div(class: 'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-tabs') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li(class : 'active') {
                                 a(href: '/myPage', '활동')
                             }
@@ -22,13 +25,21 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
                             li(){
                                 a(href: '/problem/create', '문제 만들기')
                             }
+                            if(!messages.group){
+                                li() {
+                                    a(href: '/group/list', '그룹')
+                                }
+                                li() {
+                                    a(href: '/group/create','그룹 만들기')
+                                }
+                            }
                         }
 
                     }
                 }
-                hr(class : 'half-rule')
+                br()
                 div(class : 'col-md-4') {
-                    div(class: 'prob-container') {
+                    div(id: 'problem-container') {
                         table(class: 'table table-striped') {
                             tbody {
                                 if (messages.empty) {
@@ -55,7 +66,9 @@ layout 'layout.tpl', title: '마이페이지',loginUser: loginUser,
                                        if(messages.group == null){
                                            td(class : 'common-table')
                                        }else{
-                                           td(class : 'common-table', messages.group)
+                                           td(class : 'common-table'){
+                                               a(href: '/group/myGroup',messages.group)
+                                           }
                                        }
                                     }
                                 }

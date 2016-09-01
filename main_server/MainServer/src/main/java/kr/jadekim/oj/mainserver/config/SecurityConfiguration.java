@@ -39,6 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers().frameOptions().disable()
+                .and()
                 .authorizeRequests()
                     .antMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
                     .antMatchers("/myPage/**").hasAuthority(String.valueOf(Role.USER))
@@ -46,10 +48,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                 .loginPage("/login")
-                .failureHandler((request, response, exception) -> response.addHeader("error",exception.getLocalizedMessage()))
                 .usernameParameter("login_id")
                 .passwordParameter("login_pw")
                 .defaultSuccessUrl("/")
+                .failureUrl("/login?matcherror=true")
                 .permitAll()
                 .and()
                 .logout()

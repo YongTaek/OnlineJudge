@@ -1,30 +1,34 @@
-layout 'layout.tpl', title: '그룹 만들기', loginUser:loginUser,
+layout 'layout.tpl', title: '그룹 만들기', loginUser: loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', type: 'text/css', href: '/css/groupCreate.css')
+        },
         content: contents {
-            div() {
-                div(class: 'prob-container') {
-                    form(id : 'write_question', action:'/group/create', method:'post') {\
-                        h2 'Group - 만들기'
-                        div(class: 'col-md-12') {
-                            span '그룹 이름'
-                            input(type: 'text', value: '', name: 'group_name', id : 'group_name')
+            div(id: 'content') {
+                div(id: 'info-container') {
+                    h1(class: 'title', "Group")
+                    p(class: 'sub-title', "Group create")
+                }
+                div(id: 'login-form-container') {
+                    h1(id: 'form-title', class: 'title push-bottom', "Group")
+                    form(id: 'login-form', action: '/group/create', method: 'post') {
+                        div(class: 'form-group') {
+                            label(for: 'group_name', '그룹 이름')
+                            input(type: 'text', name: 'group_name', class: 'form-control')
                         }
-                        div(class: 'col-md-12') {
-                            span '가입 제한 여부'
-                        }
-                        div(class: 'col-md-12') {
-                            div(class : 'row'){
-                                input(type: 'radio', name : 'isprivate', id : 'group_private', value : 1,'O')
-                                input(type: 'radio', name : 'isprivate', id : 'group_public', value : 2,'X')
+                        div(class: 'form-group') {
+                            label(for: 'group_private', '가입 제한 여부')
+                            div(class: 'radio') {
+                                input(type: 'radio', name: 'isprivate', id: 'group_private', value: 1)
+                                p('O')
 
+
+                                input(type: 'radio', name: 'isprivate', id: 'group_public', value: 2)
+                                p('X')
                             }
                         }
-                        div(class: 'col-md-12') {
-                            div(class: 'row') {
-                                button(type : "submit", id : "postButton", class : "btn btn-primary", '만들기')
-                                a(href : '/group',class:"btn btn-primary", '취소')
-                            }
-                        }
+                        button(type: 'submit', class: 'btn', "Create")
                     }
                 }
             }
+            script(src: "/js/login.js") {}
         }

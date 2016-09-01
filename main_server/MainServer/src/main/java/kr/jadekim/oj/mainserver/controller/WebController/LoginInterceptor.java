@@ -22,5 +22,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             User loginUser = ((CurrentUser)authentication.getPrincipal()).getUser();
             modelAndView.addObject("loginUser", loginUser.getName());
         }
+
     }
 }
