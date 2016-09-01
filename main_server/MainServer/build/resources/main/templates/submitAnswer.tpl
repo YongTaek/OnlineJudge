@@ -7,6 +7,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
             script(src: '/mode/xml/xml.js'){}
             script(src: '/js/submitAnswer.js') {}
         },
+
         content: contents {
             div(class: 'container') {
                 form(id: 'submit-answer-form', class: 'form-horizontal') {
