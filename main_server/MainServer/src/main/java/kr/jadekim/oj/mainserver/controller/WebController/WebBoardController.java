@@ -462,13 +462,14 @@ public class WebBoardController {
         if(currentUser!=null) {
             loginUser = currentUser.getUser();
         }
-        modelAndView.setViewName("redirect:/notice");
+        modelAndView.setViewName("redirect:/board/notice");
         if(loginUser == null){
             return modelAndView;
         }else{
             //System.out.println(loginUser.getLoginId());
         }
         Date date = new Date();
+        System.out.println(contents);
         Post post = new Post(board, loginUser, date, title, contents);
         postRepository.save(post);
         return modelAndView;

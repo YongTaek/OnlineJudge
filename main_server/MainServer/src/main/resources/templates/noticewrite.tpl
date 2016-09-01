@@ -39,7 +39,7 @@ layout 'layout.tpl', title: '질문하기',loginUser:loginUser,
                             div(class: 'col-md-12') {
                                 div(class: 'row') {
                                     button(type: "submit", id: "postButton", class: "btn btn-primary submit", '올리기')
-                                    a(href: '/notice', class: "btn btn-primary", '취소')
+                                    a(href: '/board/notice', class: "btn btn-primary", '취소')
                                 }
                             }
                         }
