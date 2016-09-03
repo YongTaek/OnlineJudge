@@ -125,7 +125,7 @@ public class WebGroupController {
         } else if (Integer.valueOf(request.getParameter("isprivate")) == 2) {
             isprivate = false;
         }
-        modelAndView.setViewName("redirect:/group");
+        modelAndView.setViewName("redirect:/group/list");
         if (loginUser == null) {
             return modelAndView;
         }

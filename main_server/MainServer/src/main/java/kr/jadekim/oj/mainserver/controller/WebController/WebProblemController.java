@@ -1,11 +1,15 @@
 package kr.jadekim.oj.mainserver.controller.WebController;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import kr.jadekim.oj.mainserver.config.Setting;
 import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
 import kr.jadekim.oj.mainserver.service.AnswerService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
+import kr.jadekim.oj.mainserver.util.SimpleResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -15,7 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +48,8 @@ public class WebProblemController {
 
     @Autowired
     TestcaseRepository testcaseRepository;
+
+    Gson gson = new GsonBuilder().create();
 
     @RequestMapping("{id}")
     public ModelAndView problem( ModelAndView modelAndView, @PathVariable("id") int problem_id, Authentication authentication) {
@@ -104,8 +115,8 @@ public class WebProblemController {
         User loginUser = currentUser.getUser();
         try {
             problem = problemService.getProblem(Integer.parseInt(request.getParameter("problem_id"))).get();
-
             content = request.getParameter("code");
+
             Answer answer = new Answer(loginUser, content, new Date(), problem);
             answerService.saveAnswer(answer);
         } catch (InterruptedException e) {
@@ -181,4 +192,42 @@ public class WebProblemController {
         return modelAndView;
     }
 
+    public SimpleResult sendPost(String path,Map<String,Object> params) throws Exception {
+        String url = Setting.EvaluationServer + path;
+        URL obj = new URL(url);
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        con.setRequestMethod("POST");
+
+        String urlParameters = "";
+        int count =0;
+        for(String key : params.keySet()) {
+            urlParameters += key + "=" + params.get(key);
+            count++;
+            if(count < params.keySet().size()) {
+                urlParameters +="&";
+            }
+        }
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        System.out.println(response);
+
+        SimpleResult simpleResult = gson.fromJson(response.toString(),SimpleResult.class);
+        return simpleResult;
+    }
 }

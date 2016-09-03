@@ -118,7 +118,7 @@ public class WebMyPageController {
             map.put("name", loginUser.getName());
             map.put("email", loginUser.getEmail());
             modelAndView.addObject("messages", map);
-            modelAndView.setViewName("settinglist");
+            modelAndView.setViewName("settingUserInfo");
             return modelAndView;
         }
     }

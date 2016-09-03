@@ -6,11 +6,11 @@ import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
-import kr.jadekim.oj.mainserver.repository.TestcaseRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,9 +26,6 @@ import java.util.concurrent.Future;
  */
 @Service
 public class ProblemService {
-
-    @Autowired
-    private TestcaseRepository testcaseRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -50,11 +47,12 @@ public class ProblemService {
         return new AsyncResult<>(problems);
     }
 
-
+    @Async
     public Future<Iterable<Problem>> findByName(String name){
         Iterable<Problem> problems = problemRepository.findByName(name);
         return new AsyncResult<>(problems);
     }
+
 
     public Future<ModelAndView> getSortedProbByrank(ModelAndView modelAndView,User loginUser){
         ArrayList<Map> messages = new ArrayList<>();
