@@ -11,6 +11,25 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
 
         content: contents {
             div(class: 'container') {
+                div(class: 'header'){
+                    ul(class: 'nav nav-pills head-item main') {
+                        li(id: 'problem-num') {
+                            a(href: '#', problem.id)
+                        }
+                        li(class: 'active', id: 'problem-submit') {
+                            a(href: 'submit/'+problem.id, '제출하기')
+                        }
+                        li(id: 'grade-now') {
+                            a(href: '#', '채점 현황')
+                        }
+                        li(id: 'grade-now-me') {
+                            a(href: '#', '내 채점현황')
+                        }
+                        li(id: 'q&a') {
+                            a(href: '/board/question/'+problem.id, 'Q&A')
+                        }
+                    }
+                }
                 form(id: 'submit-answer-form', class: 'form-horizontal') {
                     legend problem.name
                     input(type: 'hidden', value: problem.id, name: 'problem_id')
