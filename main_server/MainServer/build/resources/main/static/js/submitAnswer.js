@@ -8,8 +8,7 @@ $(document).ready(function() {
         lineNumbers: true,
         lineWrapping: true,
         theme: "eclipse",
-        val: textarea.value,
-        mode: "text/javascript"
-    })
-
-})
+        styleActiveLine: true,
+        matchBrackets: true,
+    });
+});

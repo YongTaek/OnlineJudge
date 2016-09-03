@@ -1,4 +1,9 @@
 #source{
-
     display: block;
+}
+.header{
+    margin-bottom: 20px;
+}
+.submitAns{
+    margin-top: 20px;
 }
