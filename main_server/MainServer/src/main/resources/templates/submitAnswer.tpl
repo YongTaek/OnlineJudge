@@ -2,6 +2,7 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/submitAnswer.css')
             link(rel: 'stylesheet', href: '/css/codemirror.css')
+            link(rel: 'stylesheet', href: '/css/createProblem.css')
             script(src: '/js/codemirror.js') {}
             script(type: 'text/javascript', src: '/mode/javascript/javascript.js'){}
             script(src: '/mode/xml/xml.js'){}
@@ -23,8 +24,8 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                     div(class: 'form-group') {
                         label(class: 'col-md-2 control-label', for: 'source', '소스 코드')
                         div(class: 'col-md-10') {
-                            textarea(id: 'code', autofocus: 'autofocus', class: 'code-java')
-
+                            textarea(id: 'code', autofocus: 'autofocus', class: 'code-java'){}
+                            button(type: "submit", id: "postButton", class: "submitAns btn btn-primary", '제출하기')
                         }
                     }
 
