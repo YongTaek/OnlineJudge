@@ -30,20 +30,20 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser,
                         }
                     }
                 }
-                form(id: 'submit-answer-form', class: 'form-horizontal') {
+                form(id: 'submit-answer-form',action:'/problem/submit', class: 'form-horizontal',method:'post') {
                     legend problem.name
                     input(type: 'hidden', value: problem.id, name: 'problem_id')
                     div(class: 'form-group') {
                         label(class: 'col-md-2 control-label', for: 'language', '언어')
-                        select {
-                            option(value: 1, 'C')
-                            option(value: 2, 'Java')
+                        select (name:'language') {
+                            option(value: 'C',selected:'selected', 'C')
+                            option(value: 'java', 'Java')
                         }
                     }
                     div(class: 'form-group') {
                         label(class: 'col-md-2 control-label', for: 'source', '소스 코드')
                         div(class: 'col-md-10') {
-                            textarea(id: 'code', autofocus: 'autofocus', class: 'code-java'){}
+                            textarea(id: 'code', autofocus: 'autofocus', name:'code',class: 'code-java'){}
                             button(type: "submit", id: "postButton", class: "submitAns btn btn-primary", '제출하기')
                         }
                     }

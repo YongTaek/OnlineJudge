@@ -1,20 +1,21 @@
 package kr.jadekim.oj.evaluation.controllers;
 
 import kr.jadekim.oj.evaluation.ApiConstants;
-import kr.jadekim.oj.evaluation.utils.Logger;
 import kr.jadekim.oj.evaluation.Setting;
-import kr.jadekim.oj.evaluation.database.ProblemRepository;
+import kr.jadekim.oj.evaluation.database.ProblemService;
 import kr.jadekim.oj.evaluation.evaluator.Evaluator;
 import kr.jadekim.oj.evaluation.evaluator.SubmissionQueue;
 import kr.jadekim.oj.evaluation.models.*;
 import kr.jadekim.oj.evaluation.network.Api;
+import kr.jadekim.oj.evaluation.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import rx.observables.BlockingObservable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jdekim43 on 2016. 1. 21..
@@ -24,22 +25,22 @@ import java.util.*;
 public class EvaluationController {
 
     @Autowired
-    ProblemRepository problemRepository;
+    ProblemService problemService;
 
-    private static volatile List<Evaluator> evaluators = new ArrayList<>();
+    public static volatile List<Evaluator> evaluators = new ArrayList<>();
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public SimpleResult submit(@RequestParam(value = "submitId", defaultValue = "-1") long id,
-                               @RequestParam(value = "language") String language,
-                               @RequestParam(value = "code") String code,
-                               @RequestParam(value = "problemId") int problemId) {
+    @RequestMapping(method = RequestMethod.POST)
+    public @ResponseBody SimpleResult submit(@RequestParam(value = "submitId", defaultValue = "-1") long id,
+                        @RequestParam(value = "language") String language,
+                        @RequestParam(value = "code") String code,
+                        @RequestParam(value = "problemId") int problemId) {
         if (id <= 0) {
             return new SimpleResult(false, "Invalid `id` value");
         }
         if (language.length() <= 0) {
             return new SimpleResult(false, "Invalid `language` value");
         }
-
+        System.out.println(language);
         try {
             Language.valueOf(language);
         } catch (IllegalArgumentException e) {
@@ -49,16 +50,17 @@ public class EvaluationController {
             }
             return new SimpleResult(false, message);
         }
-
         if (code.length() <= 0) {
             return new SimpleResult(false, "Invalid `code` value");
         }
-
-        SubmissionQueue.getInstance().add(createSubmission(id, Language.valueOf(language), code, getProblem(problemId)));
-
-        setEvaluators();
-
-        return new SimpleResult(true, Integer.toString(SubmissionQueue.getInstance().count()));
+        try {
+            SubmissionQueue.getInstance().add(createSubmission(id, Language.valueOf(language),code,problemService.findProblemById(problemId)));
+            setEvaluators();
+            return new SimpleResult(true, Integer.toString(SubmissionQueue.getInstance().count()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new SimpleResult(false,"fail to evaluate answer");
     }
 
     @RequestMapping(value = "/connect", method = RequestMethod.GET)
@@ -71,22 +73,20 @@ public class EvaluationController {
         Api.getInstance().endEvaluate(result);
     }
 
-    protected Problem getProblem(int problemId) {
-        Problem problem = problemRepository.findById(problemId);
-
-        if (problem == null) {
-            problem = BlockingObservable.from(Api.getInstance().getProblem(problemId)).first();
-            problemRepository.save(problem);
-        }
-
-        return problem;
-    }
+//    protected Problem getProblem(int problemId) {
+//        Problem problem = problemRepository.findById(problemId);
+//
+//        if (problem == null) {
+//            problem = BlockingObservable.from(Api.getInstance().getProblem(problemId)).first();
+//            problemRepository.save(problem);
+//        }
+//        return problem;
+//    }
 
     protected Submission createSubmission(long id, Language language, String code, Problem problem) {
         Submission submission = new Submission(id, language, code);
-
+        System.out.println("submission object create");
         submission.setProblem(problem);
-
         return submission;
     }
 
