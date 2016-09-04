@@ -2,10 +2,6 @@ package kr.jadekim.oj.evaluation.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 /**
  * Created by jdekim43 on 2016. 1. 21..
  */

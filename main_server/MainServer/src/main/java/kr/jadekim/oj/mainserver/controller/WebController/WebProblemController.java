@@ -3,6 +3,7 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.deploy.net.URLEncoder;
 import kr.jadekim.oj.mainserver.config.Setting;
 import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
@@ -19,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,14 +112,28 @@ public class WebProblemController {
     public ModelAndView submitAnswer(HttpServletRequest request, ModelAndView modelAndView, Authentication authentication) {
         Problem problem;
         String content;
+        String language;
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
         try {
             problem = problemService.getProblem(Integer.parseInt(request.getParameter("problem_id"))).get();
             content = request.getParameter("code");
-
+            language = request.getParameter("language");
             Answer answer = new Answer(loginUser, content, new Date(), problem);
             answerService.saveAnswer(answer);
+            Map<String,Object> params = new HashMap<>();
+            params.put("submitId",answer.getId());
+            params.put("language",language);
+            params.put("code",content);
+            params.put("problemId",problem.getId());
+            try {
+                SimpleResult result = sendPost("/api/v1/evaluation",params);
+                System.out.println(result.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("error");
+            }
+//            answerService.saveAnswer(answer);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -193,29 +208,46 @@ public class WebProblemController {
     }
 
     public SimpleResult sendPost(String path,Map<String,Object> params) throws Exception {
-        String url = Setting.EvaluationServer + path;
+        String url = Setting.EvaluationServer+ path;
+        System.out.println(url);
         URL obj = new URL(url);
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestMethod("POST");
 
         String urlParameters = "";
         int count =0;
         for(String key : params.keySet()) {
-            urlParameters += key + "=" + params.get(key);
+            urlParameters += URLEncoder.encode(key,"UTF-8") + "=" + java.net.URLEncoder.encode(String.valueOf(params.get(key)),"UTF-8");
             count++;
             if(count < params.keySet().size()) {
                 urlParameters +="&";
             }
         }
+        System.out.println(urlParameters);
+
         con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
+        con.setDoInput(true);
+        con.setConnectTimeout(5000);
+        con.setReadTimeout(1000);
+        OutputStream wr = con.getOutputStream();
+        wr.write(urlParameters.getBytes());
         wr.flush();
         wr.close();
 
         int responseCode = con.getResponseCode();
-
+        System.out.println(responseCode);
+        if(responseCode>=400) {
+            BufferedReader error = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            String errorLine;
+            StringBuffer errorResponse = new StringBuffer();
+            while((errorLine = error.readLine()) != null) {
+                errorResponse.append(errorLine);
+            }
+            System.out.println(errorResponse.toString());
+        }
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
