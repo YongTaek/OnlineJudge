@@ -89,6 +89,10 @@ input.form-control {
     border-radius: 5px;
 }
 
+.margin > span {
+    margin-right: 15px;
+    margin-left: 15px;
+}
 .username > span {
     margin-right: 10px;
 }

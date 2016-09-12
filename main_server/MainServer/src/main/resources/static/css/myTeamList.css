@@ -51,20 +51,13 @@ input.form-control {
 }
 
 #problem-container > table > thead th:nth-child(1) {
-    width: 80px;
+    width: 120px;
 }
 
-#problem-container > table > thead th:nth-child(3) {
+#problem-container > table > thead th:nth-child(2) {
     width: 70px;
 }
 
-#problem-container > table > thead th:nth-child(4) {
-    width: 90px;
-}
-
-#problem-container > table > thead th:nth-child(5) {
-    width: 60px;
-}
 
 .center {
     text-align: center;
@@ -81,9 +74,6 @@ input.form-control {
     margin-right: 20px;
 }
 
-.margin > button {
-    text-align: center;
-}
 button.submit {
     margin-right: 5px;
     margin-left: 15px;

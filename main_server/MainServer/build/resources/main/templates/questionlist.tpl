@@ -45,7 +45,7 @@ layout 'layout.tpl', title: '질문게시판',loginUser:loginUser,
                                         tr(item_id: message.id) {
                                             td(class: 'center', message.number)
                                             td(class: 'center') {
-                                                a(href: '/question/' + message.number, message.title)
+                                                a(href: '/board/question/' + message.number, message.title)
                                             }
                                             td(class: 'center', message.question)
                                             td(class: 'center', message.user)
