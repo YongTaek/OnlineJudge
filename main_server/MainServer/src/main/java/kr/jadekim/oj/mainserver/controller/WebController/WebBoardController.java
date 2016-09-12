@@ -89,7 +89,9 @@ public class WebBoardController {
             map.put("date", date);
             map.put("title", name);
             messages.add(map);
+            System.out.println(name+"");
         }
+
         if(loginUser!=null) {
             modelAndView.addObject("loginUser", loginUser.getName());
         }
@@ -178,7 +180,7 @@ public class WebBoardController {
         }
         Question question = questionRepository.findOne(id);
         if(question==null){
-            modelAndView.setViewName("redirect:/problem/"+id);
+            modelAndView.setViewName("redirect:/board/problem/"+id);
             return modelAndView;
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
@@ -189,7 +191,7 @@ public class WebBoardController {
         }
         Post post = question.getPost();
         if(post == null){
-            modelAndView.setViewName("redirect:/question");
+            modelAndView.setViewName("redirect:/board/question");
             return modelAndView;
         }
         List<QuestionAnswer> answers = question.getAnswers();
@@ -268,11 +270,11 @@ public class WebBoardController {
         }
         String title = request.getParameter("question_title");
         int question_problem = Integer.valueOf(request.getParameter("question_problem"));
-        String content = request.getParameter("question_contents");
+        String content = request.getParameter("smartEditor");
         Board board = boardRepository.findOne(2);
         User user = currentUser.getUser();
         if(user == null){
-            modelAndView.setViewName("redirect:/question");
+            modelAndView.setViewName("redirect:/board/question");
             return modelAndView;
         }
         Date date = new Date();
@@ -281,7 +283,7 @@ public class WebBoardController {
         Problem problem = problemRepository.findOne(question_problem);
         Question question = new Question(post, problem);
         questionRepository.save(question);
-        modelAndView.setViewName("redirect:/question");
+        modelAndView.setViewName("redirect:/board/question");
         return modelAndView;
     }
 
@@ -308,7 +310,7 @@ public class WebBoardController {
     @RequestMapping(value = "/question/answerwrite/{id}", method = RequestMethod.POST)
     public ModelAndView saveAnswer(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id")int id){
         String title = request.getParameter("answer_title");
-        String answer_contents = request.getParameter("answer_contents");
+        String answer_contents = request.getParameter("smartEditor");
         Board board = boardRepository.findOne(3);
         User user = userRepository.findOne(1);
         Date date = new Date();
@@ -320,7 +322,7 @@ public class WebBoardController {
         question.getAnswers().add(questionAnswer);
         questionRepository.save(question);
 
-        modelAndView.setViewName("redirect:/question/{id}");
+        modelAndView.setViewName("redirect:/board/question/{id}");
         return modelAndView;
     }
 
@@ -336,7 +338,7 @@ public class WebBoardController {
             loginUser = currentUser.getUser();
         }
         if(loginUser==null || question.getPost().getAuthor().getId()!=loginUser.getId()){
-            modelAndView.setViewName("redirect:/question");
+            modelAndView.setViewName("redirect:/board/question");
             return modelAndView;
         }
         Post post = question.getPost();
@@ -348,7 +350,7 @@ public class WebBoardController {
         }
         questionRepository.delete(question);
         postRepository.delete(post);
-        modelAndView.setViewName("redirect:/question");
+        modelAndView.setViewName("redirect:/board/question");
         return modelAndView;
     }
 
@@ -396,7 +398,7 @@ public class WebBoardController {
         postRepository.save(post);
         question.setProblem(problem);
         questionRepository.save(question);
-        modelAndView.setViewName("redirect:/question/{id}");
+        modelAndView.setViewName("redirect:/board/question/{id}");
         return modelAndView;
     }
 
@@ -417,18 +419,27 @@ public class WebBoardController {
         return modelAndView;
     }
 
+    @RequestMapping("/question/modify/get-data/")
+    public @ResponseBody String getData(HttpServletRequest request, String data1) {
+        String data = data1;
+        int id= Integer.parseInt(request.getParameter("id"));
+
+        return data;
+    }
+
     @RequestMapping(value = "/question/answermodify/{id}", method = RequestMethod.POST)
     public ModelAndView ModifyAnswer(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id")int id){
         String title = request.getParameter("answer_title");
-        String contents = request.getParameter("answer_contents");
+        String contents = request.getParameter("smartEditor");
         QuestionAnswer questionAnswer = questionAnswerRepository.findOne(id);
         int question_id = questionAnswer.getQuestion().getId();
         Post post = questionAnswer.getPost();
         post.setTitle(title);
         post.setContent(contents);
+        getData(request, contents);
         postRepository.save(post);
         questionAnswerRepository.save(questionAnswer);
-        modelAndView.setViewName("redirect:/question/"+question_id);
+        modelAndView.setViewName("redirect:/board/question/"+question_id);
         return modelAndView;
     }
 
@@ -439,7 +450,7 @@ public class WebBoardController {
         Post post = questionAnswer.getPost();
         questionAnswerRepository.delete(questionAnswer);
         postRepository.delete(post);
-        modelAndView.setViewName("redirect:/question/"+question_id);
+        modelAndView.setViewName("redirect:/board/question/"+question_id);
         return modelAndView;
     }
 
@@ -456,21 +467,22 @@ public class WebBoardController {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
         String title = request.getParameter("notice_title");
-        String contents = request.getParameter("notice_contents");
+        String contents = request.getParameter("smartEditor");
         Board board = boardRepository.findOne(1);
         User loginUser = null;
         if(currentUser!=null) {
             loginUser = currentUser.getUser();
         }
-        modelAndView.setViewName("redirect:/notice");
         if(loginUser == null){
             return modelAndView;
         }else{
             //System.out.println(loginUser.getLoginId());
         }
         Date date = new Date();
+        System.out.println(contents);
         Post post = new Post(board, loginUser, date, title, contents);
         postRepository.save(post);
+        modelAndView.setViewName("redirect:/board/notice");
         return modelAndView;
     }
 
@@ -487,7 +499,7 @@ public class WebBoardController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "notice/modify/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/notice/modify/{id}", method = RequestMethod.POST)
     public ModelAndView modifyNotice(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id")int id){
         String title = request.getParameter("notice_title");
         String contents = request.getParameter("notice_contents");
@@ -495,16 +507,16 @@ public class WebBoardController {
         post.setContent(contents);
         post.setTitle(title);
         postRepository.save(post);
-        modelAndView.setViewName("redirect:/notice");
+        modelAndView.setViewName("redirect:/board/notice");
         return modelAndView;
     }
 
-    @RequestMapping("notice/delete/{id}")
+    @RequestMapping("/notice/delete/{id}")
     public ModelAndView deleteNotice(ModelAndView modelAndView, @PathVariable("id")int id){
         Post post = postRepository.findOne(id);
         System.out.println(post.getContent());
         postRepository.delete(post);
-        modelAndView.setViewName("redirect:/notice");
+        modelAndView.setViewName("redirect:/board/notice");
         return modelAndView;
     }
 }

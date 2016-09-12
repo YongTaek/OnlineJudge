@@ -44,7 +44,7 @@ layout 'layout.tpl', title: '게시판', loginUser: loginUser,
                                     tr {
                                         td(class: 'center', message.number)
                                         td(class: 'center') {
-                                            a(href: '/notice/'+message.number, message.title)
+                                            a(href: '/board/notice/'+message.number, message.title)
                                         }
                                         td(class: 'center', message.user)
                                         td(class: 'center', message.date)

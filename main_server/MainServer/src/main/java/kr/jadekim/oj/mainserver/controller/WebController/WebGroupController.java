@@ -102,7 +102,6 @@ public class WebGroupController {
         return modelAndView;
     }
 
-
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView showCreateGroup(ModelAndView modelAndView, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();

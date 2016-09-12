@@ -70,7 +70,6 @@ input.form-control {
 }
 
 p.text {
-    margin-left: 200px;
     font-size: 15px;
     margin-bottom: 15px;
 }
@@ -85,11 +84,19 @@ input.input {
 textarea.form-control {
     margin-bottom: 15px;
     background: transparent;
-    border: solid #1F3860 1px;
-    border-radius: 5px;
 }
 
 button.plusButton {
-    margin-left: 200px;
     margin-right: 5px;
 }
+
+
+form.write_form {
+    margin-left: 20px;
+    width: 700px;
+}
+
+.testcaseButton {
+    display: inline-block;
+}
+
