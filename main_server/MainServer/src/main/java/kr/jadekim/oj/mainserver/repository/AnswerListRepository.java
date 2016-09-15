@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface AnswerListRepository extends JpaRepository<AnswerList, Integer> {
 
-    @Query("select al from AnswerList a join a.answer al join a.team t on t.id=:team_id")
+    @Query("select al from AnswerList a join a.answers al join a.team t on t.id=:team_id")
     List<Answer> findAnswerListByTeamId(@Param("team_id") int team_id);
 
 }

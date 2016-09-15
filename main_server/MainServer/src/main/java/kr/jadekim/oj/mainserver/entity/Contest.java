@@ -36,9 +36,9 @@ public class Contest  {
     @JoinColumn(name = "sponsors")
     private List<User> sponsors;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "teams")
-    private List<Team> teams;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "team")
+    private Team team;
 
     @Column(name = "name")
     private String name;
@@ -48,7 +48,7 @@ public class Contest  {
     private Map<Team, AnswerList> solvedProblem;
 
     public Contest() {
-        this.teams = new ArrayList<>();
+        this.team = new Team();
         this.solvedProblem = new HashMap<>();
     }
 
@@ -57,7 +57,7 @@ public class Contest  {
         this.endTime = endTime;
         this.name = name;
         solvedProblem = new HashMap<>();
-        teams = new ArrayList<>();
+        team = new Team();
         this.adminUsers = adminUsers;
         this.examiners = examiners;
         this.sponsors = sponsors;
@@ -103,8 +103,8 @@ public class Contest  {
     }
 
 
-    public List<Team> getTeams() {
-        return teams;
+    public Team getTeam() {
+        return team;
     }
 
 
@@ -137,8 +137,8 @@ public class Contest  {
         return solvedProblem;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public int getId(){ return id;}

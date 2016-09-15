@@ -54,16 +54,6 @@ public class WebTeamInfoController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        if(team != null){
-            Contest contest = team.getContest();
-            AnswerList answerList = contest.getAnswerList(team);
-            Map<String,Object> result = new HashMap<>();
-            List<Answer> answers = answerList.getAnswers();
-            GradeResult gradeResult;
-            for(int i=0; i< answers.size();i++){
-                gradeResult = answers.get(i).getResult();
-            }
-        }
 
 
         modelAndView.setViewName("teamInfo");

@@ -55,9 +55,9 @@ public class YTeamController {
             String admin = t.getAdmin().getName();
             String contest = "test";
             int contest_id = 0;
-            if(t.getContests().size() != 0) {
-                contest = t.getContests().get(0).getName();
-                contest_id = t.getContests().get(0).getId();
+            if(t.getContest() != null) {
+                contest = t.getContest().getName();
+                contest_id = t.getContest().getId();
             }
             map.put("number", num);
             map.put("name", name);

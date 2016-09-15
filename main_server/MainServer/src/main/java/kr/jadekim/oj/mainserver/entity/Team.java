@@ -20,7 +20,7 @@ public class Team {
     private List<User> users;
 
     @OneToOne
-    @JoinColumn(name = "contests")
+    @JoinColumn(name = "contest")
     private Contest contest;
 
     @Column(name = "name")
@@ -76,7 +76,7 @@ public class Team {
         this.users = users;
     }
 
-    public void setContests(Contest contest) {
+    public void setContest(Contest contest) {
         this.contest = contest;
     }
 }
