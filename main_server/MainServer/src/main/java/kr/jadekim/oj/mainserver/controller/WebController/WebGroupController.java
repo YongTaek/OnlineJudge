@@ -102,7 +102,6 @@ public class WebGroupController {
         return modelAndView;
     }
 
-
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView showCreateGroup(ModelAndView modelAndView, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
@@ -125,7 +124,7 @@ public class WebGroupController {
         } else if (Integer.valueOf(request.getParameter("isprivate")) == 2) {
             isprivate = false;
         }
-        modelAndView.setViewName("redirect:/group");
+        modelAndView.setViewName("redirect:/group/list");
         if (loginUser == null) {
             return modelAndView;
         }

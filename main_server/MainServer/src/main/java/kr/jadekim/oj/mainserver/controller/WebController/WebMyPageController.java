@@ -69,12 +69,14 @@ public class WebMyPageController {
             List<Integer> failProblems = new ArrayList<>();
             int successCount = 0;
             for (Answer a : answers) {
-                if (a.getResult().getIsSuccess()) {
-                    successCount++;
-                }
-                if (!a.getResult().getIsSuccess()) {
-                    if (!submitProblems.contains(a.getProblem().getId()) && !failProblems.contains(a.getProblem().getId())) {
-                        failProblems.add(a.getProblem().getId());
+                if(a.getResult() != null) {
+                    if (a.getResult().getIsSuccess()) {
+                        successCount++;
+                    }
+                    if (!a.getResult().getIsSuccess()) {
+                        if (!submitProblems.contains(a.getProblem().getId()) && !failProblems.contains(a.getProblem().getId())) {
+                            failProblems.add(a.getProblem().getId());
+                        }
                     }
                 }
             }
@@ -118,7 +120,7 @@ public class WebMyPageController {
             map.put("name", loginUser.getName());
             map.put("email", loginUser.getEmail());
             modelAndView.addObject("messages", map);
-            modelAndView.setViewName("settinglist");
+            modelAndView.setViewName("settingUserInfo");
             return modelAndView;
         }
     }

@@ -1,0 +1,138 @@
+.head-container {
+    display: table;
+    width: 100%;
+}
+
+.head-item {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.head-item.main {
+    width: 100%;
+}
+
+.nav-pills > li > a {
+    background: transparent;
+    color: #1F3860;
+}
+
+.nav-pills > li.active > a {
+    background: transparent;
+    border: solid #1F3860 1px;
+    color: #1F3860;
+}
+
+.nav-pills > li:hover > a {
+    background: #F4F8FF;
+    color: #1F3860;
+}
+
+.nav-pills > li.active:hover > a {
+    background: #F4F8FF;
+    color: #1F3860;
+}
+
+input.form-control {
+    background: transparent;
+    border: solid #1F3860 1px;
+}
+
+.btn.btn-primary {
+    background: transparent;
+    border: solid #1F3860 1px;
+    color: #1F3860;
+    text-shadow: none;
+}
+
+.btn.btn-primary:hover {
+    background: #F4F8FF;
+    text-shadow: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.panel-default > .panel-heading {
+    color: #ffffff;
+    background-image: none;
+    background-color: #1F3860;
+    border-color: #1F3860;
+}
+
+.panel-default {
+    border-color: #1F3860;
+}
+
+.panel-default > .panel-heading > .panel-title > span.title {
+    font-size: 25px;
+}
+
+.panel-default > .panel-heading > .panel-title > span.date {
+    margin-left: 15px;
+    font-size: 13px;
+}
+
+.panel-default > .panel-heading > .panel-title > span.writer {
+    margin-left: 10px;
+    margin-right: 20px;
+    font-size: 13px;
+}
+
+.panel-default > .panel-heading > .panel-title > a.modify {
+    margin-right: 10px;
+    margin-top: 5px;
+    float: right;
+}
+
+.panel-default > .panel-heading > .panel-title > a.delete {
+    float: right;
+    margin-top: 5px;
+
+}
+
+h4.question > span {
+    margin-bottom: 10px;
+    color: #3865AC;
+}
+
+#container {
+     width: 30em;
+ }
+
+hr.style-eight {
+    padding: 0;
+    border: none;
+    border-top: medium double #333;
+    color: #333;
+    /*text-align: center;*/
+    text-align: left;
+}
+hr.style-eight:after {
+    content: "Question";
+    display: inline-block;
+    position: relative;
+    top: -0.7em;
+    font-size: 1.5em;
+    padding: 0 0.25em;
+    background: white;
+}
+
+hr.style-answer {
+    padding: 0;
+    border: none;
+    border-top: medium double #333;
+    color: #333;
+    /*text-align: center;*/
+    text-align: left;
+}
+hr.style-answer:after {
+    content: "Answer";
+    display: inline-block;
+    position: relative;
+    top: -0.7em;
+    font-size: 1.5em;
+    padding: 0 0.25em;
+    background: white;
+}

@@ -1,28 +1,31 @@
 layout 'layout.tpl', title: '답변하기', loginUser:loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', type: 'text/css', href: '/css/writeNotice.css')
+            script(type: 'text/javascript', src: '/SE2.1.3.O8706/js/HuskyEZCreator.js', charset = "utf-8") {}
+        },
         content: contents {
-            link(rel:'stylesheet', href: '/css/table.css')
-            div() {
+            div(class : 'container') {
                 div(class:'row') {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-pills') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li() {
-                                a(href: '/notice', '공지사항')
+                                a(href: '/board/notice', '공지사항')
                             }
                             li() {
-                                a(href: '/question', 'Q&A')
+                                a(href: '/board/question', 'Q&A')
                             }
                             li(class : 'active'){
-                                a(href: '/question/answerwrite/'+messages.id, '답변쓰기')
+                                a(href: '/board/question/answerwrite/'+messages.id, '답변쓰기')
 
                             }
                         }
 
                     }
                 }
-
+                br()
                 div(class: 'prob-container') {
-                    form(id : 'write_question', action:'/question/answerwrite/'+messages.id, method:'post') {
-                        div(class: 'col-md-12') {
+                    form(id : 'write', action:'/board/question/answerwrite/'+messages.id, method:'post') {
+                        div(class: 'margin') {
                             span '답변 제목'
                             input(type: 'text', value: '', name: 'answer_title', id : 'title');
 
@@ -31,7 +34,9 @@ layout 'layout.tpl', title: '답변하기', loginUser:loginUser,
                             span ' 내용'
                         }
                         div(class: 'col-md-12') {
-                            input(type: 'text', value: '', name: 'answer_contents', size : '40', style : "height : 100px;, id : 'content")
+                            textarea(type: 'text', value: '', name: 'smartEditor', size: '40', style: "height : 100px;", id : 'smartEditor') {
+                            }
+                            script(type = "text/javascript", src: '/js/smartEditor.js'){}
                         }
                         div(class: 'col-md-12') {
                             div(class: 'row') {

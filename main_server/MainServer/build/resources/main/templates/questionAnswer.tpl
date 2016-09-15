@@ -1,11 +1,11 @@
 layout 'layout.tpl', title: 'Q&A',loginUser:loginUser,
         content: contents {
-            link(rel: 'stylesheet', href: '/css/table.css')
+            link(rel: 'stylesheet', href: '/css/questionAnswer.css')
             div() {
                 div(class: 'container') {
                     div(class: 'row') {
-                        div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                            ul(class: 'nav nav-pills') {
+                        div(class: 'head-container') {
+                            ul(class: 'nav nav-pills head-item-main') {
                                 li() {
                                     a(href: '/board/notice', '공지사항')
                                 }
@@ -13,28 +13,30 @@ layout 'layout.tpl', title: 'Q&A',loginUser:loginUser,
                                     a(href: '/board/question', 'Q&A')
                                 }
                                 li(){
-                                    a(href: '/question/answerwrite/'+ messages.id, '답변쓰기')
+                                    a(href: '/board/question/answerwrite/'+ messages.id, '답변쓰기')
                                 }
                             }
                         }
                     }
-
+                    br()
                     div(class: 'prob-container') {
                         div(class: 'col-md-12') {
-                            h3(clss : 'col-md-12') {
-                                span '질문 문제 : '
-                                span messages.problem_id
-                                span messages.problem_name
+                            h4(class : 'question') {
+                                a(href:'/problem/'+messages.problem_id,messages.problem_id+'번 - '+messages.problem_name)
+                                br()
+
                             }
+                            hr(class:'style-eight')
                             div(class : 'panel panel-default') {
-                                div(class : 'panel panel-heading') {
+                               div(class : 'panel panel-heading') {
                                     h3(class : 'panel-title') {
-                                        span messages.title
-                                        span messages.question_date
-                                        span messages.question_user
+                                        span(class:'title',messages.title)
+                                        span(class:'date', messages.question_date)
+                                        span(class:'writer','작성자 : '+messages.question_user)
                                         if(messages.canModifyAndDelete){
-                                            a(href: '/question/modify/'+ messages.id, '수정')
-                                            a(href: '/question/delete/'+ messages.id, '삭제')
+                                            a(class:'delete',href: '/board/question/delete/'+ messages.id, '삭제')
+                                            a(class:'modify',href: '/board/question/modify/'+ messages.id, '수정')
+
                                         }
 
                                     }
@@ -45,6 +47,7 @@ layout 'layout.tpl', title: 'Q&A',loginUser:loginUser,
                                     }
                                 }
                             }
+                            hr(class:'style-answer')
                             if(answers.empty) {
                                 span '아직 답변이 없습니다'
                             }
@@ -53,12 +56,12 @@ layout 'layout.tpl', title: 'Q&A',loginUser:loginUser,
                                     div(class: 'panel panel-default') {
                                         div(class: 'panel panel-heading') {
                                             h3(class: 'panel-title') {
-                                                span answer.answer_title
-                                                span answer.answer_date
-                                                span answer.answer_user
+                                                span(class:'title', answer.answer_title)
+                                                span(class:'date', answer.answer_date)
+                                                span(class:'writer','작성자 : '+answer.answer_user)
                                                 if(answer.canModifyAndDelete) {
-                                                    a(href: '/question/answermodify/' + answer.answer_id, '수정')
-                                                    a(href: '/question/answerdelete/' + answer.answer_id, '삭제')
+                                                    a(href: '/board/question/answermodify/' + answer.answer_id, '수정')
+                                                    a(href: '/board/question/answerdelete/' + answer.answer_id, '삭제')
                                                 }
                                             }
                                         }

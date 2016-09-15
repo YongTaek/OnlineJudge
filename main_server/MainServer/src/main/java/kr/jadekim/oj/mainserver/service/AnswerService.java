@@ -25,10 +25,9 @@ public class AnswerService {
     @Autowired
     private UserRepository userRepository;
 
-    @Async
-    public Future<Answer> saveAnswer(Answer answer) {
+    public Answer saveAnswer(Answer answer) {
 
-        return new AsyncResult<Answer>(answerRepository.save(answer));
+        return answerRepository.save(answer);
 
     }
 

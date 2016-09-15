@@ -1,32 +1,32 @@
 layout 'layout.tpl', title: '공지',loginUser:loginUser,
+        custom_head: contents {
+            link(rel: 'stylesheet', href: '/css/questionAnswer.css')
+        },
         content: contents {
-            link(rel: 'stylesheet', href: '/css/table.css')
-            div() {
-                div(class: 'container') {
-                    div(class: 'row') {
-                        div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                            ul(class: 'nav nav-pills') {
-                                li(class: 'active') {
-                                    a(href: '/board/notice', '공지사항')
-                                }
-
-                                li() {
-                                    a(href: '/board/question', 'Q&A')
-                                }
+            div(class: 'container') {
+                div(class: 'row') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
+                            li(class: 'active') {
+                                a(href: '/board/notice', '공지사항')
+                            }
+                            li() {
+                                a(href: '/board/question', 'Q&A')
                             }
                         }
                     }
-
-                    div(class: 'prob-container') {
+                }
+                br()
+                div(class: 'prob-container') {
                         div(class: 'col-md-12') {
                             div(class : 'panel panel-default') {
                                 div(class : 'panel panel-heading') {
                                     h3(class : 'panel-title') {
-                                        span messages.title
-                                        span messages.date
-                                        span messages.user
-                                        a(href: '/notice/modify/'+ messages.id, '수정')
-                                        a(href: '/notice/delete/'+ messages.id, '삭제')
+                                        span(class:'title', messages.title)
+                                        span(class:'date', messages.date)
+                                        span(class:'writer', messages.user)
+                                        a(class:'delete', href: '/board/notice/delete/'+ messages.id, '삭제')
+                                        a(class:'modify', href: '/board/notice/modify/'+ messages.id, '수정')
                                     }
                                 }
                                 div(class: 'panel-body') {
@@ -38,6 +38,6 @@ layout 'layout.tpl', title: '공지',loginUser:loginUser,
                         }
                     }
                 }
-            }
+
         }
 

@@ -1,12 +1,9 @@
 package kr.jadekim.oj.evaluation.evaluator;
 
 import kr.jadekim.oj.evaluation.Setting;
-import kr.jadekim.oj.evaluation.utils.Logger;
 import kr.jadekim.oj.evaluation.models.*;
+import kr.jadekim.oj.evaluation.utils.Logger;
 import rx.Observable;
-import rx.Scheduler;
-import rx.observables.BlockingObservable;
-import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 import java.io.File;
@@ -14,7 +11,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by jdekim43 on 2016. 2. 16..
@@ -29,15 +29,18 @@ public class Evaluator {
 
     public Observable<GradeResult> start() {
         Submission submission = SubmissionQueue.getInstance().next();
+        System.out.println(submission.getCode());
         if (submission == null) {
             subject.onCompleted();
         } else {
+            System.out.println("evaluate");
             subject.onNext(submission);
         }
         return subject.map(this::evaluate);
     }
 
     private GradeResult evaluate(Submission submission) {
+        System.out.println("evaluate start");
         GradeResult gradeResult = new GradeResult(submission);
 
         String path = Setting.get().EVALUATION_TEMP_PATH+codeToUniqueString(submission.getCode())+"/";

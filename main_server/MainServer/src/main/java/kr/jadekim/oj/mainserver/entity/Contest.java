@@ -141,5 +141,6 @@ public class Contest  {
         this.teams = teams;
     }
 
+    public int getId(){ return id;}
 
 }

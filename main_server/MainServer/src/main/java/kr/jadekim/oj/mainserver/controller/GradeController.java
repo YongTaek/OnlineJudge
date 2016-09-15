@@ -52,7 +52,7 @@ public class GradeController {
             user = userRepository.findByloginId(user_id).get(0);
             problem = problemRepository.findOne(problem_id);
             answer = new Answer(user,code,submitTime,problem);
-            answer = answerService.saveAnswer(answer).get();
+            answer = answerService.saveAnswer(answer);
             RestTemplate restTemplate = new RestTemplate();
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("lang", lang);
