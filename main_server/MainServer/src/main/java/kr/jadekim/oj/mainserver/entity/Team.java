@@ -19,9 +19,9 @@ public class Team {
     @JoinColumn(name = "users")
     private List<User> users;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "contests")
-    private List<Contest> contests;
+    private Contest contest;
 
     @Column(name = "name")
     private String name;
@@ -30,6 +30,10 @@ public class Team {
     @JoinColumn(name = "admin")
     private User admin;
 
+    @OneToMany
+    @Column(name = "result")
+    private List<GradeResult> results;
+
     public Team() {
     }
 
@@ -37,7 +41,7 @@ public class Team {
         this.name = name;
         this.admin = admin;
         users = new ArrayList<>();
-        contests = new ArrayList<>();
+        contest = new Contest();
     }
 
     public String getName() {
@@ -64,15 +68,15 @@ public class Team {
         return users;
     }
 
-    public List<Contest> getContests() {
-        return contests;
+    public Contest getContest() {
+        return contest;
     }
 
     public void setUsers(List<User> users) {
         this.users = users;
     }
 
-    public void setContests(List<Contest> contests) {
-        this.contests = contests;
+    public void setContests(Contest contest) {
+        this.contest = contest;
     }
 }
