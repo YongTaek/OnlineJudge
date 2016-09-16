@@ -10,11 +10,11 @@ public class Pagenation {
     public static ArrayList<Integer> generatePagenation(int totalPages, int pageSize) {
         ArrayList<Integer> pages = new ArrayList<>();
         if(totalPages%pageSize==0){
-            for(int i=0;i<totalPages/pageSize;++i){
+            for(int i=0;i<=totalPages/pageSize;i++){
                 pages.add(i+1);
             }
         }else{
-            for(int i=0;i<totalPages/pageSize+1;++i){
+            for(int i=0;i<(totalPages/pageSize)+1;i++){
                 pages.add(i+1);
             }
 

@@ -78,4 +78,9 @@ public class UserService {
     public Future<List<User>> findUserOrderBySuccessCount(Pageable pageable) {
         return new AsyncResult<>(userRepository.findUserOrderBySuccessCount(pageable));
     }
+
+    @Async
+    public Future<List<User>> findAll(Pageable pageable) {
+        return new AsyncResult<>(userRepository.findAll(pageable).getContent());
+    }
 }

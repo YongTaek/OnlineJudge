@@ -47,6 +47,8 @@ public class Contest  {
     @MapKey(name = "team")
     private Map<Team, AnswerList> solvedProblem;
 
+
+
     public Contest() {
         this.team = new Team();
         this.solvedProblem = new HashMap<>();
