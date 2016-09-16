@@ -14,7 +14,7 @@ import java.util.List;
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 
 
-    @Query("select t from Team t join t.contests c on c.id =:contest_id")
+    @Query("select t from Team t join t.contest c on c.id =:contest_id")
     List<Team> findTeamListByContestId(@Param("contest_id") int contest_id);
 
 //    @Query("select t from User u join u.teamList t join t.users s where s.id = u.id")

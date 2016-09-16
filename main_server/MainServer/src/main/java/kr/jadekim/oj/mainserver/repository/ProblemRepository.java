@@ -18,8 +18,6 @@ public interface ProblemRepository extends JpaRepository<Problem,Integer> {
     @Query("select count(p) from Problem p")
     int countAll();
 
-
-
     @Query("select p from Problem p join p.submitUsers u group by p order by count(u.id) desc")
     List<Problem> findOrderBySubmitUsers();
 
