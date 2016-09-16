@@ -28,6 +28,7 @@ layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,
                                 li(id: 'group') {
                                     a(href: '/group/list', '그룹')
                                 }
+                            }else {
                                 li(id: 'groupCreate') {
                                     a(href: '/group/create', '그룹 만들기')
                                 }

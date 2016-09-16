@@ -38,7 +38,7 @@ html {
                     }
                 }
                 li() {
-                    a(href: "/problem/list", "대회")
+                    a(href: "/contest/list", "대회")
                 }
                 li() {
                     a(href: "/ranking/user", "랭킹")
