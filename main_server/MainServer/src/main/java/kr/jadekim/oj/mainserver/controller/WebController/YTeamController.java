@@ -35,12 +35,12 @@ public class YTeamController {
 
     @RequestMapping("")
     public ModelAndView showTeamList(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
-        CurrentUser currentUser= null;
-        if(authentication!=null) {
+        CurrentUser currentUser = null;
+        if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
         User loginUser = null;
-        if(currentUser!=null) {
+        if (currentUser != null) {
             loginUser = currentUser.getUser();
         }
         ArrayList<Map> messages = new ArrayList<>();
@@ -55,9 +55,11 @@ public class YTeamController {
             String admin = t.getAdmin().getName();
             String contest = "test";
             int contest_id = 0;
+
             if(t.getContest() != null) {
                 contest = t.getContest().getName();
                 contest_id = t.getContest().getId();
+
             }
             map.put("number", num);
             map.put("name", name);
@@ -67,7 +69,7 @@ public class YTeamController {
             messages.add(map);
         }
 
-        if(loginUser!=null) {
+        if (loginUser != null) {
             modelAndView.addObject("loginUser", loginUser.getName());
         }
         modelAndView.addObject("messages", messages);
@@ -75,4 +77,5 @@ public class YTeamController {
 
         return modelAndView;
     }
+
 }
