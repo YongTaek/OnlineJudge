@@ -15,10 +15,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Future;
 
 /**
@@ -53,6 +50,37 @@ public class ProblemService {
         return new AsyncResult<>(problems);
     }
 
+    @Async
+    public ArrayList<Map> getCreateProblemsetForContest(User loginUser){
+        ArrayList<Map> messages = new ArrayList<>();
+        Iterable<Problem> problems = problemRepository.findProblemByAuthorId(loginUser.getId());
+        for(Problem p : problems){
+            if(p.isOpen() == false) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("problem_id", p.getId() + "");
+                map.put("problem_name", p.getName());
+                map.put("problem_isOpen", "X");
+                messages.add(map);
+            }
+        }
+        return messages;
+    }
+
+    @Async
+    public ArrayList<Map> getCreateProblemset(User loginUser){
+        ArrayList<Map> messages = new ArrayList<>();
+        Iterable<Problem> problems = problemRepository.findProblemByAuthorId(loginUser.getId());
+        for(Problem p : problems){
+            if(p.isOpen()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("problem_id", p.getId() + "");
+                map.put("problem_name", p.getName());
+                map.put("problem_isOpen", "O");
+                messages.add(map);
+            }
+        }
+        return messages;
+    }
 
     public Future<ModelAndView> getSortedProbByrank(ModelAndView modelAndView,User loginUser){
         ArrayList<Map> messages = new ArrayList<>();
@@ -129,6 +157,6 @@ public class ProblemService {
 
     public Future<List<Problem>> findProblemsBySubmittedUser(User user) {
         System.out.println(user.getId());
-        return new AsyncResult<>(problemRepository.findProblemByUserId(user.getId()));
+        return new AsyncResult<>(problemRepository.findProblemBySubmitterId(user.getId()));
     }
 }

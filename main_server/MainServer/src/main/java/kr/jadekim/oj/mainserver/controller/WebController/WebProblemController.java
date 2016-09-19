@@ -179,7 +179,9 @@ public class WebProblemController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView createProblem(ModelAndView modelAndView, HttpServletRequest request){
+    public ModelAndView createProblem(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
         String title = request.getParameter("problem_title");
         String contents = request.getParameter("problem-contents");
         int time_limit = Integer.valueOf(request.getParameter("problem_timeLimit"));
@@ -187,9 +189,16 @@ public class WebProblemController {
         String visibleInput = request.getParameter("problem_visibleInput");
         String visibleOutput = request.getParameter("problem_visibleOutput");
         int testcase_count = Integer.parseInt(request.getParameter("testcase_count"));
+        String isOpen = request.getParameter("isOpen");
         Problem problem = new Problem(title, contents, 0);
         problem.setLimitMemory(memory_limit);
         problem.setLimitTime(time_limit);
+        problem.setAuthor(loginUser);
+        if(isOpen.equals("O")){
+            problem.setOpen(true);
+        }else{
+            problem.setOpen(false);
+        }
         problemRepository.save(problem);
         for(int i =0;i<testcase_count;++i){
             String testInput = request.getParameter("testInput"+i);
