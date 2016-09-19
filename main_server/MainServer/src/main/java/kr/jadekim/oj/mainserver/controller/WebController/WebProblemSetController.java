@@ -7,19 +7,22 @@ import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.ProblemRepository;
 import kr.jadekim.oj.mainserver.repository.ProblemSetRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
+import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.service.ProblemSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * Created by ohyongtaek on 2016. 2. 24..
@@ -41,6 +44,9 @@ public class WebProblemSetController {
 
     @Autowired
     ProblemSetService problemSetService;
+
+    @Autowired
+    ProblemService problemService;
 
     @RequestMapping
     public ModelAndView list(ModelAndView modelAndView, Pageable pageable, Authentication authentication){
@@ -88,5 +94,66 @@ public class WebProblemSetController {
         System.out.println(problemSet.getProblemList().size());
 
         return "success";
+    }
+
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/create-problemset-for-contest", method = RequestMethod.GET)
+    public ModelAndView createProblemSetForContest(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        ArrayList<Map> messages = problemService.getCreateProblemsetForContest(loginUser);
+        modelAndView.addObject("messages", messages);
+        modelAndView.setViewName("problemsetForContest");
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/create-problemset-for-contest", method = RequestMethod.POST)
+    public ModelAndView createProblemSetForContestPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        String name = request.getParameter("problemset_title");
+        ProblemSet problemSet = new ProblemSet(loginUser, name);
+        String[] checkedList = request.getParameterValues("selectedProblem");
+        List<Problem> checkedProblem = new ArrayList<>();
+        for(String s : checkedList){
+            Problem tempProblem = problemRepository.findOne(Integer.valueOf(s));
+            checkedProblem.add(tempProblem);
+        }
+        problemSet.setProblemList(checkedProblem);
+        problemSetRepository.save(problemSet);
+        modelAndView.setViewName("redirect:/problemset");
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/create-problemset", method = RequestMethod.GET)
+    public ModelAndView createProblemSet(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        ArrayList<Map> messages = problemService.getCreateProblemset(loginUser);
+        modelAndView.addObject("messages", messages);
+        modelAndView.setViewName("Createproblemset");
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/create-problemset", method = RequestMethod.POST)
+    public ModelAndView createProblemSetPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        String name = request.getParameter("problemset_title");
+        ProblemSet problemSet = new ProblemSet(loginUser, name);
+        String[] checkedList = request.getParameterValues("selectedProblem");
+        List<Problem> checkedProblem = new ArrayList<>();
+        for(String s : checkedList){
+            Problem tempProblem = problemRepository.findOne(Integer.valueOf(s));
+            checkedProblem.add(tempProblem);
+        }
+        problemSet.setProblemList(checkedProblem);
+        problemSetRepository.save(problemSet);
+        modelAndView.setViewName("redirect:/problemset");
+        return modelAndView;
     }
 }
