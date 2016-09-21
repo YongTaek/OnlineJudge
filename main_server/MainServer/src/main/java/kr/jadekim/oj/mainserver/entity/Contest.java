@@ -30,7 +30,7 @@ public class Contest  {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "deputy")
-    private List<User> deputys;
+    private List<User> deputies;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "examiners")
@@ -140,8 +140,8 @@ public class Contest  {
         return admin;
     }
 
-    public List<User> getDeputys() {
-        return deputys;
+    public List<User> getDeputies() {
+        return deputies;
     }
 
     public List<User> getExaminers() {
