@@ -1,5 +1,6 @@
 package kr.jadekim.oj.mainserver.controller.WebController;
 
+import kr.jadekim.oj.mainserver.entity.Contest;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.ProblemSet;
 import kr.jadekim.oj.mainserver.entity.User;
@@ -17,7 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -45,8 +51,26 @@ public class WebContestController {
     public ModelAndView createContestPost(ModelAndView modelAndView, Authentication authentication, HttpServletRequest request) {
 
         User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
         User admin = user;
         String title = request.getParameter("contest_title");
+        String rawStartDate = request.getParameter("contest_start_time");
+        String rawEndDate = request.getParameter("contest_end_time");
+        String admins = request.getParameter("admins");
+        String problemset = request.getParameter("problemset");
+
+
+        try {
+            Contest contest = new Contest();
+            contest.setName(title);
+            contest.setStartTime(format.parse(rawStartDate));
+            contest.setEndTime(format.parse(rawEndDate));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         return modelAndView;
     }
@@ -77,7 +101,7 @@ public class WebContestController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthroity('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping("create/insert-set")
     public ModelAndView insertSet(ModelAndView modelAndView, Authentication authentication, Pageable pageable) {
         try {
@@ -93,7 +117,7 @@ public class WebContestController {
                 }
             }
             ArrayList<Integer> pages = new ArrayList<>();
-            modelAndView.addObject("addProblemsets", addProblemSets);
+            modelAndView.addObject("addProblemSets", addProblemSets);
             modelAndView.addObject("pages", pages);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -103,4 +127,5 @@ public class WebContestController {
         modelAndView.setViewName("createInsertSet");
         return modelAndView;
     }
+
 }

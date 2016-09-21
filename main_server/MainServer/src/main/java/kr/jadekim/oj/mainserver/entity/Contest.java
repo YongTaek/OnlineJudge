@@ -24,9 +24,13 @@ public class Contest  {
     @JoinColumn(name = "problemSet")
     private ProblemSet problemSet;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "admin")
+    private User admin;
+
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "admins")
-    private List<User> adminUsers;
+    @JoinColumn(name = "deputy")
+    private List<User> deputies;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "examiners")
@@ -36,9 +40,9 @@ public class Contest  {
     @JoinColumn(name = "sponsors")
     private List<User> sponsors;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "team")
-    private Team team;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "teams")
+    private List<Team> teams;
 
     @Column(name = "name")
     private String name;
@@ -50,7 +54,7 @@ public class Contest  {
 
 
     public Contest() {
-        this.team = new Team();
+        this.teams = new ArrayList<>();
         this.solvedProblem = new HashMap<>();
     }
 
@@ -59,8 +63,7 @@ public class Contest  {
         this.endTime = endTime;
         this.name = name;
         solvedProblem = new HashMap<>();
-        team = new Team();
-        this.adminUsers = adminUsers;
+        this.teams = new ArrayList<>();
         this.examiners = examiners;
         this.sponsors = sponsors;
     }
@@ -104,12 +107,6 @@ public class Contest  {
         return problemSet;
     }
 
-
-    public Team getTeam() {
-        return team;
-    }
-
-
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
@@ -139,8 +136,24 @@ public class Contest  {
         return solvedProblem;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public User getAdmin() {
+        return admin;
+    }
+
+    public List<User> getDeputies() {
+        return deputies;
+    }
+
+    public List<User> getExaminers() {
+        return examiners;
+    }
+
+    public List<User> getSponsors() {
+        return sponsors;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
     }
 
     public int getId(){ return id;}

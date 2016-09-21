@@ -3,7 +3,7 @@
  */
 
 $('#button').on('click', function () {
-
+    $(opener.document).find('#admin-list').val()
     var text = $('#result').text()
     $(opener.document).find('#admin-list').val(text)
     window.close()

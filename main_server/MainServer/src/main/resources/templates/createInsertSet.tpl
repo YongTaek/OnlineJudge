@@ -12,18 +12,16 @@ layout 'contest.tpl', loginUser: loginUser, title: '대회 만들기',
                     }
                 }
                 tbody() {
-                    if (addAdmins.empty) {
+                    if (addProblemSets.empty) {
                         tr { td(colspan: '100%', 'No required problem set') }
                     } else {
-                        if (!addProblemSets.empty) {
-                            addProblemSets.each { addProblemSet ->
-                                tr {
-                                    td(class: 'center') {
-                                        button(type: 'button', class: 'btn btn-primary btn-custom', '추가')
-                                    }
-                                    td(class: 'center', addProblemSet.name)
-                                    td(class: 'center', addProblemSet.count)
+                        addProblemSets.each { addProblemSet ->
+                            tr {
+                                td(class: 'center') {
+                                    input(type: 'radio', name:'problemset',value:addProblemSet.id,class: 'btn btn-primary btn-custom', '추가')
                                 }
+                                td(class: 'center', addProblemSet.name)
+                                td(class: 'center', addProblemSet.count)
                             }
                         }
                     }
@@ -45,5 +43,5 @@ layout 'contest.tpl', loginUser: loginUser, title: '대회 만들기',
                 }
             }
             button(class: 'btn btn-primary btn-complete', id: 'button', '완료')
-            script(type: 'text/javascript', src: '/js/contestCreateInsertAdmins.js') {}
+            script(type: 'text/javascript', src: '/js/contestCreateInsertSet.js') {}
         }
