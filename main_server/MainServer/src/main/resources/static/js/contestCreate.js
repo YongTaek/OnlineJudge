@@ -47,5 +47,5 @@ $('#admin-input').on('click',function() {
 })
 
 $('#problemset').on('click',function() {
-    window.open("/contest/create/insert-problemset","대회 문제집 추가","width=800px, height=600px")
+    window.open("/contest/create/insert-set","대회 문제집 추가","width=800px, height=600px")
 })

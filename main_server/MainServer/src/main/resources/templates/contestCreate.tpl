@@ -17,11 +17,11 @@ layout 'contest.tpl', loginUser: loginUser,title:'대회 만들기',
 
                 p(class: 'text', '대회 운영진')
                 span(id: 'admins'){}
-                input(id:'admin-list', readonly:true){}
+                input(id:'admin-list', name: 'admins', readonly:true){}
                 button(class: 'btn btn-primary',type:'button', value: "", name: 'admin-list', id: 'admin-input','추가')
 
                 p(class: 'text', '대회 문제집(추후 설정 가능)')
-
+                input(id:'set-list', name:'problemset',readonly:true){}
                 button(class: 'btn btn-primary',type:'button', value: "", name: 'problemset', id: 'problemset','추가')
 
                 button(type: "submit", id: "postButton", class: "btn btn-primary", '올리기')
