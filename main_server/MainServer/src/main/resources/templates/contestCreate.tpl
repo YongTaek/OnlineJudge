@@ -4,7 +4,7 @@ layout 'contest.tpl', loginUser: loginUser,title:'대회 만들기',
         },
         content: contents {
 
-            form(id: 'write_problem', action: '/problem/create', method: 'post', class: 'write_form') {
+            form(id: 'write_problem', action: '/contest/create', method: 'post', class: 'write_form') {
                 p(class: 'text', '대회 제목 제목')
                 input(class: 'input', type: 'text', value: '', name: 'contest_title', id: 'title')
 

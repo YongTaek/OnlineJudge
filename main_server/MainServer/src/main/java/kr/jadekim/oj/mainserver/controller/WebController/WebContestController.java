@@ -4,6 +4,7 @@ import kr.jadekim.oj.mainserver.entity.Contest;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.ProblemSet;
 import kr.jadekim.oj.mainserver.entity.User;
+import kr.jadekim.oj.mainserver.service.ContestService;
 import kr.jadekim.oj.mainserver.service.ProblemSetService;
 import kr.jadekim.oj.mainserver.service.UserService;
 import kr.jadekim.oj.mainserver.util.Pagenation;
@@ -37,6 +38,9 @@ public class WebContestController {
     ProblemSetService problemSetService;
 
     @Autowired
+    ContestService contestService;
+
+    @Autowired
     UserService userService;
 
     @PreAuthorize("hasAuthority('USER')")
@@ -64,13 +68,28 @@ public class WebContestController {
         try {
             Contest contest = new Contest();
             contest.setName(title);
+            contest.setAdmin(admin);
             contest.setStartTime(format.parse(rawStartDate));
             contest.setEndTime(format.parse(rawEndDate));
-
+            List<User> users = userService.findUsersByUserIdString(admins);
+            List<User> deputies = contest.getDeputies();
+            for(User u : users) {
+                System.out.println(u.getName());
+                deputies.add(u);
+            }
+            if(!problemset.equals("")) {
+                ProblemSet problemSet = problemSetService.findOne(Integer.parseInt(problemset)).get();
+                contest.setProblemSet(problemSet);
+            }
+            contestService.save(contest);
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-
+        modelAndView.setViewName("redirect:/problem/list");
 
         return modelAndView;
     }
@@ -80,7 +99,8 @@ public class WebContestController {
     public ModelAndView insertAdmins(ModelAndView modelAndView, Authentication authentication, @PageableDefault(sort = { "id" }, size = 10) Pageable pageable) {
 
         try {
-            List<User> users = userService.findAll(pageable).get();
+            User loginUser = ((CurrentUser)authentication.getPrincipal()).getUser();
+            List<User> users = userService.findAll(pageable,loginUser).get();
             List<Map> addAdmins = new ArrayList<>();
             ArrayList<Integer> pages;
             for (User user : users) {

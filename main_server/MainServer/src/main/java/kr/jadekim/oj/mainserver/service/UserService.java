@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -80,7 +81,22 @@ public class UserService {
     }
 
     @Async
-    public Future<List<User>> findAll(Pageable pageable) {
-        return new AsyncResult<>(userRepository.findAll(pageable).getContent());
+    public Future<List<User>> findAll(Pageable pageable,User loginUser) {
+        List<User> users = userRepository.findAll(pageable).getContent();
+        for (User u : users) {
+            System.out.println(u.getName());
+        }
+        return new AsyncResult<>(users);
+    }
+
+
+    public List<User> findUsersByUserIdString(String rawUserIds) {
+        String [] userIds = rawUserIds.split("/");
+        List<User> users = new ArrayList<>();
+        for(String id : userIds) {
+            User u = userRepository.getOne(Integer.parseInt(id));
+            users.add(u);
+        }
+        return users;
     }
 }
