@@ -56,16 +56,21 @@ public class Contest  {
     public Contest() {
         this.teams = new ArrayList<>();
         this.solvedProblem = new HashMap<>();
+        this.teams = new ArrayList<>();
+        this.deputies = new ArrayList<>();
+        this.examiners = new ArrayList<>();
+        this.sponsors = new ArrayList<>();
     }
 
-    public Contest(Date startTime, Date endTime, String name,List<User> adminUsers,List<User> examiners,List<User> sponsors) {
+    public Contest(Date startTime, Date endTime, String name) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.name = name;
         solvedProblem = new HashMap<>();
         this.teams = new ArrayList<>();
-        this.examiners = examiners;
-        this.sponsors = sponsors;
+        this.examiners = new ArrayList<>();
+        this.deputies = new ArrayList<>();
+        this.sponsors = new ArrayList<>();
     }
 
     public AnswerList getAnswerList(Team team) {
@@ -142,6 +147,10 @@ public class Contest  {
 
     public List<User> getDeputies() {
         return deputies;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
 
     public List<User> getExaminers() {

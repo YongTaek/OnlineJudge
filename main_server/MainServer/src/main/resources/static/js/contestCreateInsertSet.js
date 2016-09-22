@@ -11,6 +11,6 @@ $('#button').on('click', function () {
             break
         }
     }
-    $(opener.document).find('#admin-list').val(text)
+    $(opener.document).find('#set-list').val(text)
     window.close()
 })

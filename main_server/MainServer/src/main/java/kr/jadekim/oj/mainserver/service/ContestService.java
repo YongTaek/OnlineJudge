@@ -24,4 +24,9 @@ public class ContestService {
         Contest contest = contestRepository.getOne(contest_id);
         return new AsyncResult<Contest>(contest);
     }
+
+    @Async
+    public void save(Contest contest) {
+        contestRepository.save(contest);
+    }
 }
