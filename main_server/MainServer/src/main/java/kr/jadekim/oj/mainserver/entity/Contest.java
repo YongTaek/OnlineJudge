@@ -21,6 +21,14 @@ public class Contest  {
     private Date endTime;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "winner")
+    private User winner;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subwinner")
+    private User subwinner;
+
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "problemSet")
     private ProblemSet problemSet;
 
@@ -166,5 +174,12 @@ public class Contest  {
     }
 
     public int getId(){ return id;}
+
+    public User getWinner(){
+        return winner;
+    }
+    public User getSubwinner(){
+        return subwinner;
+    }
 
 }
