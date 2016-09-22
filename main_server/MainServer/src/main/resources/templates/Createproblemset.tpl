@@ -5,7 +5,7 @@ layout 'layout.tpl', title: '문제집 만들기', loginUser: loginUser,
         content: contents {
             div(class: 'container') {
                 div(id: 'problem-container') {
-                    form(id : 'create-problemset', action:'/problemset/create-problemset', method:'post', class: 'write_form') {
+                    form(id : 'create-problemset', action:'/problemset/create', method:'post', class: 'write_form') {
                         div(class: 'col-md-6') {
                             span('문제집 이름')
                             br()

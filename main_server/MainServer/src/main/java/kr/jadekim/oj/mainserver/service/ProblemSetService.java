@@ -25,9 +25,8 @@ public class ProblemSetService {
         return problemSetRepository.findAll(pageable);
     }
 
-    @Async
-    public Future<List<ProblemSet>> findAllProblemSets(Pageable pageable) {
-        return new AsyncResult<>(problemSetRepository.findAll(pageable).getContent());
+    public List<ProblemSet> findAllProblemSets(Pageable pageable) {
+        return problemSetRepository.findAll(pageable).getContent();
     }
     public int countAllProblem(int problemSetId,int userId){
         return problemSetRepository.countAllProblem(userId);

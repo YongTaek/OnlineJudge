@@ -21,7 +21,7 @@ layout 'layout.tpl', title: '문제집',loginUser:loginUser,
 
                         }
                         div (class: 'head-item') {
-                            a(class: 'btn btn-primary push-left', href: '/problemset/create-problemset', '문제집 만들기')
+                            a(class: 'btn btn-primary push-left', href: '/problemset/create', '문제집 만들기')
                         }
 
                     }

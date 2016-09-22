@@ -61,6 +61,7 @@ public class WebContestListController {
         modelAndView.setViewName("allContest");
         return modelAndView;
     }
+
     public ArrayList<Map> makeMassages(Iterable<Contest> contests, User user){
         ArrayList<Map> massages = new ArrayList<>();
         for(Contest c:contests){
@@ -129,7 +130,7 @@ public class WebContestListController {
 
 
     @RequestMapping("/join/{id}")
-    public ModelAndView JoinConest(ModelAndView modelAndView,@PathVariable("id") int contest_id, Authentication authentication){
+    public ModelAndView JoinContest(ModelAndView modelAndView,@PathVariable("id") int contest_id, Authentication authentication){
 
 
         ArrayList<Map> messages = new ArrayList<>();

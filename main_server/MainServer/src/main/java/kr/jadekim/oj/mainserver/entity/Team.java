@@ -15,7 +15,7 @@ public class Team {
     @Column(name = "id")
     private int id;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "users")
     private List<User> users;
 

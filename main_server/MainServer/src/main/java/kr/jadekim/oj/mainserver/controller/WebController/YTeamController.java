@@ -4,6 +4,7 @@ import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.repository.PostRepository;
 import kr.jadekim.oj.mainserver.repository.TeamRepository;
+import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -32,6 +33,32 @@ public class YTeamController {
 
     @Autowired
     ContestRepository contestRepository;
+
+    @Autowired
+    UserService userService;
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("/test")
+    public ModelAndView test(ModelAndView modelAndView, Authentication authentication){
+        CurrentUser currentUser = null;
+        if (authentication != null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User loginUser = null;
+        if (currentUser != null) {
+            loginUser = currentUser.getUser();
+        }
+        Team team = new Team(loginUser, "test");
+        Contest contest = contestRepository.getOne(1);
+        team.setContest(contest);
+        team.setAdmin(loginUser);
+        team.getUsers().add(loginUser);
+        teamRepository.save(team);
+        loginUser.getTeamList().add(team);
+        userService.saveUser(loginUser);
+        modelAndView.setViewName("redirect:/myPage");
+        return modelAndView;
+    }
 
     @RequestMapping("")
     public ModelAndView showTeamList(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {

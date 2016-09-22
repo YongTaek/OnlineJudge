@@ -241,8 +241,7 @@ public class WebGroupController {
             modelAndView.setViewName("redirect:/group/info");
             return modelAndView;
         }
-        try {
-            List<ProblemSet> problemSets = problemSetService.findAllProblemSets(pageable).get();
+            List<ProblemSet> problemSets = problemSetService.findAllProblemSets(pageable);
             List<ProblemSet> groupProblemSets = loginUser.getGroup().getMustProblemSet();
             List<Map> addProblemSets = new ArrayList<>();
             List<Map> removeProblemSets = new ArrayList<>();
@@ -262,11 +261,7 @@ public class WebGroupController {
             modelAndView.addObject("removeProblemsets",removeProblemSets);
             modelAndView.addObject("pages",pages);
             modelAndView.addObject("userGroup",loginUser.getGroup().getName());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
 
         modelAndView.setViewName("addRequiredProblemset");
         return modelAndView;
