@@ -32,7 +32,7 @@ public class WebContestListController {
 
     @Autowired
     ContestService contestService;
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list")
     public ModelAndView ContestList(ModelAndView modelAndView, @PageableDefault(size = 10) Pageable pageable, Authentication authentication){
         CurrentUser currentUser = null;
         if (authentication != null) {
@@ -71,7 +71,7 @@ public class WebContestListController {
                     break;
                 }
             }
-            map.put("number",c.getId());
+            map.put("id",c.getId());
             map.put("isjoin",isjoin);
             map.put("name",c.getName());
             map.put("winner",c.getWinner().getName());

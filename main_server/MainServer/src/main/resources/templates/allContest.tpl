@@ -1,3 +1,5 @@
+import java.awt.Button
+
 layout 'contestList.tpl', title: '문제', loginUser: loginUser, page:list,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
@@ -12,9 +14,10 @@ layout 'contestList.tpl', title: '문제', loginUser: loginUser, page:list,
                             th(class: 'center', '대회')
                             th(class: 'center', '우승')
                             th(class: 'center', '준우승')
-                            th(class: 'center', '참여')
+                            th(class: 'center', '참가여부')
                             th(class: 'center', '진행 중')
                             th(class: 'center', '개최자')
+                            th(class: 'center', '참가하기')
                         }
                     }
                     tbody() {
@@ -53,6 +56,9 @@ layout 'contestList.tpl', title: '문제', loginUser: loginUser, page:list,
                                         td(class: 'center')
                                     }
                                     td(class: 'center',admin)
+                                    td(class: 'center'){
+                                        a(href: "/contest/join/${message.id}", '참가하기')
+                                    }
                                 }
                             }
                         }

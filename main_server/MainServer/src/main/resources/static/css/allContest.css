@@ -11,7 +11,7 @@
 }
 
 #problem-container > table > thead th:nth-child(5) {
-    width: 50px;
+    width: 77px;
 }
 #problem-container > table > thead th:nth-child(6) {
     width: 66px;
@@ -19,4 +19,7 @@
 
 #problem-container > table > thead th:nth-child(7) {
     width: 65px;
+}
+#problem-container > table > thead th:nth-child(8){
+    width: 77px;
 }
