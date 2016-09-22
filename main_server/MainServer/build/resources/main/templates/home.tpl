@@ -18,6 +18,10 @@ html {
                 a(href: "/problem/list", "문제 풀러 가기")
             }
             li() {
+                a(href: "/problemset", "문제집")
+            }
+
+            li() {
                 a(href: "/board/notice", "게시판")
             }
             li() {

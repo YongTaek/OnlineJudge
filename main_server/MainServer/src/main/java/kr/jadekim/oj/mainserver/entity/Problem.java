@@ -34,10 +34,6 @@ public class Problem {
     @JoinColumn(name="submitUsers")
     private List<User> submitUsers;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "problem_id")
-    private ProblemSet problemSet;
-
     @Column(name = "isOpen")
     private boolean isOpen;
 
@@ -98,15 +94,6 @@ public class Problem {
         submitUsers = new ArrayList<>();
         this.testcases = new ArrayList<>();
     }
-
-    public ProblemSet getProblemSet() {
-        return problemSet;
-    }
-
-    public void setProblemSet(ProblemSet problemSet) {
-        this.problemSet = problemSet;
-    }
-
 
     public int getId() {
         return id;

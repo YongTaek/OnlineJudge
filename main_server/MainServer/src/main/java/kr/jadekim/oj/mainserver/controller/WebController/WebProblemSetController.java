@@ -15,10 +15,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,45 +47,46 @@ public class WebProblemSetController {
     ProblemService problemService;
 
     @RequestMapping
-    public ModelAndView list(ModelAndView modelAndView, Pageable pageable, Authentication authentication){
+    public ModelAndView list(ModelAndView modelAndView, Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = null;
-        if(authentication!=null){
+        if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
         User loginUser = null;
-        if(currentUser!=null) {
+        if (currentUser != null) {
             loginUser = currentUser.getUser();
         }
         ArrayList<Map> messages = new ArrayList<>();
         Iterable<ProblemSet> problemSets = problemSetService.findAllProblemSet(pageable);
-        for(ProblemSet p : problemSets){
-            Map<String,Object> map = new HashMap<>();
+        for (ProblemSet p : problemSets) {
+            Map<String, Object> map = new HashMap<>();
             int num = p.getId();
             String name = p.getName();
             int total = p.getProblemList().size();
             int success;
-            if(loginUser!=null){
-                success = problemSetService.countAllProblem(p.getId(),loginUser.getId());
-                map.put("rate",success+"/"+total);
+            if (loginUser != null) {
+                success = problemSetService.countAllProblem(p.getId(), loginUser.getId());
+                map.put("rate", success + "/" + total);
             }
-            map.put("id",num);
-            map.put("name",name);
+            map.put("id", num);
+            map.put("name", name);
             messages.add(map);
         }
-        modelAndView.addObject("messages",messages);
+        modelAndView.addObject("messages", messages);
         modelAndView.setViewName("workbook");
 
         return modelAndView;
     }
 
     @RequestMapping("test")
-    public @ResponseBody String test(){
+    public
+    @ResponseBody
+    String test() {
         User user = userRepository.findByloginId("ka123ak").get(0);
-        ProblemSet problemSet = new ProblemSet(user,"test");
+        ProblemSet problemSet = new ProblemSet(user, "test");
         Iterable<Problem> problems = problemRepository.findAll();
         problemSetRepository.save(problemSet);
-        for(Problem p : problems){
-            p.setProblemSet(problemSet);
+        for (Problem p : problems) {
             problemRepository.save(p);
             problemSet.getProblemList().add(p);
         }
@@ -110,20 +109,10 @@ public class WebProblemSetController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create-problemset-for-contest", method = RequestMethod.POST)
-    public ModelAndView createProblemSetForContestPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication){
+    public ModelAndView createProblemSetForContestPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
-        String name = request.getParameter("problemset_title");
-        ProblemSet problemSet = new ProblemSet(loginUser, name);
-        String[] checkedList = request.getParameterValues("selectedProblem");
-        List<Problem> checkedProblem = new ArrayList<>();
-        for(String s : checkedList){
-            Problem tempProblem = problemRepository.findOne(Integer.valueOf(s));
-            checkedProblem.add(tempProblem);
-        }
-        problemSet.setProblemList(checkedProblem);
-        problemSetRepository.save(problemSet);
-        modelAndView.setViewName("redirect:/problemset");
+        modelAndView = duplicate(loginUser, request, modelAndView);
         return modelAndView;
     }
 
@@ -140,20 +129,57 @@ public class WebProblemSetController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create-problemset", method = RequestMethod.POST)
-    public ModelAndView createProblemSetPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication){
+    public ModelAndView createProblemSetPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
+        modelAndView = duplicate(loginUser, request, modelAndView);
+        return modelAndView;
+    }
+
+    public ModelAndView duplicate(User loginUser, HttpServletRequest request, ModelAndView modelAndView) {
         String name = request.getParameter("problemset_title");
         ProblemSet problemSet = new ProblemSet(loginUser, name);
         String[] checkedList = request.getParameterValues("selectedProblem");
-        List<Problem> checkedProblem = new ArrayList<>();
-        for(String s : checkedList){
+        for (String s : checkedList) {
             Problem tempProblem = problemRepository.findOne(Integer.valueOf(s));
-            checkedProblem.add(tempProblem);
+            problemSet.getProblemList().add(tempProblem);
         }
-        problemSet.setProblemList(checkedProblem);
         problemSetRepository.save(problemSet);
         modelAndView.setViewName("redirect:/problemset");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/{id}")
+    public ModelAndView notice(ModelAndView modelAndView, @PathVariable("id") int id, Authentication authentication) {
+        ProblemSet problemSet = problemSetRepository.findOne(id);
+        List<Problem> problemList = problemSet.getProblemList();
+
+        String problemset_name = problemSet.getName();
+        String author = "asd";
+
+        ArrayList<Map> messages = new ArrayList<>();
+
+        Map<String, Object> problemset_map = new HashMap<>();
+        problemset_map.put("problemset_name", problemset_name);
+        problemset_map.put("problemset_author", author);
+        problemset_map.put("problemset_id", id);
+
+        for(Problem p : problemList){
+            Map<String, Object> map = new HashMap<>();
+            System.out.println(p);
+            System.out.println(p.getId()+"id");
+            map.put("problem_id", p.getId());
+            map.put("problem_name", p.getName());
+            map.put("problem_clear", 0+"");
+            map.put("problem_rate", 0+"%");
+            map.put("problem_I", "X");
+            messages.add(map);
+        }
+        modelAndView.addObject("messages", messages);
+        modelAndView.addObject("problemset", problemset_map);
+
+        modelAndView.setViewName("problemsetInfo");
+        return modelAndView;
+    }
 }
+
