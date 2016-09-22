@@ -4,6 +4,7 @@ import kr.jadekim.oj.mainserver.entity.Group;
 import kr.jadekim.oj.mainserver.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;

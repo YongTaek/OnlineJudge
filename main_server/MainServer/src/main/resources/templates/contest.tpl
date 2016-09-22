@@ -22,13 +22,13 @@ layout 'layout.tpl', title: '대회', loginUser: loginUser,
                     }
                 }
                 div() {
-                    div(class: "row"){
-                        div(class: "col-md-12"){
-                            p(class: "team-name"){
+                    div(class: "row") {
+                        div(class: "col-md-12") {
+                            p(class: "team-name") {
                                 span(style: 'font-size : 35', "ContestName")
-                                a(herf='#',admin){}
+                                a(herf = '#', admin) {}
                             }
-                            p(){
+                            p() {
                                 span("date of contest")
                             }
                         }
@@ -46,8 +46,8 @@ layout 'layout.tpl', title: '대회', loginUser: loginUser,
                             }
                             tbody {
                                 tr {
-                                    td(class:'center',messages.number)
-                                    td(class:'center',messages.title)
+                                    td(class: 'center', messages.number)
+                                    td(class: 'center', messages.title)
                                     td()
                                 }
                             }
@@ -55,17 +55,17 @@ layout 'layout.tpl', title: '대회', loginUser: loginUser,
                     }
                 }
                 div(class: 'problem-body') {
-                    div(class : 'panel panel-default') {
+                    div(class: 'panel panel-default') {
                         div(class: 'panel panel-heading') {
                             h3(class: 'panel-title') {
                                 span '대회 운영진'
                             }
                         }
-                        div(class: 'panel-body'){
-                            a(href='#'){
+                        div(class: 'panel-body') {
+                            a(href = '#') {
                                 admin
                             }
-                            if(!admins.empty){
+                            if (!admins.empty) {
                                 admins.each { admins ->
                                     a(herf = '#') {
                                         admins.deputy
@@ -74,26 +74,24 @@ layout 'layout.tpl', title: '대회', loginUser: loginUser,
                             }
                         }
                     }
-                    div(class : 'panel panel-default') {
+                    div(class: 'panel panel-default') {
                         div(class: 'panel panel-heading') {
                             h3(class: 'panel-title') {
                                 span '대회 참가자'
                             }
                         }
-                        div(class: 'panel-body'){
-                            if(!participant.empty){
+                        div(class: 'panel-body') {
+                            if (!participant.empty) {
                                 participant.each { participant ->
                                     a(herf = '#') {
                                         joins.name
                                     }
                                 }
-                            }
-                            else{
+                            } else {
                                 p('There is no participant')
                             }
                         }
                     }
                 }
             }
-
         }

@@ -31,6 +31,14 @@ public class ProblemSet {
     public ProblemSet() {
     }
 
+    public boolean isCanModify() {
+        return canModify;
+    }
+
+    public List<User> getClearUsers() {
+        return clearUsers;
+    }
+
     public ProblemSet(User author, String name){
 
         this.name = name;
@@ -45,10 +53,6 @@ public class ProblemSet {
 
     public String getName() {
         return name;
-    }
-
-    public List<User> getCelarUsers() {
-        return clearUsers;
     }
 
     public List<Problem> getProblemList() {

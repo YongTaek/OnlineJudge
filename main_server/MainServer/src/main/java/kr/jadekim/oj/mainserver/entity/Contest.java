@@ -24,9 +24,13 @@ public class Contest  {
     @JoinColumn(name = "problemSet")
     private ProblemSet problemSet;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "admin")
+    private User admin;
+
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "admins")
-    private List<User> adminUsers;
+    @JoinColumn(name = "deputy")
+    private List<User> deputies;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "examiners")
@@ -36,9 +40,9 @@ public class Contest  {
     @JoinColumn(name = "sponsors")
     private List<User> sponsors;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "team")
-    private Team team;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "teams")
+    private List<Team> teams;
 
     @Column(name = "name")
     private String name;
@@ -47,20 +51,26 @@ public class Contest  {
     @MapKey(name = "team")
     private Map<Team, AnswerList> solvedProblem;
 
+
+
     public Contest() {
-        this.team = new Team();
+        this.teams = new ArrayList<>();
         this.solvedProblem = new HashMap<>();
+        this.teams = new ArrayList<>();
+        this.deputies = new ArrayList<>();
+        this.examiners = new ArrayList<>();
+        this.sponsors = new ArrayList<>();
     }
 
-    public Contest(Date startTime, Date endTime, String name,List<User> adminUsers,List<User> examiners,List<User> sponsors) {
+    public Contest(Date startTime, Date endTime, String name) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.name = name;
         solvedProblem = new HashMap<>();
-        team = new Team();
-        this.adminUsers = adminUsers;
-        this.examiners = examiners;
-        this.sponsors = sponsors;
+        this.teams = new ArrayList<>();
+        this.examiners = new ArrayList<>();
+        this.deputies = new ArrayList<>();
+        this.sponsors = new ArrayList<>();
     }
 
     public AnswerList getAnswerList(Team team) {
@@ -102,12 +112,6 @@ public class Contest  {
         return problemSet;
     }
 
-
-    public Team getTeam() {
-        return team;
-    }
-
-
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
@@ -137,8 +141,28 @@ public class Contest  {
         return solvedProblem;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public User getAdmin() {
+        return admin;
+    }
+
+    public List<User> getDeputies() {
+        return deputies;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public List<User> getExaminers() {
+        return examiners;
+    }
+
+    public List<User> getSponsors() {
+        return sponsors;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
     }
 
     public int getId(){ return id;}
