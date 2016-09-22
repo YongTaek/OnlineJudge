@@ -55,12 +55,15 @@ public class WebContestController {
     public ModelAndView createContestPost(ModelAndView modelAndView, Authentication authentication, HttpServletRequest request) {
 
         User user = ((CurrentUser) authentication.getPrincipal()).getUser();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
         User admin = user;
         String title = request.getParameter("contest_title");
-        String rawStartDate = request.getParameter("contest_start_time");
-        String rawEndDate = request.getParameter("contest_end_time");
+        String rawStartDate = request.getParameter("contest_start_date");
+        String rawStartTime = request.getParameter("contest_start_time");
+        System.out.println(rawStartDate + " " + rawStartTime);
+        String rawEndDate = request.getParameter("contest_end_date");
+        String rawEndTime = request.getParameter("contest_end_time");
         String admins = request.getParameter("admins");
         String problemset = request.getParameter("problemset");
 
@@ -69,8 +72,8 @@ public class WebContestController {
             Contest contest = new Contest();
             contest.setName(title);
             contest.setAdmin(admin);
-            contest.setStartTime(format.parse(rawStartDate));
-            contest.setEndTime(format.parse(rawEndDate));
+            contest.setStartTime(format.parse(rawStartDate +" " +  rawStartTime));
+            contest.setEndTime(format.parse(rawEndDate + " " + rawEndTime));
             List<User> users = userService.findUsersByUserIdString(admins);
             List<User> deputies = contest.getDeputies();
             for(User u : users) {
