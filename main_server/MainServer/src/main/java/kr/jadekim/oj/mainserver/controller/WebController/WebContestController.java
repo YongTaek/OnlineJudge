@@ -124,26 +124,22 @@ public class WebContestController {
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping("create/insert-set")
     public ModelAndView insertSet(ModelAndView modelAndView, Authentication authentication, Pageable pageable) {
-        try {
-            List<ProblemSet> problemSets = problemSetService.findAllProblemSets(pageable).get();
-            List<Map> addProblemSets = new ArrayList<>();
-            for (ProblemSet set : problemSets) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("name", set.getName());
-                map.put("id", set.getId());
-                map.put("count", set.getProblemList().size());
-                if (set.isCanModify()) {
-                    addProblemSets.add(map);
-                }
+        List<ProblemSet> problemSets = problemSetService.findAllProblemSets(pageable);
+        List<Map> addProblemSets = new ArrayList<>();
+        for (ProblemSet set : problemSets) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", set.getName());
+            map.put("id", set.getId());
+            map.put("count", set.getProblemList().size());
+            if (!set.isCanModify()) {
+                addProblemSets.add(map);
             }
+            addProblemSets.add(map);
+        }
             ArrayList<Integer> pages = new ArrayList<>();
             modelAndView.addObject("addProblemSets", addProblemSets);
             modelAndView.addObject("pages", pages);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
         modelAndView.setViewName("createInsertSet");
         return modelAndView;
     }

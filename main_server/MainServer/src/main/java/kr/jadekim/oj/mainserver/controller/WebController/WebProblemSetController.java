@@ -70,10 +70,11 @@ public class WebProblemSetController {
             }
             map.put("id", num);
             map.put("name", name);
+            map.put("author", p.getAuthor().getName());
             messages.add(map);
         }
         modelAndView.addObject("messages", messages);
-        modelAndView.setViewName("workbook");
+        modelAndView.setViewName("problemSetList");
 
         return modelAndView;
     }
@@ -97,7 +98,7 @@ public class WebProblemSetController {
 
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/create-problemset-for-contest", method = RequestMethod.GET)
+    @RequestMapping(value = "/create/contest", method = RequestMethod.GET)
     public ModelAndView createProblemSetForContest(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -108,7 +109,7 @@ public class WebProblemSetController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/create-problemset-for-contest", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/contest", method = RequestMethod.POST)
     public ModelAndView createProblemSetForContestPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -117,7 +118,7 @@ public class WebProblemSetController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/create-problemset", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView createProblemSet(ModelAndView modelAndView, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -128,7 +129,7 @@ public class WebProblemSetController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/create-problemset", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView createProblemSetPost(ModelAndView modelAndView, HttpServletRequest request, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -155,13 +156,13 @@ public class WebProblemSetController {
         List<Problem> problemList = problemSet.getProblemList();
 
         String problemset_name = problemSet.getName();
-        String author = "asd";
+
 
         ArrayList<Map> messages = new ArrayList<>();
 
         Map<String, Object> problemset_map = new HashMap<>();
         problemset_map.put("problemset_name", problemset_name);
-        problemset_map.put("problemset_author", author);
+        problemset_map.put("problemset_author", problemSet.getAuthor().getName());
         problemset_map.put("problemset_id", id);
 
         for(Problem p : problemList){
