@@ -1,3 +1,6 @@
 .team-name > span {
     margin-right: 10px;
 }
+.panel-default>.panel-heading{
+    margin: 0;
+}
