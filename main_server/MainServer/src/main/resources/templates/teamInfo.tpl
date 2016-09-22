@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '문제', loginUser: loginUser, page:list,
+layout 'layout.tpl', title: '팀 정보', loginUser: loginUser, page:list,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
             link(rel: 'stylesheet', href: '/css/myPage.css')
@@ -48,12 +48,22 @@ layout 'layout.tpl', title: '문제', loginUser: loginUser, page:list,
                             div(class: 'panel-body'){
                                 table(class: "grade-contest"){
                                     tbody(){
-                                        if(members.empty){
+                                        if(results.empty){
                                             tr{td(colspan: '100%', "can't get result")}
                                         }
-                                        messages.each{ message ->
-                                            tr(){
-                                                td()
+                                        int pnumber = 0;
+                                        results.each{ results->
+                                            tr {
+                                                List list = results.list;
+                                                list.each {
+                                                    pnumber++;
+                                                    td(class: 'center', pnumber);
+                                                    if (list) {
+                                                        td(class: 'center', 'O');
+                                                    } else {
+                                                        td(class: 'center', "X");
+                                                    }
+                                                }
                                             }
                                         }
                                     }

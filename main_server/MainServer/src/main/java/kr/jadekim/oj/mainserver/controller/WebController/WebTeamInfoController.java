@@ -1,6 +1,7 @@
 package kr.jadekim.oj.mainserver.controller.WebController;
 
 import kr.jadekim.oj.mainserver.entity.*;
+import kr.jadekim.oj.mainserver.repository.AnswerListRepository;
 import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,11 @@ public class WebTeamInfoController {
     @Autowired
     TeamInfoService teamInfoService;
 
+    @Autowired
+    AnswerListRepository answerListRepository;
+
     @RequestMapping("/info/{id}")
-    public ModelAndView index(ModelAndView modelAndView,@PathVariable("id") int team_id, Authentication authentication){
+    public ModelAndView TeamInfo(ModelAndView modelAndView, @PathVariable("id") int team_id, Authentication authentication) {
 
         CurrentUser currentUser = null;
         if (authentication != null) {
@@ -39,7 +43,7 @@ public class WebTeamInfoController {
         ArrayList<Map> members = new ArrayList<>();
         try {
             team = teamInfoService.findOne(team_id).get();
-            if(team != null){
+            if (team != null) {
                 List<User> users = team.getUsers();
                 for (User u : users) {
                     Map<String, Object> map = new HashMap<>();
@@ -47,18 +51,33 @@ public class WebTeamInfoController {
                     members.add(map);
                 }
             }
-            modelAndView.addObject("members", members);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
-
+        List<Answer> answerList = new ArrayList<>();
+        ArrayList<Map> results = new ArrayList<>();
+        if (team != null) {
+            answerList = answerListRepository.findAnswerListByTeamId(team.getId());
+            Boolean gradeResult;
+            List<Object> result = new ArrayList<>();
+            for (int i = 0; i < answerList.size(); i++) {
+                gradeResult = answerList.get(i).getResult().getIsSuccess();
+                result.add(gradeResult);
+                if ((i + 1) % 5 == 0) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("list", result);
+                    results.add(map);
+                    result = new ArrayList<>();
+                }
+            }
+        }
+        modelAndView.addObject("members", members);
+        modelAndView.addObject("results", results);
         modelAndView.setViewName("teamInfo");
         return modelAndView;
     }
-
-
 }
+
