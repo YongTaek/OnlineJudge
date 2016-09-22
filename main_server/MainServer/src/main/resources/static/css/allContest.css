@@ -1,0 +1,22 @@
+#problem-container > table > thead th:nth-child(1){
+    width: 50px;
+}
+
+#problem-container > table > thead th:nth-child(3) {
+    width: 100px;
+}
+
+#problem-container > table > thead th:nth-child(4) {
+    width: 100px;
+}
+
+#problem-container > table > thead th:nth-child(5) {
+    width: 50px;
+}
+#problem-container > table > thead th:nth-child(6) {
+    width: 66px;
+}
+
+#problem-container > table > thead th:nth-child(7) {
+    width: 65px;
+}
