@@ -25,19 +25,34 @@ layout 'contestList.tpl', title: '문제', loginUser: loginUser, page:list,
                                 tr(item_id: message.id) {
                                     td(class: 'center', message.id)
                                     td(class: 'center') {
-                                        a(href: "/problem/${message.id}", message.name)
+                                        a(href: "/contest/${message.id}", message.name)
                                     }
-                                    td(class: 'center', message.count)
-                                    td(class: 'center', message.rate)
-                                    if (message.result != null) {
-                                        if (message.result == true) {
-                                            td(class: 'center', 'O')
-                                        } else {
-                                            td(class: 'center', 'X')
-                                        }
-                                    } else {
+                                    if(message.winner !=null){
+                                        td(class: 'center', message.winner)
+                                    }
+                                    else{
                                         td(class: 'center')
                                     }
+                                    if(message.subwinner !=null){
+                                        td(class: 'center', message.subwinner)
+                                    }
+                                    else{
+                                        td(class: 'center')
+                                    }
+                                    td(class: 'center', message.join)
+                                    if (message.isjoin == true) {
+                                        td(class: 'center', 'O')
+                                    }
+                                    else {
+                                            td(class: 'center')
+                                    }
+                                    if(message.isgoig !=null && message.isgoig){
+                                        td(class: 'center',"O")
+                                    }
+                                    else{
+                                        td(class: 'center')
+                                    }
+                                    td(class: 'center',admin)
                                 }
                             }
                         }
