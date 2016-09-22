@@ -24,8 +24,12 @@ public class ProblemSet {
     @JoinColumn(name = "clearUsers")
     private List<User> clearUsers;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "problemSet")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author")
+    private User author;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "problem_set")
     private List<Problem> problemList;
 
     public ProblemSet() {
@@ -41,6 +45,7 @@ public class ProblemSet {
 
     public ProblemSet(User author, String name){
 
+        this.author = author;
         this.name = name;
         this.clearUsers = new ArrayList<>();
         this.problemList = new ArrayList<>();
@@ -64,8 +69,16 @@ public class ProblemSet {
         this.name = name;
     }
 
-    public void setCelarUsers(List<User> celarUsers) {
-        this.clearUsers = celarUsers;
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setCanModify(boolean canModify) {
+        this.canModify = canModify;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public void setProblemList(List<Problem> problemList) {

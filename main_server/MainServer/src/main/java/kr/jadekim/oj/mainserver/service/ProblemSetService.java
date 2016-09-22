@@ -30,7 +30,7 @@ public class ProblemSetService {
         return new AsyncResult<>(problemSetRepository.findAll(pageable).getContent());
     }
     public int countAllProblem(int problemSetId,int userId){
-        return problemSetRepository.countAllProblem(problemSetId,userId);
+        return problemSetRepository.countAllProblem(userId);
     }
 
     @Async

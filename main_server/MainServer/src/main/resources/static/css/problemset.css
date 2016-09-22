@@ -1,35 +1,76 @@
-table.prob-table{
-    border: 1px solid #dddddd;
-    width:100%;
-}
-thead.prob-table-head{
-    display: table-header-group;
+.head-container {
+    display: table;
+    width: 100%;
 }
 
-.common-table{
-    padding: 8px;
-    height:35px;
-    border:1px solid #dddddd;
+.head-item {
+    display: table-cell;
+    vertical-align: middle;
 }
-th{
-    font-size: 13px;
+
+.head-item.main {
+    width: 100%;
 }
-#prob-id{
-    width: 10%;
+
+.nav-pills > li > a {
+    background: transparent;
+    color: #1F3860;
 }
-#prob-author{
-    width: 10%;
+
+.nav-pills > li.active > a {
+    background: transparent;
+    border: solid #1F3860 1px;
+    color: #1F3860;
 }
-#prob-title{
-    width:50%;
+
+.nav-pills > li:hover > a {
+    background: #F4F8FF;
+    color: #1F3860;
 }
-#prob-rate{
-    width:25%;
+
+.nav-pills > li.active:hover > a {
+    background: #F4F8FF;
+    color: #1F3860;
 }
-#prob-etc{
-    width:5%;
+
+input.form-control {
+    background: transparent;
+    border: solid #1F3860 1px;
 }
-.container{
-    width:940px;
-    height:100%;
+
+.btn.btn-primary {
+    background: transparent;
+    border: solid #1F3860 1px;
+    color: #1F3860;
+    text-shadow: none;
+}
+
+.btn.btn-primary:hover {
+    background: #F4F8FF;
+    text-shadow: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.btn.btn-primary.btn-custom {
+    font-size: 8px;
+    padding: 3px 12px;
+}
+
+#problem-container > table > thead th:nth-child(1) {
+    width: 80px;
+}
+
+#problem-container > table > thead th:nth-child(3) {
+    width: 200px;
+}
+
+#problem-container > table > thead th:nth-child(4) {
+    width: 600px;
+}
+
+#problem-container > table > thead th:nth-child(5) {
+    width: 120px;
 }

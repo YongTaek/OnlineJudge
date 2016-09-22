@@ -1,11 +1,14 @@
 layout 'layout.tpl', title: '문제집',loginUser:loginUser,
-        content: contents {
-            div() {
-                link(rel:'stylesheet', href: '/css/problemset.css')
+        custom_head:contents{
+            custom_head()
+            link(rel: 'stylesheet', href: '/css/problemset.css')
 
+        },
+        content: contents {
+            div(class: 'container') {
                 div(class: row) {
-                    div(class: 'col-md-8 col-xs-12 col-sm-6') {
-                        ul(class: 'nav nav-pills') {
+                    div(class: 'head-container') {
+                        ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active', id: 'problem') {
                                 a(href: '/problem', '전체')
                             }
@@ -17,18 +20,22 @@ layout 'layout.tpl', title: '문제집',loginUser:loginUser,
                             }
 
                         }
+                        div (class: 'head-item') {
+                            a(class: 'btn btn-primary push-left', href: '/problemset/create-problemset', '문제집 만들기')
+                        }
+
                     }
                 }
 
-                div(class: 'prob-container') {
-                    table(class: 'prob-table') {
-                        thead(class: 'prob-table-head', id: 'test-id') {
+                div(id: 'problem-container') {
+                    table(class: 'table table-striped') {
+                        thead(id: 'test-id') {
                             tr {
-                                th(class: 'common-table', id: 'prob-id', '번호')
-                                th(class: 'common-table', id: 'prob-author', '만든 사람')
-                                th(class: 'common-table', id: 'prob-name', '이름')
-                                th(class: 'common-table', id: 'prob-rate', '성취도')
-                                th(class: 'common-table', id: 'prob-etc', ' ')
+                                th(class: 'center', id: 'prob-id', '번호')
+                                th(class: 'center', id: 'prob-author', '만든 사람')
+                                th(class: 'center', id: 'prob-name', '이름')
+                                th(class: 'center', id: 'prob-rate', '성취도')
+                                th(class: 'center', id: 'prob-etc', '푼 사람수')
                             }
                         }
                         tbody(id: 'prob-tbody') {
@@ -37,11 +44,13 @@ layout 'layout.tpl', title: '문제집',loginUser:loginUser,
                             } else {
                                 messages.each { message ->
                                     tr {
-                                        td(class: 'common-table', message.id)
-                                        td(class: 'common-table', message.author)
-                                        td(class: 'common-table', message.name)
-                                        td(class: 'common-table', message.rate)
-                                        td(class: 'common-table', ' ')
+                                        td(class: 'center', message.id)
+                                        td(class: 'center', message.author)
+                                        td(class: 'center'){
+                                            a(href: '/problemset/'+message.id, message.name)
+                                        }
+                                        td(class: 'center', message.rate)
+                                        td(class: 'center', ' ')
                                     }
                                 }
                             }
