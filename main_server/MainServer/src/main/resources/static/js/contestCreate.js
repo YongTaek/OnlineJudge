@@ -42,6 +42,13 @@ YUI().use('calendar', 'datatype-date', 'cssbutton', function(Y) {
 
 })
 
+$('#starttime').timepicker({
+    timeFormat: 'HH:mm'
+})
+$('#endtime').timepicker({
+    timeFormat: 'HH:mm'
+})
+
 $('#admin-input').on('click',function() {
     window.open("/contest/create/insert-admin","운영진 추가","width=800px, height=600px")
 })
