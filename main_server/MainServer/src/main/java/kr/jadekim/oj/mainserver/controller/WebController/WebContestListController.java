@@ -2,6 +2,7 @@ package kr.jadekim.oj.mainserver.controller.WebController;
 
 import kr.jadekim.oj.mainserver.entity.Contest;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
+import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.service.ContestService;
 import kr.jadekim.oj.mainserver.util.Pagenation;
@@ -32,6 +33,7 @@ public class WebContestListController {
 
     @Autowired
     ContestService contestService;
+
     @RequestMapping(value = "/list")
     public ModelAndView ContestList(ModelAndView modelAndView, @PageableDefault(size = 10) Pageable pageable, Authentication authentication){
         CurrentUser currentUser = null;
@@ -87,9 +89,40 @@ public class WebContestListController {
     }
     @RequestMapping("/{id}")
     public ModelAndView Contest(ModelAndView modelAndView,@PathVariable("id") int contest_id, Authentication authentication){
+        Map<String,Object> contestinfo = new HashMap<>();
+        Contest contest = null;
+        try {
+            contest = contestService.getContest(contest_id).get();
+            if(contest != null) {
+                contestinfo.put("id", contest.getId());
+                contestinfo.put("name", contest.getName());
+                contestinfo.put("start", contest.getStartTime().toString());
+                contestinfo.put("end", contest.getEndTime().toString());
+                contestinfo.put("admin", contest.getAdmin().getName());
+                contestinfo.put("deputy", contest.getDeputies());
+                contestinfo.put("participant", contest.getExaminers());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Map> probleminfo = null;
+        if(contest !=null){
+            probleminfo = new ArrayList<>();
+            List<Problem> problems = contest.getProblemSet().getProblemList();
+            for(int i=0;i<problems.size();i++){
+                Map<String,Object> problem = new HashMap<>();
+                Problem prob = problems.get(i);
+                problem.put("id",prob.getId());
+                problem.put("name",prob.getName());
+                probleminfo.add(problem);
+            }
 
-        ArrayList<Map> messages = new ArrayList<>();
-        modelAndView.addObject("messages",messages);
+
+        }
+        modelAndView.addObject("message",contestinfo);
+        modelAndView.addObject("problems",probleminfo);
         modelAndView.setViewName("contest");
         return modelAndView;
     }
