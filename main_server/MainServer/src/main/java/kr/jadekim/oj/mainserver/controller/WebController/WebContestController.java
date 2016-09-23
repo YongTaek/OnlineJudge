@@ -75,6 +75,7 @@ public class WebContestController {
             contest.setStartTime(format.parse(rawStartDate +" " +  rawStartTime));
             contest.setEndTime(format.parse(rawEndDate + " " + rawEndTime));
             List<User> users = userService.findUsersByUserIdString(admins);
+            System.out.println(users.size());
             List<User> deputies = contest.getDeputies();
             for(User u : users) {
                 System.out.println(u.getName());
@@ -139,9 +140,9 @@ public class WebContestController {
             }
             addProblemSets.add(map);
         }
-            ArrayList<Integer> pages = new ArrayList<>();
-            modelAndView.addObject("addProblemSets", addProblemSets);
-            modelAndView.addObject("pages", pages);
+        ArrayList<Integer> pages = new ArrayList<>();
+        modelAndView.addObject("addProblemSets", addProblemSets);
+        modelAndView.addObject("pages", pages);
 
         modelAndView.setViewName("createInsertSet");
         return modelAndView;

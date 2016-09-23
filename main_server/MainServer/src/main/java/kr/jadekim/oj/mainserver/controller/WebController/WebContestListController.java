@@ -14,11 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -47,7 +44,6 @@ public class WebContestListController {
             if(currentUser!=null) {
                 user = currentUser.getUser();
             }
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -119,8 +115,6 @@ public class WebContestListController {
                 problem.put("name",prob.getName());
                 probleminfo.add(problem);
             }
-
-
         }
         modelAndView.addObject("message",contestinfo);
         modelAndView.addObject("problems",probleminfo);

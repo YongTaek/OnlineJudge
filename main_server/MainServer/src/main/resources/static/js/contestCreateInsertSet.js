@@ -2,12 +2,12 @@
  * Created by ohyongtaek on 2016. 9. 16..
  */
 $('#button').on('click', function () {
-    $(opener.document).find('#admin-list').val()
+    $(opener.document).find('#set-list').val()
     var selectedSet = $("input[name=problemset]");
-    var text = $('#result')
+    var text
     for (var i = 0; i< selectedSet.length; i++) {
-        if(selectedSet[i].checked){
-            text.text(selectedSet[i].value)
+        if(selectedSet[i].checked == true){
+            text = selectedSet[i].value
             break
         }
     }

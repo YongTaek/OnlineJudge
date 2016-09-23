@@ -21,30 +21,21 @@ import java.util.Random;
  */
 public class Evaluator {
 
-    private PublishSubject<Submission> subject = PublishSubject.create();
-
     public static Evaluator newInstance() {
         return new Evaluator();
     }
 
     public Observable<GradeResult> start() {
-        Submission submission = SubmissionQueue.getInstance().next();
-        System.out.println(submission.getCode());
-        if (submission == null) {
-            subject.onCompleted();
-        } else {
-            System.out.println("evaluate");
-            subject.onNext(submission);
-        }
-        return subject.map(this::evaluate);
+        return Observable.from(SubmissionQueue.getInstance())
+                .filter(submission -> submission != null)
+                .map(this::evaluate);
     }
 
     private GradeResult evaluate(Submission submission) {
-        System.out.println("evaluate start");
         GradeResult gradeResult = new GradeResult(submission);
 
-        String path = Setting.get().EVALUATION_TEMP_PATH+codeToUniqueString(submission.getCode())+"/";
-        File file = saveToFile(path+"Main."+submission.getLanguage().getExtension(), submission.getCode());
+        String path = Setting.get().EVALUATION_TEMP_PATH + codeToUniqueString(submission.getCode()) + "/";
+        File file = saveToFile(path + "Main." + submission.getLanguage().getExtension(), submission.getCode());
         String compileResult = Compiler.compile(file, submission.getLanguage());
 
         if (compileResult != null && !"".equals(compileResult)) {
@@ -69,13 +60,13 @@ public class Evaluator {
             }
         }
         gradeResult.setTests(testResults);
-        gradeResult.setGrade((successCount/testCases.size())*100.0);
+        gradeResult.setGrade((successCount / testCases.size()) * 100.0);
         gradeResult.setSuccess(successCount == testCases.size());
         return gradeResult;
     }
 
     private static String codeToUniqueString(String contentString) {
-        String name = contentString + '\n'+new Date().toString()+'\n'+"this is sort : "+new Random().nextDouble();
+        String name = contentString + '\n' + new Date().toString() + '\n' + "this is sort : " + new Random().nextDouble();
         MessageDigest messageDigest = null;
         try {
             messageDigest = MessageDigest.getInstance("MD5");
