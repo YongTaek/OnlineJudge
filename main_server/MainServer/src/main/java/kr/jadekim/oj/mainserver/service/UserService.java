@@ -99,4 +99,9 @@ public class UserService {
         }
         return users;
     }
+
+    public User findUserById(int id){
+        User user = userRepository.findOne(id);
+        return user;
+    }
 }

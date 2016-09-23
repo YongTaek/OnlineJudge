@@ -79,6 +79,7 @@ input.input {
     background: transparent;
     border: solid #1F3860 1px;
     border-radius: 5px;
+    display: inherit;
 }
 
 textarea.form-control {

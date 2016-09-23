@@ -61,6 +61,7 @@ public class WebMyPageController {
     public ModelAndView mypage(ModelAndView modelAndView, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
+        boolean isMe = true;
         Map<String, Object> map = new HashMap<>();
         try {
             List<Problem> submitProblems = problemService.findProblemsBySubmittedUser(loginUser).get();
@@ -99,7 +100,7 @@ public class WebMyPageController {
         }
         map.put("user_name", loginUser.getName());
         map.put("user_id", loginUser.getloginId());
-
+        map.put("isMe", isMe);
         modelAndView.addObject("messages", map);
         modelAndView.setViewName("mypage");
         return modelAndView;
