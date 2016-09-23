@@ -4,8 +4,10 @@ import kr.jadekim.oj.mainserver.entity.Answer;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.User;
+import kr.jadekim.oj.mainserver.repository.GroupRepository;
 import kr.jadekim.oj.mainserver.repository.UserRepository;
 import kr.jadekim.oj.mainserver.service.AnswerService;
+import kr.jadekim.oj.mainserver.service.GroupService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +52,12 @@ public class WebUserController {
     @Autowired
     UserRepository userRepository;
 
-//    @PreAuthorize("hasAuthority('USER')")
+    @Autowired
+    GroupService groupService;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    //    @PreAuthorize("hasAuthority('USER')")
 //    @RequestMapping(value = "/login?logout", method = RequestMethod.GET)
 //    public java.lang.String logout() {
 //        System.out.println("logout Success");
@@ -86,7 +95,6 @@ public class WebUserController {
     public ModelAndView join(HttpServletRequest request){
         User user;
         try {
-
             user = userService.join(request.getParameter("login_id"), request.getParameter("login_pw"), request.getParameter("name"), request.getParameter("email")).get();
             CurrentUser currentUser = new CurrentUser(user);
             Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser,null,currentUser.getAuthorities());
@@ -165,11 +173,106 @@ public class WebUserController {
             map.put("group", user.getGroup().getName());
         }
         map.put("user_name", user.getName());
-        map.put("user_id", user.getloginId());
+        map.put("user_loginid", user.getloginId());
+        map.put("user_id", user.getId());
         map.put("isMe", isMe);
         modelAndView.addObject("messages", map);
         modelAndView.setViewName("mypage");
 
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/setting", method = RequestMethod.GET)
+    public ModelAndView showSetting(ModelAndView modelAndView, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        boolean isMe = true;
+        if (loginUser == null) {
+            modelAndView.setViewName("redirect:/board/notice");
+            return modelAndView;
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("user_id", loginUser.getLoginId());
+            map.put("user_name", loginUser.getName());
+            map.put("name", loginUser.getName());
+            map.put("email", loginUser.getEmail());
+            map.put("isMe", isMe);
+            modelAndView.addObject("messages", map);
+            modelAndView.setViewName("settingUserInfo");
+            return modelAndView;
+        }
+    }
+
+    @RequestMapping(value = "/setting", method = RequestMethod.POST)
+    public ModelAndView modifyinfo(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        loginUser.setName(name);
+        loginUser.setEmail(email);
+        userService.saveUser(loginUser);
+        ((CurrentUser) authentication.getPrincipal()).setUser(loginUser);
+        modelAndView.setViewName("redirect:/user/setting");
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/setting/password", method = RequestMethod.GET)
+    public ModelAndView showsettingpw(ModelAndView modelAndView, Authentication authentication) {
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", user.getLoginId());
+        map.put("user_name", user.getName());
+        map.put("isMe", true);
+        modelAndView.addObject("messages", map);
+        modelAndView.setViewName("settingPassword");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/setting/password", method = RequestMethod.POST)
+    public ModelAndView settingpw(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication) {
+        String origin_password = request.getParameter("origin_password");
+        String new_password = request.getParameter("new_password");
+        String new_password1 = request.getParameter("new_password1");
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        if (!bCryptPasswordEncoder.matches(origin_password, user.getLoginPw())) {
+            modelAndView.setViewName("redirect:/user/setting/password");
+            return modelAndView;
+        } else {
+            if (new_password.equals(new_password1)) {
+                user.setLoginPw(bCryptPasswordEncoder.encode(new_password));
+                userService.saveUser(user);
+            }
+        }
+        modelAndView.setViewName("redirect:/home");
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.GET)
+    public ModelAndView showWithdrawl(ModelAndView modelAndView, Authentication authentication) {
+        modelAndView.setViewName("withdrawl");
+        Map<String, Object> map = new HashMap<>();
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        map.put("user_id", user.getloginId());
+        map.put("user_name", user.getName());
+        map.put("isMe", true);
+        modelAndView.addObject("messages", map);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.POST)
+    public ModelAndView withdrawal(ModelAndView modelAndView, Authentication authentication, HttpSession session) {
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        if (user.getGroup() != null) {
+            user.getGroup().getUsers().remove(user);
+            groupService.save(user.getGroup());
+        }
+        userRepository.delete(user);
+        session.invalidate();
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 }

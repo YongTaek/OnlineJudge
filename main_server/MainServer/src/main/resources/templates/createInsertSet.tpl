@@ -1,5 +1,6 @@
 layout 'layout.tpl', loginUser: loginUser, title: '대회 만들기',
         custom_head: contents {
+            link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
         },
         content: contents {
             label(id: 'result') {}

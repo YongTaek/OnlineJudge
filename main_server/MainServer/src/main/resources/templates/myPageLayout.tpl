@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,
+layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,user_id:user_loginid,
         custom_head: contents {
             custom_head()
         },
@@ -7,7 +7,7 @@ layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,
                 div(class: 'row') {
                     div() {
                         p(class: 'username') {
-                            span(style: 'font-size : 35', user_id)
+                            span(style: 'font-size : 35', user_loginid)
                             span(user_name)
                         }
                     }
@@ -17,10 +17,10 @@ layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,
                         div(class: 'head-container') {
                             ul(class: 'nav nav-pills head-item main') {
                                 li(id: 'myActivity', class: 'active') {
-                                    a(href: '/myPage', '활동')
+                                    a(href: '/user/'+user_loginid, '활동')
                                 }
                                 li(id: 'setting') {
-                                    a(href: '/myPage/setting', '설정')
+                                    a(href: '/user/setting', '설정')
                                 }
                                 li(id: 'createProblem') {
                                     a(href: '/problem/create', '문제 만들기')

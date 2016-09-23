@@ -1,0 +1,119 @@
+.head-container {
+    display: table;
+    width: 100%;
+}
+
+.head-item {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.head-item.main {
+    width: 100%;
+}
+
+.nav-pills > li > a {
+    background: transparent;
+    color: #1F3860;
+}
+
+.nav-pills > li.active > a {
+    background: transparent;
+    border: solid #1F3860 1px;
+    color: #1F3860;
+}
+
+.nav-pills > li:hover > a {
+    background: #F4F8FF;
+    color: #1F3860;
+}
+
+.nav-pills > li.active:hover > a {
+    background: #F4F8FF;
+    color: #1F3860;
+}
+
+input.form-control {
+    background: transparent;
+    border: solid #1F3860 1px;
+}
+
+.btn.btn-primary {
+    background: transparent;
+    border: solid #1F3860 1px;
+    color: #1F3860;
+    text-shadow: none;
+}
+
+.btn.btn-primary:hover {
+    background: #F4F8FF;
+    text-shadow: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.margin > p{
+    margin-bottom: 15px;
+}
+
+.margin > input{
+    margin-bottom: 15px;
+    background: transparent;
+    border: solid #1F3860 1px;
+    border-radius: 5px;
+}
+
+.username > span {
+    margin-right: 10px;
+}
+
+p.text {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+input.input {
+    margin-bottom: 15px;
+    background: transparent;
+    border: solid #1F3860 1px;
+    border-radius: 5px;
+    display: inline;
+}
+
+input.margin {
+    margin-right: 10px;
+}
+textarea.form-control {
+    margin-bottom: 15px;
+    background: transparent;
+}
+
+button.plusButton {
+    margin-right: 5px;
+}
+
+
+form.write_form {
+    width: 700px;
+    margin-left: 50px;
+}
+
+.testcaseButton {
+    display: inline-block;
+}
+
+label.forCheckBox {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.inrow {
+    display: inline-block;
+}
+
+.marginRight{
+    margin-right: 20px;
+}
+
