@@ -4,6 +4,7 @@ import kr.jadekim.oj.mainserver.entity.Contest;
 import kr.jadekim.oj.mainserver.entity.CurrentUser;
 import kr.jadekim.oj.mainserver.entity.Problem;
 import kr.jadekim.oj.mainserver.entity.User;
+import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.service.ContestService;
 import kr.jadekim.oj.mainserver.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,27 @@ public class WebContestListController {
 
     @Autowired
     ContestService contestService;
+
+    @Autowired
+    ContestRepository contestRepository;
+    @RequestMapping("/test")
+    public ModelAndView testCreateContest(ModelAndView modelAndView, Authentication authentication){
+        CurrentUser currentUser = null;
+        if (authentication != null) {
+            currentUser = (CurrentUser) authentication.getPrincipal();
+        }
+        User loginUser = null;
+        if (currentUser != null) {
+            loginUser = currentUser.getUser();
+        }
+        Date startTime = new Date();
+        Date endTime = new Date();
+        Contest contest = new Contest(startTime, endTime,"test");
+        contestRepository.save(contest);
+
+        modelAndView.setViewName("redirect:/myPage");
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/list")
     public ModelAndView ContestList(ModelAndView modelAndView, @PageableDefault(size = 10) Pageable pageable, Authentication authentication){
@@ -64,21 +86,42 @@ public class WebContestListController {
             Map<String,Object> map = new HashMap<>();
             Boolean isjoin = false;
             List<User> users = c.getExaminers();
-            for(int i =0; i< users.size();i++){
-                if(users.get(i) == user){
-                    isjoin = true;
-                    break;
+            if(users != null) {
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i) == user) {
+                        isjoin = true;
+                        break;
+                    }
                 }
             }
             map.put("id",c.getId());
             map.put("isjoin",isjoin);
             map.put("name",c.getName());
-            map.put("winner",c.getWinner().getName());
-            map.put("subwinner",c.getSubwinner().getName());
-            map.put("admin",c.getAdmin().getName());
+            User winner = c.getWinner();
+            User subWinner = c.getSubwinner();
+            if(winner != null && subWinner != null){
+                map.put("winner",c.getWinner().getName());
+                map.put("subwinner",c.getSubwinner().getName());
+            }
+            else{
+                map.put("winner","");
+                map.put("subwinner","");
+            }
+            User admin = c.getAdmin();
+            if(admin != null){
+                map.put("admin",c.getAdmin().getName());
+            }
+            else{
+                map.put("admin","");
+            }
             Date today = new Date();
-            if(today.before(c.getEndTime())&&today.after(c.getStartTime())){
+            Date startTime = c.getStartTime();
+            Date endTime = c.getEndTime();
+            if(startTime != null && endTime != null &&today.before(endTime)&&today.after(startTime)){
                 map.put("isgoing",true);
+            }
+            else{
+                map.put("isgoing",false);
             }
             massages.add(map);
         }
