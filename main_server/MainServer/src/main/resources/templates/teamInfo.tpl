@@ -9,8 +9,8 @@ layout 'layout.tpl', title: '팀 정보', loginUser: loginUser, page:list,
                 div(class: "row"){
                     div(class: "col-md-12"){
                         p(class: "team-name"){
-                            span(style: 'font-size : 35', "TeamName")
-                            span("ContestName")
+                            span(style: 'font-size : 35', teamname)
+                            span(contestname)
                         }
                     }
                 }
@@ -27,10 +27,19 @@ layout 'layout.tpl', title: '팀 정보', loginUser: loginUser, page:list,
                                 if (members.empty) {
                                     tr { td(colspan: '100%', 'No Team Members') }
                                 } else {
+                                    tr(item_id: admin){
+                                        td(class: 'center', admin)
+                                        td(class: 'center')
+                                    }
                                     members.each { members ->
                                         tr(item_id: members.name) {
                                             td(class: 'center', members.name)
-                                            td(class: 'center', 'x')
+                                            td(class: 'center'){
+                                                form(class: 'remove form-inline', action: '/team/remove-member', method: 'post') {
+                                                    input(type: 'hidden', name: 'id', value = members.id)
+                                                    button(class: 'btn btn-primary btn-custom', type: 'submit', 'X')
+                                                }
+                                            }
                                         }
                                     }
                                 }

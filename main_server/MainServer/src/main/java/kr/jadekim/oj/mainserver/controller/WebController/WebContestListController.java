@@ -1,11 +1,9 @@
 package kr.jadekim.oj.mainserver.controller.WebController;
 
-import kr.jadekim.oj.mainserver.entity.Contest;
-import kr.jadekim.oj.mainserver.entity.CurrentUser;
-import kr.jadekim.oj.mainserver.entity.Problem;
-import kr.jadekim.oj.mainserver.entity.User;
+import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.service.ContestService;
+import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -49,7 +50,7 @@ public class WebContestListController {
         Contest contest = new Contest(startTime, endTime,"test");
         contestRepository.save(contest);
 
-        modelAndView.setViewName("redirect:/myPage");
+        modelAndView.setViewName("redirect:/contestList");
         return modelAndView;
     }
 
@@ -76,7 +77,7 @@ public class WebContestListController {
 
         modelAndView.addObject("messages",messages);
         modelAndView.addObject("pages",pages);
-        modelAndView.setViewName("allContest");
+        modelAndView.setViewName("contestList");
         return modelAndView;
     }
 
@@ -114,20 +115,23 @@ public class WebContestListController {
             else{
                 map.put("admin","");
             }
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date today = new Date();
             Date startTime = c.getStartTime();
             Date endTime = c.getEndTime();
             if(startTime != null && endTime != null &&today.before(endTime)&&today.after(startTime)){
                 map.put("isgoing",true);
+                map.put("startTime",format.format(startTime));
             }
             else{
                 map.put("isgoing",false);
+                map.put("startTime",format.format(startTime));
             }
             massages.add(map);
         }
         return massages;
     }
-    @RequestMapping("/{id}")
+    @RequestMapping("info/{id}")
     public ModelAndView Contest(ModelAndView modelAndView,@PathVariable("id") int contest_id, Authentication authentication){
         Map<String,Object> contestinfo = new HashMap<>();
         Contest contest = null;
@@ -136,9 +140,15 @@ public class WebContestListController {
             if(contest != null) {
                 contestinfo.put("id", contest.getId());
                 contestinfo.put("name", contest.getName());
-                contestinfo.put("start", contest.getStartTime().toString());
-                contestinfo.put("end", contest.getEndTime().toString());
-                contestinfo.put("admin", contest.getAdmin().getName());
+                Date startTime = contest.getStartTime();
+                Date endTime = contest.getEndTime();
+                SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                contestinfo.put("start", format.format(startTime));
+                contestinfo.put("end", format.format(endTime));
+                User admin = contest.getAdmin();
+                if(admin != null){
+                    contestinfo.put("admin", admin.getName());
+                }
                 contestinfo.put("deputy", contest.getDeputies());
                 contestinfo.put("participant", contest.getExaminers());
             }
@@ -150,7 +160,12 @@ public class WebContestListController {
         ArrayList<Map> probleminfo = null;
         if(contest !=null){
             probleminfo = new ArrayList<>();
-            List<Problem> problems = contest.getProblemSet().getProblemList();
+            ProblemSet problemset = contest.getProblemSet();
+            List<Problem> problems = new ArrayList<>();
+            if(problemset != null){
+                 problems = problemset.getProblemList();
+
+            }
             for(int i=0;i<problems.size();i++){
                 Map<String,Object> problem = new HashMap<>();
                 Problem prob = problems.get(i);
@@ -161,7 +176,7 @@ public class WebContestListController {
         }
         modelAndView.addObject("message",contestinfo);
         modelAndView.addObject("problems",probleminfo);
-        modelAndView.setViewName("contest");
+        modelAndView.setViewName("contestInfo");
         return modelAndView;
     }
 
@@ -172,7 +187,7 @@ public class WebContestListController {
 
         ArrayList<Map> messages = new ArrayList<>();
         modelAndView.addObject("messages",messages);
-        modelAndView.setViewName("allContest");
+        modelAndView.setViewName("contestList");
         return modelAndView;
     }
 }

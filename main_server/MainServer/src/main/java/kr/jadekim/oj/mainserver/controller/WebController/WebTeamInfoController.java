@@ -5,13 +5,16 @@ import kr.jadekim.oj.mainserver.repository.AnswerListRepository;
 import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.service.TeamInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +47,17 @@ public class WebTeamInfoController {
         try {
             team = teamInfoService.findOne(team_id).get();
             if (team != null) {
+                modelAndView.addObject("teamname",team.getName());
+                modelAndView.addObject("contestname",team.getContest().getName());
                 List<User> users = team.getUsers();
+                User admin = team.getAdmin();
+                if(admin != null){
+                    modelAndView.addObject("admin",admin.getName());
+                }
                 for (User u : users) {
                     Map<String, Object> map = new HashMap<>();
                     map.put("name", u.getName());
+                    map.put("id",u.getId());
                     members.add(map);
                 }
             }
@@ -79,5 +89,7 @@ public class WebTeamInfoController {
         modelAndView.setViewName("teamInfo");
         return modelAndView;
     }
+
+
 }
 
