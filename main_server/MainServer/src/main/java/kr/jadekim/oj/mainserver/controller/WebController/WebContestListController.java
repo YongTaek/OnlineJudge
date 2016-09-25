@@ -1,6 +1,10 @@
 package kr.jadekim.oj.mainserver.controller.WebController;
 
 import kr.jadekim.oj.mainserver.entity.*;
+import kr.jadekim.oj.mainserver.entity.Contest;
+import kr.jadekim.oj.mainserver.entity.CurrentUser;
+import kr.jadekim.oj.mainserver.entity.Problem;
+import kr.jadekim.oj.mainserver.entity.User;
 import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.service.ContestService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
