@@ -1,25 +1,34 @@
-#problem-container > table > thead th:nth-child(1){
-    width: 50px;
+#problem-container > table > thead th:nth-child(1) {
+    width: 600px;
+}
+#problem-container > table > thead th:nth-child(2) {
+    width: 80px;
 }
 
 #problem-container > table > thead th:nth-child(3) {
-    width: 100px;
+    width: 80px;
 }
 
 #problem-container > table > thead th:nth-child(4) {
-    width: 100px;
+    width: 150px;
 }
-
 #problem-container > table > thead th:nth-child(5) {
-    width: 77px;
-}
-#problem-container > table > thead th:nth-child(6) {
-    width: 66px;
+    width: 80px;
 }
 
-#problem-container > table > thead th:nth-child(7) {
-    width: 65px;
+#problem-container > table > thead th:nth-child(6) {
+    width: 80px;
 }
-#problem-container > table > thead th:nth-child(8){
-    width: 77px;
+.ongoing{
+    background-color: #FFFFE4 !important;
+}
+.isjoin{
+    background: transparent;
+    border: solid red 1px;
+    color: red;
+    text-shadow: none;
+    font-size: 8px;
+    padding: 3px 12px;
+    margin-left:1em;
+    border-radius: 5px;
 }
