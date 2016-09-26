@@ -1,4 +1,4 @@
-layout 'group.tpl',loginUser:loginUser,userGroup:userGroup,
+layout 'group.tpl',loginUser:loginUser,userGroup:userGroup, user_id : user_id,
         custom_head:contents{
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
         },

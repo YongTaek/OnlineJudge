@@ -1,4 +1,4 @@
-layout 'myPageLayout.tpl',user_id:user_id,group:group,loginUser:loginUser,
+layout 'myPageLayout.tpl',user_loginid:user_loginid,group:group,loginUser:loginUser,user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/setting.css')
         },

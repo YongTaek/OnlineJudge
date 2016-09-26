@@ -1,4 +1,6 @@
-layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,user_id:user_loginid,
+package templates
+
+layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,user_loginid:user_loginid,user_id:user_id,
         custom_head: contents {
             custom_head()
         },
@@ -17,7 +19,7 @@ layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,user_id:user
                         div(class: 'head-container') {
                             ul(class: 'nav nav-pills head-item main') {
                                 li(id: 'myActivity', class: 'active') {
-                                    a(href: '/user/'+user_loginid, '활동')
+                                    a(href: '/user/'+user_id, '활동')
                                 }
                                 li(id: 'setting') {
                                     a(href: '/user/setting', '설정')

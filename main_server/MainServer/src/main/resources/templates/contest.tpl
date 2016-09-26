@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '대회', loginUser: loginUser,
+layout 'layout.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
         custom_head:contents{
             custom_head()
         },

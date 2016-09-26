@@ -1,4 +1,4 @@
-layout 'layout.tpl', loginUser: loginUser,title:'대회 만들기',
+layout 'layout.tpl', loginUser: loginUser,title:'대회 만들기', user_id : user_id,
         custom_head: contents {
             link(rel:'stylesheet', href:'//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css')
             script(src: 'http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js'){}

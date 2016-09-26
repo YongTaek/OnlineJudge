@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '질문하기',loginUser:loginUser,
+layout 'layout.tpl', title: '질문하기',loginUser:loginUser, user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/questionList.css')
             script(type: 'text/javascript', src: '/SE2.1.3.O8706/js/HuskyEZCreator.js', charset = "utf-8") {}

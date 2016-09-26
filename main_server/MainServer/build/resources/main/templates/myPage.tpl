@@ -1,4 +1,4 @@
-layout 'myPageLayout.tpl', loginUser: loginUser,user_id:messages.user_id,group:group,isMe:messages.isMe,user_name: messages.user_name,
+layout 'myPageLayout.tpl', loginUser: loginUser,group:group,isMe:messages.isMe,user_name: messages.user_name,user_loginid : messages.user_loginid,user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/myPage.css')
         },

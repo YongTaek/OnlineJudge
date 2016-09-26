@@ -120,6 +120,30 @@ public class WebUserController {
     }
 
 
+
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "setting", method = RequestMethod.GET)
+    public ModelAndView showSetting(ModelAndView modelAndView, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        boolean isMe = true;
+        if (loginUser == null) {
+            modelAndView.setViewName("redirect:/board/notice");
+            return modelAndView;
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("user_loginid", loginUser.getLoginId());
+            map.put("user_name", loginUser.getName());
+            map.put("name", loginUser.getName());
+            map.put("email", loginUser.getEmail());
+            map.put("isMe", isMe);
+            modelAndView.addObject("messages", map);
+            modelAndView.setViewName("settingUserInfo");
+            return modelAndView;
+        }
+    }
+
     @RequestMapping("user/{id}")
     public ModelAndView userInfoShow(ModelAndView modelAndView, @PathVariable("id") int id, Authentication authentication){
         CurrentUser currentUser = null;
@@ -177,31 +201,9 @@ public class WebUserController {
         map.put("user_id", user.getId());
         map.put("isMe", isMe);
         modelAndView.addObject("messages", map);
-        modelAndView.setViewName("mypage");
+        modelAndView.setViewName("myPage");
 
         return modelAndView;
-    }
-
-    @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/setting", method = RequestMethod.GET)
-    public ModelAndView showSetting(ModelAndView modelAndView, Authentication authentication) {
-        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-        User loginUser = currentUser.getUser();
-        boolean isMe = true;
-        if (loginUser == null) {
-            modelAndView.setViewName("redirect:/board/notice");
-            return modelAndView;
-        } else {
-            Map<String, Object> map = new HashMap<>();
-            map.put("user_id", loginUser.getLoginId());
-            map.put("user_name", loginUser.getName());
-            map.put("name", loginUser.getName());
-            map.put("email", loginUser.getEmail());
-            map.put("isMe", isMe);
-            modelAndView.addObject("messages", map);
-            modelAndView.setViewName("settingUserInfo");
-            return modelAndView;
-        }
     }
 
     @RequestMapping(value = "/setting", method = RequestMethod.POST)

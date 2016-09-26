@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: 'MyTeam', loginUser: loginUser,
+layout 'layout.tpl', title: 'MyTeam', loginUser: loginUser, user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/myTeamList.css')
         },
