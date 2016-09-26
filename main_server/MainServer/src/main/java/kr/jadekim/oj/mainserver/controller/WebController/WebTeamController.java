@@ -6,7 +6,6 @@ import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.repository.TeamRepository;
 import kr.jadekim.oj.mainserver.service.ContestService;
-import kr.jadekim.oj.mainserver.service.TeamInfoService;
 import kr.jadekim.oj.mainserver.service.TeamService;
 import kr.jadekim.oj.mainserver.service.UserService;
 import org.aspectj.bridge.Message;
@@ -40,9 +39,6 @@ public class WebTeamController {
     TeamService teamService;
 
     @Autowired
-    TeamInfoService teamInfoService;
-
-    @Autowired
     AnswerListRepository answerListRepository;
 
     @Autowired
@@ -57,22 +53,36 @@ public class WebTeamController {
     @Autowired
     ContestService contestService;
 
-    @RequestMapping("/{id}")
+    @RequestMapping("info/{id}")
     public ModelAndView TeamInfo(ModelAndView modelAndView, @PathVariable("id") int team_id, Authentication authentication) {
 
         CurrentUser currentUser = null;
         if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
+        User loginUser = currentUser.getUser();
         Team team = null;
         ArrayList<Map> members = new ArrayList<>();
         try {
-            team = teamInfoService.findOne(team_id).get();
+            team = teamService.findOne(team_id).get();
             if (team != null) {
+                modelAndView.addObject("teamname",team.getName());
+                modelAndView.addObject("contestname",team.getContest().getName());
                 List<User> users = team.getUsers();
+                User admin = team.getAdmin();
+                if(admin != null){
+                    modelAndView.addObject("admin",admin.getName());
+                    if(admin == loginUser ){
+                        modelAndView.addObject("isadmin",true);
+                    }
+                    else{
+                        modelAndView.addObject("isadmin",false);
+                    }
+                }
                 for (User u : users) {
                     Map<String, Object> map = new HashMap<>();
                     map.put("name", u.getName());
+                    map.put("id",u.getId());
                     members.add(map);
                 }
             }

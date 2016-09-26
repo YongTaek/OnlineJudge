@@ -42,6 +42,5 @@ layout 'layout.tpl', title: '문제집 만들기', loginUser: loginUser, user_id
                         button(type: "submit", id: "postButton", class: "btn btn-primary", '올리기')
                     }
                 }
-                script(type: 'text/javascript', src: '/js/problemsetSetting.js') {}
             }
         }

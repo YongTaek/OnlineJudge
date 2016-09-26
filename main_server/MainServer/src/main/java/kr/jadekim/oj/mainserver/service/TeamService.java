@@ -43,5 +43,8 @@ public class TeamService {
         teamRepository.save(team);
     }
 
-
+    @Async
+    public Future<Team> findOne(int id) {
+        return new AsyncResult<>(teamRepository.findOne(id));
+    }
 }

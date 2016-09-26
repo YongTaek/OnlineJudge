@@ -57,6 +57,5 @@ layout 'layout.tpl', title: '문제집 만들기', loginUser: loginUser,
                     }
                     a(class:'btn btn-primary',href: "/problemset", '완료')
                 }
-                script(type: 'text/javascript', src: '/js/problemsetSetting.js') {}
             }
         }
