@@ -1,3 +1,4 @@
+
 layout 'contestList.tpl', title: '문제', loginUser: loginUser, page:list, user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
