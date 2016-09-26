@@ -156,7 +156,6 @@ public class ProblemService {
     }
 
     public Future<List<Problem>> findProblemsBySubmittedUser(User user) {
-        System.out.println(user.getId());
         return new AsyncResult<>(problemRepository.findProblemBySubmitterId(user.getId()));
     }
 }

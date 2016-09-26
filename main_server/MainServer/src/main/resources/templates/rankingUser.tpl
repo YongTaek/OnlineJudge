@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '랭킹', loginUser: loginUser,
+layout 'layout.tpl', title: '랭킹', loginUser: loginUser, user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/rankingUser.css')
         },

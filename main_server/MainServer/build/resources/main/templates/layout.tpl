@@ -22,7 +22,7 @@ html {
                     }
                     ul(class: "hidden", id: "profile-data") {
                         li() {
-                            a(class: "profile-link", href: "/myPage", "My Page")
+                            a(class: "profile-link", href: "/user/info/"+user_id, "My Page")
                         }
                         li() {
                             form(id: 'form-id', action:'/logout', method:'post') {

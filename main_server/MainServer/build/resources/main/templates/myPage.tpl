@@ -1,4 +1,4 @@
-layout 'myPageLayout.tpl', loginUser: loginUser,user_id:messages.user_id,group:group,
+layout 'myPageLayout.tpl', loginUser: loginUser,group:group,isMe:messages.isMe,user_name: messages.user_name,user_loginid : messages.user_loginid,user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/myPage.css')
         },
@@ -29,7 +29,7 @@ layout 'myPageLayout.tpl', loginUser: loginUser,user_id:messages.user_id,group:g
                                 tr {
                                     td(class: 'common-table', "소속 그룹")
                                     if (messages.group == null) {
-                                        td(class: 'common-table')
+                                        td(class: 'common-table', "가입된 그룹이 없습니다")
                                     } else {
                                         td(class: 'common-table') {
                                             a(href: '/group/myGroup', messages.group)

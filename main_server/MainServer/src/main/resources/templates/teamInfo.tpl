@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '팀 정보', loginUser: loginUser, page:list,
+layout 'layout.tpl', title: '팀 정보', loginUser: loginUser, page:list, user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
             link(rel: 'stylesheet', href: '/css/myPage.css')

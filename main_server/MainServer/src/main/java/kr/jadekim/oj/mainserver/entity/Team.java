@@ -34,6 +34,11 @@ public class Team {
     @Column(name = "result")
     private List<GradeResult> results;
 
+    @OneToMany
+    @JoinColumn(name = "request_users",unique = true)
+    private List<User> requestUsers; //try catch 하시고 에러 잡으세요
+
+
     public Team() {
     }
 
@@ -42,6 +47,7 @@ public class Team {
         this.admin = admin;
         users = new ArrayList<>();
         contest = new Contest();
+        requestUsers = new ArrayList<>();
     }
 
     public String getName() {
@@ -78,5 +84,13 @@ public class Team {
 
     public void setContest(Contest contest) {
         this.contest = contest;
+    }
+
+    public List<User> getRequestUsers() {
+        return this.requestUsers;
+    }
+
+    public void setRequestUsers(List<User> requestUsers) {
+        this.requestUsers = requestUsers;
     }
 }

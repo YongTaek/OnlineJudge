@@ -1,4 +1,4 @@
-layout 'layout.tpl',title:'문제집 수정',loginUser:loginUser,userGroup:userGroup,
+layout 'layout.tpl',title:'문제집 수정',loginUser:loginUser,userGroup:userGroup, user_id : user_id,
         custom_head:contents{
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
             link(rel: 'stylesheet', type: 'text/css', href: '/css/requiredProblemset.css')

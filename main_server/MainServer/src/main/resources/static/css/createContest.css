@@ -79,9 +79,12 @@ input.input {
     background: transparent;
     border: solid #1F3860 1px;
     border-radius: 5px;
-    display: inherit;
+    display: inline;
 }
 
+input.margin {
+    margin-right: 10px;
+}
 textarea.form-control {
     margin-bottom: 15px;
     background: transparent;
@@ -93,8 +96,8 @@ button.plusButton {
 
 
 form.write_form {
-    margin-left: 20px;
     width: 700px;
+    margin-left: 50px;
 }
 
 .testcaseButton {
@@ -104,5 +107,13 @@ form.write_form {
 label.forCheckBox {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.inrow {
+    display: inline-block;
+}
+
+.marginRight{
+    margin-right: 20px;
 }
 

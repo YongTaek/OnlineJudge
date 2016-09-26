@@ -1,4 +1,4 @@
-layout 'layout.tpl', title: '그룹 만들기', loginUser: loginUser,
+layout 'layout.tpl', title: '그룹 만들기', loginUser: loginUser, user_id : user_id,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/groupCreate.css')
         },
