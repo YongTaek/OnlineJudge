@@ -1,4 +1,4 @@
-layout 'settinglist.tpl', loginUser: loginUser, user_id: user_id, group: group, user_loginid:messages.user_loginid,
+layout 'settinglist.tpl', loginUser: loginUser, user_id: user_id, group: group, user_loginid:messages.user_loginid,isMe:messages.isMe,
         content: contents {
             div(class: 'col-md-8') {
                 form(id: 'modify_info', action: '/myPage/setting', method: 'post') {

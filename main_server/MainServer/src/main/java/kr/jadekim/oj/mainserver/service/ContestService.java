@@ -30,7 +30,6 @@ public class ContestService {
         return new AsyncResult<>(contests);
     }
 
-    @Async
     public void save(Contest contest) {
         contestRepository.save(contest);
     }

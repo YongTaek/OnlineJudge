@@ -123,7 +123,7 @@ public class WebUserController {
 
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "setting", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/setting", method = RequestMethod.GET)
     public ModelAndView showSetting(ModelAndView modelAndView, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -144,7 +144,7 @@ public class WebUserController {
         }
     }
 
-    @RequestMapping("user/{id}")
+    @RequestMapping("/user/info/{id}")
     public ModelAndView userInfoShow(ModelAndView modelAndView, @PathVariable("id") int id, Authentication authentication){
         CurrentUser currentUser = null;
         boolean isMe = false;
@@ -206,7 +206,7 @@ public class WebUserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/setting", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/setting", method = RequestMethod.POST)
     public ModelAndView modifyinfo(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
@@ -221,11 +221,11 @@ public class WebUserController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/setting/password", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/setting/password", method = RequestMethod.GET)
     public ModelAndView showsettingpw(ModelAndView modelAndView, Authentication authentication) {
         User user = ((CurrentUser) authentication.getPrincipal()).getUser();
         Map<String, Object> map = new HashMap<>();
-        map.put("user_id", user.getLoginId());
+        map.put("user_loginid", user.getLoginId());
         map.put("user_name", user.getName());
         map.put("isMe", true);
         modelAndView.addObject("messages", map);
@@ -233,7 +233,7 @@ public class WebUserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/setting/password", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/setting/password", method = RequestMethod.POST)
     public ModelAndView settingpw(ModelAndView modelAndView, HttpServletRequest request, Authentication authentication) {
         String origin_password = request.getParameter("origin_password");
         String new_password = request.getParameter("new_password");
@@ -253,19 +253,19 @@ public class WebUserController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/setting/withdrawal", method = RequestMethod.GET)
     public ModelAndView showWithdrawl(ModelAndView modelAndView, Authentication authentication) {
         modelAndView.setViewName("withdrawl");
         Map<String, Object> map = new HashMap<>();
         User user = ((CurrentUser) authentication.getPrincipal()).getUser();
-        map.put("user_id", user.getloginId());
+        map.put("user_loginid", user.getloginId());
         map.put("user_name", user.getName());
         map.put("isMe", true);
         modelAndView.addObject("messages", map);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/setting/withdrawal", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/setting/withdrawal", method = RequestMethod.POST)
     public ModelAndView withdrawal(ModelAndView modelAndView, Authentication authentication, HttpSession session) {
         User user = ((CurrentUser) authentication.getPrincipal()).getUser();
         if (user.getGroup() != null) {

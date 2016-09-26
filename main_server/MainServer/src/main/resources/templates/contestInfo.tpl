@@ -1,4 +1,4 @@
-layout 'contest.tpl', title: '대회', loginUser: loginUser,
+layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/myPage.css')
             link(rel: 'stylesheet', href: '/css/contest.css')
@@ -80,7 +80,7 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser,
                     }
                 }
                 div(class:'join-button'){
-                    a(class:'btn btn-primary',href: "/contest/join/${message.id}", '참가하기')
+                    a(class:'btn btn-primary',href: "/contest/team/create/${message.id}", '참가하기')
                 }
             }
         }

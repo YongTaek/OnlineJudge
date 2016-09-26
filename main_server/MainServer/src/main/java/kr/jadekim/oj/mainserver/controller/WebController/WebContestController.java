@@ -59,14 +59,12 @@ public class WebContestController {
         String title = request.getParameter("contest_title");
         String rawStartDate = request.getParameter("contest_start_date");
         String rawStartTime = request.getParameter("contest_start_time");
-        System.out.println(rawStartDate + " " + rawStartTime);
         String rawEndDate = request.getParameter("contest_end_date");
         String rawEndTime = request.getParameter("contest_end_time");
 //        String admins = request.getParameter("admins");
         String problemset = request.getParameter("problemset");
         long start = format.parse(rawStartDate+" "+rawStartTime).getTime();
         long end = format.parse(rawEndDate+" "+rawEndTime).getTime();
-        System.out.println(start+"");
         if(title.equals("") || rawStartDate.equals("") || rawStartTime.equals("") || rawEndDate.equals("") || rawEndTime.equals("")){
             modelAndView.setViewName("redirect:/contest/create");
             return modelAndView;
@@ -99,7 +97,7 @@ public class WebContestController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        modelAndView.setViewName("redirect:/problem/list");
+        modelAndView.setViewName("redirect:/contest/list");
 
         return modelAndView;
     }

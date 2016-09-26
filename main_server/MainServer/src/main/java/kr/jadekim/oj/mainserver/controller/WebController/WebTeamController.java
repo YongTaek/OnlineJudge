@@ -5,7 +5,9 @@ import kr.jadekim.oj.mainserver.repository.AnswerListRepository;
 import kr.jadekim.oj.mainserver.repository.AnswerRepository;
 import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.repository.TeamRepository;
+import kr.jadekim.oj.mainserver.service.ContestService;
 import kr.jadekim.oj.mainserver.service.TeamInfoService;
+import kr.jadekim.oj.mainserver.service.TeamService;
 import kr.jadekim.oj.mainserver.service.UserService;
 import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ import java.util.concurrent.ExecutionException;
 public class WebTeamController {
 
     @Autowired
+    TeamService teamService;
+
+    @Autowired
     TeamInfoService teamInfoService;
 
     @Autowired
@@ -48,6 +53,9 @@ public class WebTeamController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ContestService contestService;
 
     @RequestMapping("/{id}")
     public ModelAndView TeamInfo(ModelAndView modelAndView, @PathVariable("id") int team_id, Authentication authentication) {
@@ -152,6 +160,8 @@ public class WebTeamController {
             }
             map.put("number", num);
             map.put("name", name);
+            map.put("team_id", t.getId());
+            map.put("admin_id", t.getAdmin().getId());
             map.put("admin", admin);
             map.put("contest", contest);
             map.put("contest_id", contest_id + "");
@@ -189,12 +199,12 @@ public class WebTeamController {
         team.setContest(contest);
         team.setAdmin(loginUser);
         team.getUsers().add(loginUser);
-        teamRepository.save(team);
+        teamService.save(team);
         loginUser.getTeamList().add(team);
         userService.saveUser(loginUser);
         contest.getTeams().add(team);
-        contestRepository.save(contest);
-        modelAndView.setViewName("redirect:/contest/"+id);
+        contestService.save(contest);
+        modelAndView.setViewName("redirect:/contest/info/"+id);
         return modelAndView;
     }
 

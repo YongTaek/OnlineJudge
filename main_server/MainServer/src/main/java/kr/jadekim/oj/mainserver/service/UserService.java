@@ -63,7 +63,6 @@ public class UserService {
         return user;
     }
 
-    @Async
     public void saveUser(User user){
         userRepository.save(user);
     }

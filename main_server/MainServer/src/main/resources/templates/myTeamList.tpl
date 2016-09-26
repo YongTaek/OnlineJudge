@@ -33,10 +33,14 @@ layout 'layout.tpl', title: 'MyTeam', loginUser: loginUser, user_id : user_id,
                             } else {
                                 messages.each { message ->
                                     tr {
-                                        td(class: 'center', message.name)
-                                        td(class: 'center', message.admin)
+                                        td(class: 'center'){
+                                            a(href: '/team/info/'+message.team_id ,message.name)
+                                        }
+                                        td(class: 'center'){
+                                            a(href: '/user/info/'+message.admin_id, message.admin)
+                                        }
                                         td(class: 'center') {
-                                            a(href: '/contest/'+message.contest_id, message.contest)
+                                            a(href: '/contest/info/'+message.contest_id, message.contest)
                                         }
                                     }
                                 }
