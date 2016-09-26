@@ -52,9 +52,11 @@ public class WebContestListController {
         Date startTime = new Date();
         Date endTime = new Date();
         Contest contest = new Contest(startTime, endTime,"test");
+        List<User> examiner = contest.getExaminers();
+        examiner.add(loginUser);
         contestRepository.save(contest);
 
-        modelAndView.setViewName("redirect:/contestList");
+        modelAndView.setViewName("redirect:/contest");
         return modelAndView;
     }
 
@@ -64,13 +66,13 @@ public class WebContestListController {
         if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
-        Iterable<Contest> contests = null;
         User user = null;
+        if(currentUser!=null) {
+            user = currentUser.getUser();
+        }
+        Iterable<Contest> contests = null;
         try {
             contests = contestService.findAllContest(pageable).get();
-            if(currentUser!=null) {
-                user = currentUser.getUser();
-            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -93,7 +95,7 @@ public class WebContestListController {
             List<User> users = c.getExaminers();
             if(users != null) {
                 for (int i = 0; i < users.size(); i++) {
-                    if (users.get(i) == user) {
+                    if (users.get(i).getloginId().matches(user.getloginId())) {
                         isjoin = true;
                         break;
                     }
@@ -124,7 +126,11 @@ public class WebContestListController {
             Date startTime = c.getStartTime();
             Date endTime = c.getEndTime();
             if(startTime != null && endTime != null &&today.before(endTime)&&today.after(startTime)){
-                map.put("isgoing",true);
+                map.put("isgoing",1);
+                map.put("startTime",format.format(startTime));
+            }
+            else if(startTime != null && endTime != null &&today.before(startTime)){
+                map.put("isgoing",2);
                 map.put("startTime",format.format(startTime));
             }
             else{

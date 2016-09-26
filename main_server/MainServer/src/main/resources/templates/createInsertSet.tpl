@@ -45,4 +45,5 @@ layout 'layout.tpl', loginUser: loginUser, title: '대회 만들기', user_id : 
             }
             button(class: 'btn btn-primary btn-complete', id: 'button', '완료')
             script(type: 'text/javascript', src: '/js/contestCreateInsertSet.js') {}
+
         }

@@ -13,7 +13,7 @@ layout 'contest.tpl', title: '문제', loginUser: loginUser, page:list, user_id:
                             th(class: 'center', '우승')
                             th(class: 'center', '준우승')
                             th(class: 'center', '대회 시작')
-                            th(class: 'center', '주최자')
+                            th(class: 'center', '상태')
                             th(class: 'center', '참가하기')
                         }
                     }
@@ -22,7 +22,7 @@ layout 'contest.tpl', title: '문제', loginUser: loginUser, page:list, user_id:
                             tr { td(colspan: '100%', 'No Contents') }
                         } else {
                             messages.each { message ->
-                                if(message.isgoing){
+                                if(message.isgoing == 1){
                                     tr(class: "ongoing",item_id: message.id) {
                                         td() {
                                             a(href: "/contest/info/${message.id}", message.name)
@@ -43,12 +43,8 @@ layout 'contest.tpl', title: '문제', loginUser: loginUser, page:list, user_id:
                                             td(class: 'center')
                                         }
                                         td(class: 'center',message.startTime)
-                                        td(class: 'center',admin)
-                                        td(class: 'center') {
-                                            if(!message.isjoin) {
-                                                a(class: "btn-custom btn btn-primary",href: "/contest/join/${message.id}", '참가하기')
-                                            }
-                                        }
+                                        td(class: 'center','진행')
+                                        td(class: 'center')
                                     }
                                 }
                                 else{
@@ -72,8 +68,19 @@ layout 'contest.tpl', title: '문제', loginUser: loginUser, page:list, user_id:
                                             td(class: 'center')
                                         }
                                         td(class: 'center',message.startTime)
-                                        td(class: 'center',admin)
-                                        td(class: 'center')
+                                        if(message.isgoing == 2){
+                                            td(class: 'center',"준비중")
+                                            td(class: 'center'){
+                                                if(!message.isjoin) {
+                                                    a(class: "btn-custom btn btn-primary",href: "/contest/join/${message.id}", '참가하기')
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            td(class:'center',"마감")
+                                            td(class: 'center')
+                                        }
+
                                     }
                                 }
 
