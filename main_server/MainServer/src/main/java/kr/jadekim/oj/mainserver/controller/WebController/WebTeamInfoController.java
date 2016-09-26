@@ -42,6 +42,7 @@ public class WebTeamInfoController {
         if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
+        User loginUser = currentUser.getUser();
         Team team = null;
         ArrayList<Map> members = new ArrayList<>();
         try {
@@ -53,6 +54,12 @@ public class WebTeamInfoController {
                 User admin = team.getAdmin();
                 if(admin != null){
                     modelAndView.addObject("admin",admin.getName());
+                    if(admin == loginUser ){
+                        modelAndView.addObject("isadmin",true);
+                    }
+                    else{
+                        modelAndView.addObject("isadmin",false);
+                    }
                 }
                 for (User u : users) {
                     Map<String, Object> map = new HashMap<>();

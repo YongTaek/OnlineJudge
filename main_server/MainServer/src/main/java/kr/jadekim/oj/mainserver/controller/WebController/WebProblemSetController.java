@@ -182,5 +182,61 @@ public class WebProblemSetController {
         modelAndView.setViewName("problemsetInfo");
         return modelAndView;
     }
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/setting/{id}", method = RequestMethod.GET)
+    public ModelAndView settingProblemset(ModelAndView modelAndView,@PathVariable("id") int set_id, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        ArrayList<Map> messages = new ArrayList<>();
+        List<Problem> problems = problemRepository.findProblemByAuthorId(loginUser.getId());
+        ProblemSet problemSet = problemSetRepository.findOne(set_id);
+        List<Problem> problemInSet = new ArrayList<>();
+        if(problemSet != null){
+            problemInSet = problemSet.getProblemList();
+            modelAndView.addObject("setName",problemSet.getName());
+        }
+        else{
+            modelAndView.addObject("setName","");
+        }
+        for(Problem p:problems){
+            if(p.isOpen()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("problem_id", p.getId() + "");
+                map.put("problem_name", p.getName());
+                map.put("problem_isOpen", "O");
+                if (problemInSet.contains(p)) {
+                    map.put("contain", true);
+                } else {
+                    map.put("contain", false);
+                }
+                messages.add(map);
+            }
+        }
+        modelAndView.addObject("messages", messages);
+        modelAndView.setViewName("settingProblemset");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "setting/{id}", method = RequestMethod.POST)
+    public ModelAndView settingProblemsetPost(ModelAndView modelAndView, @PathVariable("id") int set_id, Authentication authentication, HttpServletRequest request){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+
+        ProblemSet problemSet = problemSetRepository.findOne(set_id);
+        if(problemSet != null){
+            List<Problem> problems = problemSet.getProblemList();
+            String id = request.getParameter("id");
+            Problem problem = problemRepository.findOne(Integer.valueOf(id));
+            if(problem != null && !problems.contains(problem)){
+                problems.add(problem);
+            }
+            else if(problem != null && problems.contains(problem)){
+                problems.remove(problem);
+            }
+        }
+        problemSetRepository.save(problemSet);
+        modelAndView.setViewName("redirect:/problemset/setting/{id}");
+        return modelAndView;
+    }
 }
 
