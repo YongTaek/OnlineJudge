@@ -124,7 +124,11 @@ public class WebContestListController {
             Date startTime = c.getStartTime();
             Date endTime = c.getEndTime();
             if(startTime != null && endTime != null &&today.before(endTime)&&today.after(startTime)){
-                map.put("isgoing",true);
+                map.put("isgoing",1);
+                map.put("startTime",format.format(startTime));
+            }
+            else if(startTime != null && endTime != null &&today.before(startTime)){
+                map.put("isgoing",2);
                 map.put("startTime",format.format(startTime));
             }
             else{
