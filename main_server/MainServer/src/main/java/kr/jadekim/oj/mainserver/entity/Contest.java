@@ -52,6 +52,10 @@ public class Contest  {
     @JoinColumn(name = "teams")
     private List<Team> teams;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "requestDeputy")
+    private List<User> requestDeputy;
+
     @Column(name = "name")
     private String name;
 
@@ -68,6 +72,7 @@ public class Contest  {
         this.deputies = new ArrayList<>();
         this.examiners = new ArrayList<>();
         this.sponsors = new ArrayList<>();
+        this.requestDeputy = new ArrayList<>();
     }
 
     public Contest(Date startTime, Date endTime, String name) {
@@ -153,7 +158,7 @@ public class Contest  {
         return admin;
     }
 
-    public List<User> getDeputies() {
+    public List<User>  getDeputies() {
         return deputies;
     }
 
@@ -181,5 +186,7 @@ public class Contest  {
     public User getSubwinner(){
         return subwinner;
     }
+
+    public List<User> getRequestDeputy() {return requestDeputy;}
 
 }

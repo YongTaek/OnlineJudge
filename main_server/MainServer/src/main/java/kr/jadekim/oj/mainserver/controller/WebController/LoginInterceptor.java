@@ -20,8 +20,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getPrincipal().getClass().equals(CurrentUser.class)) {
             User loginUser = ((CurrentUser)authentication.getPrincipal()).getUser();
-            modelAndView.addObject("loginUser", loginUser.getName());
-            modelAndView.addObject("user_id", loginUser.getId());
+            if(loginUser != null && modelAndView != null) {
+                modelAndView.addObject("loginUser", loginUser.getName());
+                modelAndView.addObject("user_id", loginUser.getId());
+            }
         }
 
     }

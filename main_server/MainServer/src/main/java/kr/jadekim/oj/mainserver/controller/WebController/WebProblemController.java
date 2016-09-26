@@ -169,8 +169,9 @@ public class WebProblemController {
             modelAndView.setViewName("redirect:/problem/list");
         }else{
             Map<String, Object> map = new HashMap<>();
-            map.put("user_id", loginUser.getloginId());
+            map.put("user_loginid", loginUser.getloginId());
             map.put("user_name", loginUser.getName());
+            map.put("isMe", true);
             modelAndView.addObject("messages", map);
             modelAndView.setViewName("problemCreate");
         }

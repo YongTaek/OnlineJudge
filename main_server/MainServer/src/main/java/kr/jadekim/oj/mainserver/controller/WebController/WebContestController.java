@@ -4,6 +4,7 @@ import kr.jadekim.oj.mainserver.entity.*;
 import kr.jadekim.oj.mainserver.repository.ContestRepository;
 import kr.jadekim.oj.mainserver.service.ContestService;
 import kr.jadekim.oj.mainserver.service.ProblemSetService;
+import kr.jadekim.oj.mainserver.service.TeamService;
 import kr.jadekim.oj.mainserver.service.UserService;
 import kr.jadekim.oj.mainserver.util.Pagenation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,9 @@ public class WebContestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    TeamService teamService;
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -254,6 +259,147 @@ public class WebContestController {
         }
         return massages;
     }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/setting/{id}", method = RequestMethod.GET)
+    public ModelAndView settingContestShow(ModelAndView modelAndView, @PathVariable("id") int contest_id, Authentication authentication) {
+        try {
+            Contest contest = contestService.getContest(contest_id).get();
+            CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+            User loginUser = currentUser.getUser();
+//            if(!loginUser.equals(contest.getAdmin())){
+//                modelAndView.setViewName("redirect:/contest/info/"+contest_id);
+//                return modelAndView;
+//            }
+            ArrayList<Map> messages = new ArrayList<>();
+            Map<String, Object> map = new HashMap<>();
+            map.put("contest_name", contest.getName());
+            map.put("contest_id", contest_id);
+            if(contest.getProblemSet() != null) {
+                map.put("contest_problemset", contest.getProblemSet().getName());
+            }else{
+                map.put("contest_problemset", "");
+            }
+            messages.add(map);
+            ArrayList<Map> Deputies = new ArrayList<>();
+            for(User user : contest.getDeputies()){
+                Map<String, Object> deputy = new HashMap<>();
+                deputy.put("deputy_name", user.getName());
+                deputy.put("deputy_id", user.getId());
+                Deputies.add(deputy);
+            }
+            modelAndView.addObject("Deputies",Deputies);
+            ArrayList<Map> requestDeputies = new ArrayList<>();
+            for(User user : contest.getRequestDeputy()){
+                Map<String, Object> requestDeputy = new HashMap<>();
+                requestDeputy.put("requestDeputy_name", user.getName());
+                System.out.println(requestDeputy.get("requestDeputy_name"));
+                requestDeputy.put("requestDeputy_id",user.getId());
+                requestDeputies.add(requestDeputy);
+            }
+            System.out.println(requestDeputies.size());
+            modelAndView.addObject("requestDeputies",requestDeputies);
+            modelAndView.addObject("messages", map);
+            modelAndView.setViewName("contestsetting");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/setting/{id}", method = RequestMethod.POST)
+    public ModelAndView settingContest(ModelAndView modelAndView, @PathVariable("id") int contest_id, HttpServletRequest request,Authentication authentication) throws ExecutionException, InterruptedException {
+        Contest contest = contestService.getContest(contest_id).get();
+        ProblemSet problemSet;
+        String contest_name = request.getParameter("contestname");
+        String contest_problemset = request.getParameter("contestProblemset");
+        if(!contest_problemset.equals("")){
+            problemSet = problemSetService.findOne(Integer.valueOf(contest_problemset)).get();
+            contest.setProblemSet(problemSet);
+        }
+        contest.setName(contest_name);
+        contestService.save(contest);
+        modelAndView.setViewName("redirect:/contest/info/"+contest_id);
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("info/deputy")
+    public @ResponseBody String askRequest(HttpServletRequest request, Authentication authentication){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        User loginUser = currentUser.getUser();
+        int contest_id = Integer.parseInt(request.getParameter("contest_id"));
+        Contest contest;
+        try {
+            contest = contestService.getContest(contest_id).get();
+            contest.getRequestDeputy().add(loginUser);
+            contestService.save(contest);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return "{'success' : true}";
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("add/deputy")
+    public @ResponseBody String addRequest(HttpServletRequest request, Authentication authentication) throws ExecutionException, InterruptedException {
+        String[] temp =  request.getParameter("deputy_id").split("/");
+        int contest_id = Integer.valueOf(temp[1]);
+        System.out.println(contest_id+"*"+temp[0]);
+        Contest contest = contestService.getContest(contest_id).get();
+        User deputy = userService.findUserById(Integer.valueOf(temp[0]));
+        contest.getRequestDeputy().remove(deputy);
+        contest.getDeputies().add(deputy);
+        contestService.save(contest);
+        return "{'success' : true}";
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("delete/requestDeputy")
+    public @ResponseBody String deleteRequest(HttpServletRequest request, Authentication authentication) throws ExecutionException, InterruptedException {
+        String[] temp =  request.getParameter("deputy_id").split("/");
+        System.out.println(temp[0]+"!"+temp[1]);
+        int contest_id = Integer.valueOf(temp[1]);
+        System.out.println(contest_id+"*"+temp[0]);
+        Contest contest = contestService.getContest(contest_id).get();
+        User deputy = userService.findUserById(Integer.valueOf(temp[0]));
+        contest.getRequestDeputy().remove(deputy);
+        contestService.save(contest);
+        return "{'success' : true}";
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("delete/deputy")
+    public @ResponseBody String deleteDeputy(HttpServletRequest request, Authentication authentication) throws ExecutionException, InterruptedException {
+        String[] temp =  request.getParameter("deputy_id").split("/");
+        System.out.println(temp[0]+"!"+temp[1]);
+        int contest_id = Integer.valueOf(temp[1]);
+        System.out.println(contest_id+"*"+temp[0]);
+        Contest contest = contestService.getContest(contest_id).get();
+        User deputy = userService.findUserById(Integer.valueOf(temp[0]));
+        contest.getDeputies().remove(deputy);
+        contestService.save(contest);
+        return "{'success' : true}";
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("delete")
+    public @ResponseBody String deleteContest(HttpServletRequest request, Authentication authentication) throws ExecutionException, InterruptedException {
+        String temp =  request.getParameter("contest_id");
+        int contest_id = Integer.valueOf(temp);
+        Contest contest = contestService.getContest(contest_id).get();
+        contestService.deleteContest(contest);
+        for(Team team : contest.getTeams()){
+            teamService.deleteTeam(team);
+        }
+        return "{'success' : true}";
+    }
+
     @RequestMapping("info/{id}")
     public ModelAndView Contest(ModelAndView modelAndView, @PathVariable("id") int contest_id, Authentication authentication){
         Map<String,Object> contestinfo = new HashMap<>();

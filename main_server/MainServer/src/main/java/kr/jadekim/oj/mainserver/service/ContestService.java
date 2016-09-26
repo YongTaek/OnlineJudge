@@ -33,4 +33,8 @@ public class ContestService {
     public void save(Contest contest) {
         contestRepository.save(contest);
     }
+
+    public void deleteContest(Contest contest) {
+        contestRepository.delete(contest);
+    }
 }

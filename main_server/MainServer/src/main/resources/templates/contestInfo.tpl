@@ -16,6 +16,7 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
                             p() {
                                 span(message.start +" - "+message.end)
                             }
+                            button(id: 'deputy-request', class:'btn btn-primary',type:'button', '부관리자 신청')
                         }
                     }
                 }
@@ -81,6 +82,8 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
                 }
                 div(class:'join-button'){
                     a(class:'btn btn-primary',href: "/contest/team/create/${message.id}", '참가하기')
+                    a(class:'btn btn-primary', href:"/contest/setting/${message.id}", "설정")
                 }
             }
+            script(src:'/js/contestInfo.js'){}
         }
