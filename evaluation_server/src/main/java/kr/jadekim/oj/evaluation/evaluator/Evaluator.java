@@ -4,7 +4,6 @@ import kr.jadekim.oj.evaluation.Setting;
 import kr.jadekim.oj.evaluation.models.*;
 import kr.jadekim.oj.evaluation.utils.Logger;
 import rx.Observable;
-import rx.subjects.PublishSubject;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class Evaluator {
         GradeResult gradeResult = new GradeResult(submission);
 
         String path = Setting.get().EVALUATION_TEMP_PATH + codeToUniqueString(submission.getCode()) + "/";
-        File file = saveToFile(path + "Main." + submission.getLanguage().getExtension(), submission.getCode());
+        File file = saveToFile(path, "Main." + submission.getLanguage().getExtension(), submission.getCode());
         String compileResult = Compiler.compile(file, submission.getLanguage());
 
         if (compileResult != null && !"".equals(compileResult)) {
@@ -78,14 +77,18 @@ public class Evaluator {
         return name;
     }
 
-    private static File saveToFile(String path, String code) {
+    private static File saveToFile(String path, String fileName, String code) {
         File file = new File(path);
-        try (PrintWriter writer = new PrintWriter(new java.io.FileWriter(file))) {
+        if(!file.exists()) {
+            file.mkdirs();
+        }
+        File codeFile = new File(path + fileName);
+        try (PrintWriter writer = new PrintWriter(new java.io.FileWriter(codeFile))) {
             writer.write(code);
             writer.flush();
         } catch (IOException e) {
             Logger.error(e);
         }
-        return file;
+        return codeFile;
     }
 }

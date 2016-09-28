@@ -1,13 +1,11 @@
 package kr.jadekim.oj.evaluation.evaluator;
 
-import kr.jadekim.oj.evaluation.utils.Logger;
 import kr.jadekim.oj.evaluation.Setting;
-import rx.Observable;
-import rx.Scheduler;
 import rx.observables.StringObservable;
 import rx.schedulers.Schedulers;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +25,7 @@ public class Runner {
     public Runner(String path, String[] command, int limitMemory) {
         //TODO: check installed docker
         List<String> finallyCommand = new ArrayList<>();
-        String[] runCommand = {"docker", "run", "-i", "-a", "STDOUT", "-a", "STDERR", "-m", limitMemory+"k",
+        String[] runCommand = {"docker", "run", "-i", "-a", "STDOUT", "-a", "STDERR", "-m", limitMemory+"m",
                 "-v", path+":/root/oj", Setting.get().DOCKER_CONTAINER};
         Collections.addAll(finallyCommand, runCommand);
         Collections.addAll(finallyCommand, command);

@@ -9,15 +9,15 @@ import java.util.List;
  * Created by jdekim43 on 2016. 2. 5..
  */
 @Entity
-@Table(name="problem")
+@Table(name="tbl_problem")
 public class Problem {
 
     @Id
     @SerializedName("id")
     private int id;
 
-    @OneToMany
-    @JoinColumn(name="testCase")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="testcase")
     @SerializedName("testCases")
     private List<TestCase> testCases;
 
