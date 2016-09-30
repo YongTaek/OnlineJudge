@@ -53,7 +53,7 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
                         }
                     }
                     div(class: 'panel-body') {
-
+                        span(admin+" ")
                         if (message.deputy!=null ) {
                             message.deputy.each { deputy ->
                                 span(deputy.getName()+" ")
