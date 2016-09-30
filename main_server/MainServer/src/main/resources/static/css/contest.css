@@ -3,4 +3,17 @@
 }
 .join-button>a{
     float: right;
+    margin-left: 10px;
 }
+
+input.inline {
+    display: inline;
+    width: 89%;
+    margin-right: 5px;
+}
+
+.modifyButton {
+    float: right;
+    margin-right: 16px;
+}
+

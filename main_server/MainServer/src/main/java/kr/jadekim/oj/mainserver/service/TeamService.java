@@ -47,4 +47,7 @@ public class TeamService {
     public Future<Team> findOne(int id) {
         return new AsyncResult<>(teamRepository.findOne(id));
     }
+
+    @Async
+    public void deleteTeam(Team team) {teamRepository.delete(team);}
 }

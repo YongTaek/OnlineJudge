@@ -1,4 +1,4 @@
-layout 'myPageLayout.tpl', title: '문제만들기', loginUser: loginUser,user_id:messages.user_id,group:group,
+layout 'myPageLayout.tpl', title: '문제만들기', loginUser: loginUser,user_loginid:messages.user_loginid,group:group,user_id:user_id, isMe : messages.isMe,user_name:messages.user_name,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/createProblem.css')
             script(type: 'text/javascript', src: '/SE2.1.3.O8706/js/HuskyEZCreator.js', charset = "utf-8") {}

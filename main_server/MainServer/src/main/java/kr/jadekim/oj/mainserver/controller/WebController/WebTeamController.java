@@ -53,7 +53,7 @@ public class WebTeamController {
     @Autowired
     ContestService contestService;
 
-    @RequestMapping("info/{id}")
+    @RequestMapping("/info/{id}")
     public ModelAndView TeamInfo(ModelAndView modelAndView, @PathVariable("id") int team_id, Authentication authentication) {
 
         CurrentUser currentUser = null;
@@ -208,7 +208,6 @@ public class WebTeamController {
         Contest contest = contestRepository.findOne(id);
         team.setContest(contest);
         team.setAdmin(loginUser);
-        team.getUsers().add(loginUser);
         teamService.save(team);
         loginUser.getTeamList().add(team);
         userService.saveUser(loginUser);
