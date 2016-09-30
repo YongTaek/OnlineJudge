@@ -419,7 +419,6 @@ public class WebContestController {
                     contestinfo.put("admin", admin.getName());
                 }
                 contestinfo.put("deputy", contest.getDeputies());
-//                contestinfo.put("participant", contest.getExaminers());
                 contestinfo.put("participant", contest.getTeams());
                 System.out.println(contest.getTeams().size());
                 System.out.println(contest.getTeams());

@@ -70,14 +70,9 @@ public class WebTeamController {
                 modelAndView.addObject("contestname",team.getContest().getName());
                 List<User> users = team.getUsers();
                 User admin = team.getAdmin();
-                if(admin != null){
-                    modelAndView.addObject("admin",admin.getName());
-                    if(admin == loginUser ){
-                        modelAndView.addObject("isadmin",true);
-                    }
-                    else{
-                        modelAndView.addObject("isadmin",false);
-                    }
+                List<User> requestUsers = team.getRequestUsers();
+                if(admin !=null && admin.getloginId() == loginUser.getloginId()){
+                    ArrayList<Map> requestUser = makeRequestUserList(requestUsers);
                 }
                 for (User u : users) {
                     Map<String, Object> map = new HashMap<>();
@@ -114,7 +109,10 @@ public class WebTeamController {
         modelAndView.setViewName("teamInfo");
         return modelAndView;
     }
+    public ArrayList<Map> makeRequestUserList(List<User> requestUsers){
+        
 
+    }
 
 
     @PreAuthorize("hasAuthority('USER')")
