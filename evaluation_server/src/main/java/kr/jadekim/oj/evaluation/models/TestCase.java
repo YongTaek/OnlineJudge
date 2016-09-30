@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * Created by jdekim43 on 2016. 1. 21..
  */
 @Entity
-@Table(name="test_case")
+@Table(name="tbl_test_case")
 public class TestCase {
 
     @Id
