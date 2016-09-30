@@ -72,7 +72,7 @@ public class WebTeamController {
                 User admin = team.getAdmin();
                 List<User> requestUsers = team.getRequestUsers();
                 if(admin !=null && admin.getloginId() == loginUser.getloginId()){
-                    ArrayList<Map> requestUser = makeRequestUserList(requestUsers);
+//                    ArrayList<Map> requestUser = makeRequestUserList(requestUsers);
                 }
                 for (User u : users) {
                     Map<String, Object> map = new HashMap<>();
@@ -109,10 +109,10 @@ public class WebTeamController {
         modelAndView.setViewName("teamInfo");
         return modelAndView;
     }
-    public ArrayList<Map> makeRequestUserList(List<User> requestUsers){
-        
-
-    }
+//    public ArrayList<Map> makeRequestUserList(List<User> requestUsers){
+//
+//
+//    }
 
 
     @PreAuthorize("hasAuthority('USER')")
