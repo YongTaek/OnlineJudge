@@ -10,6 +10,7 @@ import kr.jadekim.oj.mainserver.repository.UserRepository;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.service.ProblemSetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -124,7 +125,11 @@ public class WebProblemSetController {
         User loginUser = currentUser.getUser();
         ArrayList<Map> messages = problemService.getCreateProblemset(loginUser);
         modelAndView.addObject("messages", messages);
-        modelAndView.setViewName("Createproblemset");
+        modelAndView.addObject("flag",1);
+        modelAndView.addObject("action","/problemset/create/");
+        modelAndView.addObject("setName","");
+        modelAndView.addObject("title","문제집 만들기");
+        modelAndView.setViewName("createAndEditproblemset");
         return modelAndView;
     }
 
@@ -183,13 +188,16 @@ public class WebProblemSetController {
         return modelAndView;
     }
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/setting/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView settingProblemset(ModelAndView modelAndView,@PathVariable("id") int set_id, @PageableDefault(sort = {"id"}, size = 25) Pageable pageable, Authentication authentication) {
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         User loginUser = currentUser.getUser();
+        ProblemSet problemSet = problemSetRepository.findOne(set_id);
+        if(problemSet!=null || !loginUser.getloginId().matches(problemSet.getAuthor().getloginId())){
+            modelAndView.setViewName("redirect:/problemset");
+        }
         ArrayList<Map> messages = new ArrayList<>();
         List<Problem> problems = problemRepository.findProblemByAuthorId(loginUser.getId());
-        ProblemSet problemSet = problemSetRepository.findOne(set_id);
         List<Problem> problemInSet = new ArrayList<>();
         if(problemSet != null){
             problemInSet = problemSet.getProblemList();
@@ -213,15 +221,15 @@ public class WebProblemSetController {
             }
         }
         modelAndView.addObject("messages", messages);
-        modelAndView.setViewName("settingProblemset");
+        modelAndView.addObject("flag",2);
+        modelAndView.addObject("action","/problemset/edit/"+set_id);
+        modelAndView.addObject("title","문제집 수정");
+        modelAndView.setViewName("createAndEditProblemset");
         return modelAndView;
     }
-
-    @RequestMapping(value = "setting/{id}", method = RequestMethod.POST)
-    public ModelAndView settingProblemsetPost(ModelAndView modelAndView, @PathVariable("id") int set_id, Authentication authentication, HttpServletRequest request){
-        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-        User loginUser = currentUser.getUser();
-
+    @RequestMapping(value = "/edit/{id}/update",method = RequestMethod.POST)
+    public ModelAndView editProblemsetPut(ModelAndView modelAndView, @PathVariable("id") int set_id, Authentication authentication, HttpServletRequest request){
+        System.out.print("hello\n\n\n\n\n");
         ProblemSet problemSet = problemSetRepository.findOne(set_id);
         if(problemSet != null){
             List<Problem> problems = problemSet.getProblemList();
@@ -235,8 +243,23 @@ public class WebProblemSetController {
             }
         }
         problemSetRepository.save(problemSet);
-        modelAndView.setViewName("redirect:/problemset/setting/{id}");
+        modelAndView.setViewName("redirect:/problemset/edit/"+set_id);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    public ModelAndView editProblemsetPost(ModelAndView modelAndView, @PathVariable("id") int set_id, Authentication authentication, HttpServletRequest request){
+        CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+        ProblemSet problemSet = problemSetRepository.findOne(set_id);
+        System.out.print("hi\n\n\n\n\n");
+        if(problemSet != null){
+            String title = request.getParameter("problemset_title");
+            problemSet.setName(title);
+        }
+        problemSetRepository.save(problemSet);
+        modelAndView.setViewName("redirect:/problemset");
+        return modelAndView;
+    }
+
 }
 
