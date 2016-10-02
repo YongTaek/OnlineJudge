@@ -11,6 +11,9 @@ layout 'layout.tpl', title: '문제집', loginUser: loginUser, user_id : user_id
                             li(class: 'active', id: 'problem') {
                                 a(href: '/problemset/'+problemset.problemset_id, '문제집')
                             }
+                            li( id: 'problem') {
+                                a(href: '/problemset/edit/'+problemset.problemset_id, '문제집 수정')
+                            }
                         }
                     }
                 }
