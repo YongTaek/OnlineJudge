@@ -126,7 +126,7 @@ public class WebProblemSetController {
         ArrayList<Map> messages = problemService.getCreateProblemset(loginUser);
         modelAndView.addObject("messages", messages);
         modelAndView.addObject("flag",1);
-        modelAndView.addObject("action","/problemset/create/");
+        modelAndView.addObject("action","/problemset/create");
         modelAndView.addObject("setName","");
         modelAndView.addObject("title","문제집 만들기");
         modelAndView.setViewName("createAndEditproblemset");
@@ -229,7 +229,6 @@ public class WebProblemSetController {
     }
     @RequestMapping(value = "/edit/{id}/update",method = RequestMethod.POST)
     public ModelAndView editProblemsetPut(ModelAndView modelAndView, @PathVariable("id") int set_id, Authentication authentication, HttpServletRequest request){
-        System.out.print("hello\n\n\n\n\n");
         ProblemSet problemSet = problemSetRepository.findOne(set_id);
         if(problemSet != null){
             List<Problem> problems = problemSet.getProblemList();
@@ -251,7 +250,6 @@ public class WebProblemSetController {
     public ModelAndView editProblemsetPost(ModelAndView modelAndView, @PathVariable("id") int set_id, Authentication authentication, HttpServletRequest request){
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
         ProblemSet problemSet = problemSetRepository.findOne(set_id);
-        System.out.print("hi\n\n\n\n\n");
         if(problemSet != null){
             String title = request.getParameter("problemset_title");
             problemSet.setName(title);

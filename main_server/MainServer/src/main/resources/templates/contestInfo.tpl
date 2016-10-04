@@ -53,7 +53,7 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
                         }
                     }
                     div(class: 'panel-body') {
-                        span(admin+" ")
+                        span(message.admin+" ")
                         if (message.deputy!=null ) {
                             message.deputy.each { deputy ->
                                 span(deputy.getName()+" ")
@@ -73,7 +73,7 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
                     div(class: 'panel-body') {
                         if (message.participant != null) {
                             message.participant.each { participant ->
-                                span(participant.getName())
+                                a(href:"/contest/team/info/${participant.getId()}",participant.getName()+" ")
                             }
                         } else {
                             p('There is no participant')

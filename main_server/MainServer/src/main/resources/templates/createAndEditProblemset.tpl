@@ -6,15 +6,14 @@ layout 'layout.tpl', title: title, loginUser: loginUser, user_id : user_id,
         content: contents {
             div(class: 'container') {
                 div(id: 'problem-container') {
+                    form(id: 'create-problemset', action: action, method: 'post', class: 'write_form') {
                         div(class: 'col-md-6') {
-                            form(id: 'create-problemset', action: action, method: 'post', class: 'write_form') {
-                                span('문제집 이름')
-                                br()
-                                input(type: 'text', class: 'form-control', value: setName, name: 'problemset_title', id: 'title');
-                            }
+                            span('문제집 이름')
+                            br()
+                            input(type: 'text', class: 'form-control', value: setName, name: 'problemset_title', id: 'title');
                         }
-                        div(class: 'col-md-6') {
-                            if (flag == 1) {
+                        if (flag == 1) {
+                            div(class: 'col-md-6') {
                                 table(class: 'table table-striped') {
                                     thead {
                                         tr {
@@ -42,7 +41,10 @@ layout 'layout.tpl', title: title, loginUser: loginUser, user_id : user_id,
                                     }
                                 }
                             }
-                            if (flag == 2) {
+                        }
+                    }
+                        if (flag == 2) {
+                            div(class: 'col-md-6') {
                                 table(class: 'table table-striped') {
                                     thead {
                                         tr {
