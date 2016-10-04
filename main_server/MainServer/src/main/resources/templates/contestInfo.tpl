@@ -1,4 +1,4 @@
-layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
+layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id, contest_id: message.contest_id,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/myPage.css')
             link(rel: 'stylesheet', href: '/css/contest.css')
@@ -16,7 +16,9 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,
                             p() {
                                 span(message.start +" - "+message.end)
                             }
-                            button(id: 'deputy-request', class:'btn btn-primary',type:'button', '부관리자 신청')
+                            if(message.canApply == true) {
+                                button(id: 'deputy-request', class: 'btn btn-primary', type: 'button', '부관리자 신청')
+                            }
                         }
                     }
                 }

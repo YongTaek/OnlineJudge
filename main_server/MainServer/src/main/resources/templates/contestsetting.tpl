@@ -43,8 +43,8 @@ layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,con
                                                 a(href: "/user/info/${requestDeputy.requestDeputy_id}", requestDeputy.requestDeputy_name)
                                             }
                                             td(class: 'center') {
-                                                button(class: 'btn btn-primary', type: 'button', value: requestDeputy.requestDeputy_id+"/"+messages.contest_id,name: 'requestDeputy_add', id: 'requestDeputy-add', '추가')
-                                                button(class: 'btn btn-primary', type: 'button', value: requestDeputy.requestDeputy_id+"/"+messages.contest_id, name: 'requestDeputy_deny', id: 'requestDeputy-deny', '거절')
+                                                button(class: 'btn btn-primary', type: 'button', value: requestDeputy.requestDeputy_id+"/"+messages.contest_id,name: 'requestDeputy-add', id: 'requestDeputy-add', '추가')
+                                                button(class: 'btn btn-primary', type: 'button', value: requestDeputy.requestDeputy_id+"/"+messages.contest_id, name: 'requestDeputy-deny', id: 'requestDeputy-deny', '거절')
                                             }
                                         }
                                     }

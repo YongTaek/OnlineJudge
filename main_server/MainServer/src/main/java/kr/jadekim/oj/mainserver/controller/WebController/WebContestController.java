@@ -285,10 +285,10 @@ public class WebContestController {
             Contest contest = contestService.getContest(contest_id).get();
             CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
             User loginUser = currentUser.getUser();
-//            if(!loginUser.equals(contest.getAdmin())){
-//                modelAndView.setViewName("redirect:/contest/info/"+contest_id);
-//                return modelAndView;
-//            }
+            if(loginUser.getId() != contest.getAdmin().getId()){
+                modelAndView.setViewName("redirect:/contest/info/"+contest_id);
+                return modelAndView;
+            }
             ArrayList<Map> messages = new ArrayList<>();
             Map<String, Object> map = new HashMap<>();
             map.put("contest_name", contest.getName());
@@ -422,6 +422,11 @@ public class WebContestController {
     public ModelAndView Contest(ModelAndView modelAndView, @PathVariable("id") int contest_id, Authentication authentication){
         Map<String,Object> contestinfo = new HashMap<>();
         Contest contest = null;
+        User user = null;
+        if(authentication != null){
+            CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
+            user = currentUser.getUser();
+        }
         try {
             contest = contestService.getContest(contest_id).get();
             if(contest != null) {
@@ -441,6 +446,24 @@ public class WebContestController {
                 }
                 contestinfo.put("deputy", contest.getDeputies());
                 contestinfo.put("participant", contest.getTeams());
+                contestinfo.put("contest_id", contest_id);
+                List<User> deputies = contest.getDeputies();
+                for(User temp : contest.getRequestDeputy()){
+                    deputies.add(temp);
+                }
+                if(user != null){
+                    for(User temp : deputies){
+                        if(temp.getId() == user.getId()){
+                            contestinfo.put("canApply", false);
+                            break;
+                        }
+                    }
+                    if(contestinfo.get("canApply") == null){
+                        contestinfo.put("canApply", true);
+                    }
+                }else{
+                    contestinfo.put("canApply", true);
+                }
                 System.out.println(contest.getTeams().size());
             }
         } catch (InterruptedException e) {

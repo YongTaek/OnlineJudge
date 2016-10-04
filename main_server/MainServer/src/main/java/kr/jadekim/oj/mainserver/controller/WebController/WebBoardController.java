@@ -180,7 +180,7 @@ public class WebBoardController {
         }
         Question question = questionRepository.findOne(id);
         if(question==null){
-            modelAndView.setViewName("redirect:/board/problem/"+id);
+            modelAndView.setViewName("redirect:/problem/"+id);
             return modelAndView;
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
