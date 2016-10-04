@@ -10,20 +10,18 @@ layout 'layout.tpl', title: '문제집',loginUser:loginUser, user_id : user_id,
                     div(class: 'head-container') {
                         ul(class: 'nav nav-pills head-item main') {
                             li(class: 'active', id: 'problem') {
-                                a(href: '/problem', '전체')
+                                a(href: '/problemset', '전체')
                             }
                             li(id: 'recent') {
-                                a(href: '/problem/recent', '푼 사람이 많은 문제')
+                                a(href: '/problemset/recent', '푼 사람이 많은 문제')
                             }
                             li(id: 'ranking') {
-                                a(href: '/problem/ranking', '그룹장이 많은 문제')
+                                a(href: '/problemset/ranking', '그룹장이 많은 문제')
                             }
-
                         }
                         div (class: 'head-item') {
                             a(class: 'btn btn-primary push-left', href: '/problemset/create', '문제집 만들기')
                         }
-
                     }
                 }
 
