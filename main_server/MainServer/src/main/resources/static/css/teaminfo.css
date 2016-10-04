@@ -7,3 +7,10 @@
 .remove{
     margin: 0;
 }
+form{
+    margin: 0 10px;
+    display: inline-block;
+}
+.rightbtn{
+    float:right;
+}

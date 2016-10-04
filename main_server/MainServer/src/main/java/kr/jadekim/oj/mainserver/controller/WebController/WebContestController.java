@@ -184,9 +184,13 @@ public class WebContestController {
         if (authentication != null) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
+        User loginUser = null;
+        if(currentUser!=null){
+           loginUser = currentUser.getUser();
+        }
         User user = null;
-        if(currentUser!=null) {
-            user = currentUser.getUser();
+        if(loginUser!=null) {
+            user = userService.getUserByLoginId(loginUser.getLoginId()).get();
         }
         Iterable<Contest> contests = null;
         try {
@@ -210,12 +214,26 @@ public class WebContestController {
         for(Contest c:contests){
             Map<String,Object> map = new HashMap<>();
             Boolean isjoin = false;
-            List<User> users = c.getExaminers();
-            if(users != null) {
-                for (int i = 0; i < users.size(); i++) {
-                    if (users.get(i).getloginId().matches(user.getloginId())) {
-                        isjoin = true;
-                        break;
+            List<Team> teams = c.getTeams();
+            if(teams !=null){
+                int size = teams.size();
+                int i = 0;
+                if(user !=null) {
+                    while (i < size) {
+                        User admin = teams.get(i).getAdmin();
+                        if (admin != null && teams.get(i).getAdmin() == user) {
+                            isjoin = true;
+                            break;
+                        }
+                        List<User> users = teams.get(i).getUsers();
+                        for (int j = 0; j < users.size(); j++) {
+                            if (users.contains(user)) {
+                                isjoin = true;
+                                i = size;
+                                break;
+                            }
+                        }
+                        i++;
                     }
                 }
             }
@@ -418,10 +436,12 @@ public class WebContestController {
                 if(admin != null){
                     contestinfo.put("admin", admin.getName());
                 }
+                else{
+                    contestinfo.put("admin","");
+                }
                 contestinfo.put("deputy", contest.getDeputies());
                 contestinfo.put("participant", contest.getTeams());
                 System.out.println(contest.getTeams().size());
-                System.out.println(contest.getTeams());
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
