@@ -7,10 +7,10 @@ layout 'layout.tpl', title:'문제',loginUser:loginUser, user_id: user_id,
                 div(class: 'head-container') {
                     ul(class: 'nav nav-pills head-item main') {
                         li(class: 'active',id: 'problem-num') {
-                            a(href: '#', messages.num)
+                            a(href: '#', num)
                         }
                         li(id: 'problem-submit') {
-                            a(href: 'submit/'+messages.num, '제출하기')
+                            a(href: 'submit/'+num, '제출하기')
                         }
                         li(id: 'grade-now') {
                             a(href: '#', '채점 현황')
@@ -19,7 +19,7 @@ layout 'layout.tpl', title:'문제',loginUser:loginUser, user_id: user_id,
                             a(href: '#', '내 채점현황')
                         }
                         li(id: 'q&a') {
-                            a(href: '/board/question/'+messages.num, 'Q&A')
+                            a(href: '/board/question/'+num, 'Q&A')
                         }
                     }
                 }

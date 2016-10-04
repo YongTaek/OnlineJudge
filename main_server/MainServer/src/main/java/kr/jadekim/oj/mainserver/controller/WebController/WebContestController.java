@@ -318,6 +318,7 @@ public class WebContestController {
             System.out.println(requestDeputies.size());
             modelAndView.addObject("requestDeputies",requestDeputies);
             modelAndView.addObject("messages", map);
+            modelAndView.addObject("noSearch",true);
             modelAndView.setViewName("contestsetting");
         } catch (InterruptedException e) {
             e.printStackTrace();

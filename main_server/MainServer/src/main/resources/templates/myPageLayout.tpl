@@ -1,5 +1,3 @@
-package templates
-
 layout 'layout.tpl', title: '마이페이지', loginUser: loginUser,user_loginid:user_loginid,user_id:user_id,isMe:isMe,user_name:user_name,
         custom_head: contents {
             custom_head()

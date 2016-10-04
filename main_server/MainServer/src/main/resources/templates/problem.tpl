@@ -1,4 +1,4 @@
-layout 'problemInfoLayout.tpl', title: '문제', loginUser: loginUser, user_id: user_id,
+layout 'problemInfoLayout.tpl', title: '문제', loginUser: loginUser, user_id: user_id,'num':messages.num,
         custom_head: contents {
             link(rel: 'stylesheet', type: 'text/css', href: '/css/problemList.css')
         },

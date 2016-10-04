@@ -23,4 +23,5 @@ layout 'myPageLayout.tpl',user_loginid:user_loginid,group:group,loginUser:loginU
                 }
             }
             content()
+            script(src:'/js/mySetting.js')
         }
