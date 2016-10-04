@@ -5,9 +5,10 @@ $('#problemset').on('click',function() {
     window.open("/contest/create/insert-set","대회 문제집 추가","width=800px, height=600px")
 })
 
-$('#requestDeputy-add').on('click',function() {
+$("button[name=requestDeputy-add]").on('click', function () {
+//$('#requestDeputy-add').on('click',function() {
     console.log($(location).attr('path'))
-    var buttonValue = document.getElementById('requestDeputy-add').value;
+    var buttonValue = this.value;
     $.ajax({
         type: 'POST',
         url: '/contest/add/deputy',
@@ -23,9 +24,10 @@ $('#requestDeputy-add').on('click',function() {
     location.reload();
 })
 
-$('#requestDeputy-deny').on('click',function() {
+$("button[name=requestDeputy-deny]").on('click', function () {
+//$('#requestDeputy-deny').on('click',function() {
     console.log($(location).attr('path'))
-    var buttonValue = document.getElementById('requestDeputy-deny').value;
+    var buttonValue = this.value;
     $.ajax({
         type: 'POST',
         url: '/contest/delete/requestDeputy',
@@ -41,9 +43,10 @@ $('#requestDeputy-deny').on('click',function() {
     location.reload();
 })
 
-$('#deputy-delete').on('click',function() {
+$("button[name=deputy-delete]").on('click', function () {
+//$('#deputy-delete').on('click',function() {
     console.log($(location).attr('path'))
-    var buttonValue = document.getElementById('deputy-delete').value;
+    var buttonValue = this.value;
     $.ajax({
         type: 'POST',
         url: '/contest/delete/deputy',
