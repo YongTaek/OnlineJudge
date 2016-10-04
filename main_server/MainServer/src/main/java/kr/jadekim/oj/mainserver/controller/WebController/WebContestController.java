@@ -488,11 +488,11 @@ public class WebContestController {
                 probleminfo.add(problem);
             }
         }
+        modelAndView.addObject("notSearch",true);
         modelAndView.addObject("message",contestinfo);
         modelAndView.addObject("problems",probleminfo);
         modelAndView.setViewName("contestInfo");
         return modelAndView;
     }
-
 
 }

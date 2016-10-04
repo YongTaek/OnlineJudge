@@ -1,4 +1,4 @@
-layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id, contest_id: message.contest_id,
+layout 'contest.tpl', title: '대회', loginUser: loginUser, user_id:user_id,contest_id: message.contest_id,notSearch:notSearch,
         custom_head: contents {
             link(rel: 'stylesheet', href: '/css/myPage.css')
             link(rel: 'stylesheet', href: '/css/contest.css')

@@ -31,4 +31,8 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
 
     @Query("select distinct a.id from Answer a join a.submitter u on u.id=:user_id join a.result r on r.isSuccess=true")
     List<Integer> findSuccessAnswerByUserId(@Param("user_id")int user_id);
+
+    @Query("select a from Answer a join a.problem p on p.id=:problemId join a.submitter u on u.id=:userId")
+    List<Answer> findAnswerByProblemIdAndUserId(@Param("problemId") int problemId, @Param("userId")int userId);
+
 }

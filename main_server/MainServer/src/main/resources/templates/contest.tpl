@@ -15,13 +15,14 @@ layout 'layout.tpl', title: '대회', loginUser: loginUser, user_id:user_id, con
                             }
 
                         }
-                        div(class: 'head-item') {
-                            input(type: "text", class: 'form-control', name: 'search')
+                        if(!notSearch) {
+                            div(class: 'head-item') {
+                                input(type: "text", class: 'form-control', name: 'search')
+                            }
+                            div(class: 'head-item') {
+                                button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
+                            }
                         }
-                        div(class: 'head-item') {
-                            button(type: "submit", id: 'search-button', class: "btn btn-primary push-left", '검색')
-                        }
-
 
                     }
                 }

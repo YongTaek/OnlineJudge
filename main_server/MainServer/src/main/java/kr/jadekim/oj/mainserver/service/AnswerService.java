@@ -67,4 +67,9 @@ public class AnswerService {
     public Future<List<Integer>> findSuccessAnswerByUserId(int user_id) {
         return new AsyncResult<>(answerRepository.findSuccessAnswerByUserId(user_id));
     }
+
+    @Async
+    public Future<List<Answer>> findAnswerByUserIdAndProblemId(int problemId, int userId) {
+        return new AsyncResult<>(answerRepository.findAnswerByProblemIdAndUserId(problemId,userId));
+    }
 }

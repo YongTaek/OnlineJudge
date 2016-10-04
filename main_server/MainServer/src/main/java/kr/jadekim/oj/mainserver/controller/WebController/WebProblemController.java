@@ -12,6 +12,7 @@ import kr.jadekim.oj.mainserver.service.AnswerService;
 import kr.jadekim.oj.mainserver.service.ProblemService;
 import kr.jadekim.oj.mainserver.util.SimpleResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -271,5 +270,38 @@ public class WebProblemController {
 
         SimpleResult simpleResult = gson.fromJson(response.toString(),SimpleResult.class);
         return simpleResult;
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping("problem/{id}/answer/result")
+    public ModelAndView getAnswerResult(@Param("problemId")int problemId, ModelAndView modelAndView, Authentication authentication) {
+        User user = ((CurrentUser) authentication.getPrincipal()).getUser();
+        try {
+            List<Answer> answerList = answerService.findAnswerByUserIdAndProblemId(problemId,user.getId()).get();
+            ArrayList<Map> answers = new ArrayList<>(answerList.size());
+            for(Answer a : answerList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("num", a.getId());
+                map.put("problem_num",problemId);
+                if(a.getResult() != null) {
+                    map.put("result", a.getResult().getIsSuccess());
+                } else {
+                    map.put("result", false);
+                }
+                map.put("message",a.getResult().getMessage());
+                map.put("language",a.getLanguage());
+                map.put("codeLength",a.getCodeLength());
+                answers.add(map);
+            }
+            modelAndView.addObject("answers",answers);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("login_user",user.getloginId());
+
+        modelAndView.setViewName("answerList");
+        return modelAndView;
     }
 }

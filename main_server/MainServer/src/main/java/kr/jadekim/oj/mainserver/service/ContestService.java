@@ -23,7 +23,7 @@ public class ContestService {
     @Async
     public Future<Contest> getContest(int contest_id) {
         Contest contest = contestRepository.findOne(contest_id);
-        return new AsyncResult<Contest>(contest);
+        return new AsyncResult<>(contest);
     }
     public Future<Iterable<Contest>> findAllContest(Pageable pageable){
         Iterable<Contest> contests = contestRepository.findAll(pageable);

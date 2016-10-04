@@ -30,6 +30,12 @@ public class Answer{
     @Column(name = "submitTime")
     private Date submitTime;
 
+    @Column(name = "language")
+    private String language;
+
+    @Column(name = "codeLength")
+    private int codeLength;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User submitter;
@@ -79,6 +85,22 @@ public class Answer{
     public int getId() {
 
         return id;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public int getCodeLength() {
+        return codeLength;
+    }
+
+    public void setCodeLength(int codeLength) {
+        this.codeLength = codeLength;
     }
 
     public Problem getProblem() {
