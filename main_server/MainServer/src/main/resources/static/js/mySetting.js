@@ -5,7 +5,7 @@ var myInfo = $('#info')
 var myPassword = $('#password')
 var withdrawal = $('#withdrawal')
 
-if ($(location).attr('pathname').indexOf('/user/info') > -1) {
+if ($(location).attr('pathname') === '/user/setting') {
     if (!myInfo.hasClass('active')) {
         myInfo.addClass('active')
     }
@@ -15,7 +15,7 @@ if ($(location).attr('pathname').indexOf('/user/info') > -1) {
     if (withdrawal.hasClass('active')) {
         withdrawal.removeClass('active')
     }
-} else if ($(location).attr('pathname').indexOf('/user/setting') > -1) {
+} else if ($(location).attr('pathname') === '/user/setting/password') {
     if (myInfo.hasClass('active')) {
         myInfo.removeClass('active')
     }
@@ -25,7 +25,7 @@ if ($(location).attr('pathname').indexOf('/user/info') > -1) {
     if (withdrawal.hasClass('active')) {
         withdrawal.removeClass('active')
     }
-} else if ($(location).attr('pathname') === '/problem/create') {
+} else if ($(location).attr('pathname') === '/user/setting/withdrawal') {
     if (myInfo.hasClass('active')) {
         myInfo.removeClass('active')
     }

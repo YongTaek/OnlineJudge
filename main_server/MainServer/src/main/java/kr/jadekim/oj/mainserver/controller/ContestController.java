@@ -35,7 +35,7 @@ public class ContestController {
     public
     @ResponseBody
     String getContestInfo(int contest_id) throws ExecutionException, InterruptedException {
-        Contest contest = contestService.getContest(contest_id).get();
+        Contest contest = contestService.getContest(contest_id);
         ProblemSet problemSet = new ProblemSet();
         Team team = new Team();
         Date startDate = new Date();

@@ -5,7 +5,7 @@ package kr.jadekim.oj.mainserver.config;
  */
 public class Setting {
 
-    public static String EvaluationServer = "http://localhost:3000";
+    public static String EvaluationServer = "http://yongtech.kr:3000";
 
 
 }

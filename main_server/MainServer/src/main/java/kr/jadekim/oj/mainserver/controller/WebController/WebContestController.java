@@ -282,7 +282,7 @@ public class WebContestController {
     @RequestMapping(value = "/setting/{id}", method = RequestMethod.GET)
     public ModelAndView settingContestShow(ModelAndView modelAndView, @PathVariable("id") int contest_id, Authentication authentication) {
         try {
-            Contest contest = contestService.getContest(contest_id).get();
+            Contest contest = contestService.getContest(contest_id);
             CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
             User loginUser = currentUser.getUser();
             if(loginUser.getId() != contest.getAdmin().getId()){
@@ -320,9 +320,7 @@ public class WebContestController {
             modelAndView.addObject("messages", map);
             modelAndView.addObject("noSearch",true);
             modelAndView.setViewName("contestsetting");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return modelAndView;
@@ -331,7 +329,7 @@ public class WebContestController {
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/setting/{id}", method = RequestMethod.POST)
     public ModelAndView settingContest(ModelAndView modelAndView, @PathVariable("id") int contest_id, HttpServletRequest request,Authentication authentication) throws ExecutionException, InterruptedException {
-        Contest contest = contestService.getContest(contest_id).get();
+        Contest contest = contestService.getContest(contest_id);
         ProblemSet problemSet;
         String contest_name = request.getParameter("contestname");
         String contest_problemset = request.getParameter("contestProblemset");
@@ -353,12 +351,10 @@ public class WebContestController {
         int contest_id = Integer.parseInt(request.getParameter("contest_id"));
         Contest contest;
         try {
-            contest = contestService.getContest(contest_id).get();
+            contest = contestService.getContest(contest_id);
             contest.getRequestDeputy().add(loginUser);
             contestService.save(contest);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "{'success' : true}";
@@ -370,7 +366,7 @@ public class WebContestController {
         String[] temp =  request.getParameter("deputy_id").split("/");
         int contest_id = Integer.valueOf(temp[1]);
         System.out.println(contest_id+"*"+temp[0]);
-        Contest contest = contestService.getContest(contest_id).get();
+        Contest contest = contestService.getContest(contest_id);
         User deputy = userService.findUserById(Integer.valueOf(temp[0]));
         contest.getRequestDeputy().remove(deputy);
         contest.getDeputies().add(deputy);
@@ -385,7 +381,7 @@ public class WebContestController {
         System.out.println(temp[0]+"!"+temp[1]);
         int contest_id = Integer.valueOf(temp[1]);
         System.out.println(contest_id+"*"+temp[0]);
-        Contest contest = contestService.getContest(contest_id).get();
+        Contest contest = contestService.getContest(contest_id);
         User deputy = userService.findUserById(Integer.valueOf(temp[0]));
         contest.getRequestDeputy().remove(deputy);
         contestService.save(contest);
@@ -399,7 +395,7 @@ public class WebContestController {
         System.out.println(temp[0]+"!"+temp[1]);
         int contest_id = Integer.valueOf(temp[1]);
         System.out.println(contest_id+"*"+temp[0]);
-        Contest contest = contestService.getContest(contest_id).get();
+        Contest contest = contestService.getContest(contest_id);
         User deputy = userService.findUserById(Integer.valueOf(temp[0]));
         contest.getDeputies().remove(deputy);
         contestService.save(contest);
@@ -411,7 +407,7 @@ public class WebContestController {
     public @ResponseBody String deleteContest(HttpServletRequest request, Authentication authentication) throws ExecutionException, InterruptedException {
         String temp =  request.getParameter("contest_id");
         int contest_id = Integer.valueOf(temp);
-        Contest contest = contestService.getContest(contest_id).get();
+        Contest contest = contestService.getContest(contest_id);
         contestService.deleteContest(contest);
         for(Team team : contest.getTeams()){
             teamService.deleteTeam(team);
@@ -429,7 +425,8 @@ public class WebContestController {
             user = currentUser.getUser();
         }
         try {
-            contest = contestService.getContest(contest_id).get();
+            System.out.println("test start");
+            contest = contestService.getContest(contest_id);
             if(contest != null) {
                 contestinfo.put("id", contest.getId());
                 contestinfo.put("name", contest.getName());
@@ -448,28 +445,13 @@ public class WebContestController {
                 contestinfo.put("deputy", contest.getDeputies());
                 contestinfo.put("participant", contest.getTeams());
                 contestinfo.put("contest_id", contest_id);
-                List<User> deputies = contest.getDeputies();
-                for(User temp : contest.getRequestDeputy()){
-                    deputies.add(temp);
-                }
-                if(user != null){
-                    for(User temp : deputies){
-                        if(temp.getId() == user.getId()){
-                            contestinfo.put("canApply", false);
-                            break;
-                        }
-                    }
-                    if(contestinfo.get("canApply") == null){
-                        contestinfo.put("canApply", true);
-                    }
-                }else{
-                    contestinfo.put("canApply", true);
-                }
+
+
+                contestinfo.put("canApply", !contestService.isUserInDeputyOrRequestDeputy(user.getId(),contest_id));
+
                 System.out.println(contest.getTeams().size());
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ArrayList<Map> probleminfo = null;
