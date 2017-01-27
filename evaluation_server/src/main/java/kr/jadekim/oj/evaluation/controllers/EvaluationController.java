@@ -94,9 +94,7 @@ public class EvaluationController {
         for (int i=evaluators.size(); i<Setting.get().EVALUATOR_COUNT; i++) {
             Evaluator evaluator = Evaluator.newInstance();
             evaluators.add(evaluator);
-            evaluator.start().subscribe(this::endEvaluate, Logger::error, () -> {
-                evaluators.remove(evaluator);
-            });
+            evaluator.start().subscribe(this::endEvaluate, Logger::error, () -> evaluators.remove(evaluator));
         }
     }
 }
